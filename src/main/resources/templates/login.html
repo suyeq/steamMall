@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <th:block th:replace="fragment_header::#head"></th:block>
+    <link href="css/font.css" rel="stylesheet">
+    <link href="css/home.css" rel="stylesheet">
+    <link href="css/creator.css" rel="stylesheet">
+    <link href="css/cart.css" rel="stylesheet">
+    <link href="css/login.css" rel="stylesheet">
+</head>
+<body class="v6 infinite_scrolling responsive_page">
+<!--头部-->
+<div class="responsive_page_content">
+    <div th:replace="fragment_top::#top"></div>
+</div>
+
+<div class="responsive_page_frame with_header">
+    <!--菜单-->
+    <div th:replace="fragment_menu::#menu"></div>
+
+    <!--登陆主体-->
+    <div class="page_content">
+
+
+        <!-- Center Column -->
+
+        <div id="error_display" class="checkout_error" style="display: none; color: #cc3300">
+        </div>
+
+        <div class="leftcol">
+
+
+            <div class="checkout_content_box">
+                <div class="loginbox">
+                    <div class="loginbox_left">
+                        <div class="loginbox_content">
+                            <h2>登录</h2>
+                            <p>到现有的 Steam 帐户</p>
+                            <br>
+                            <form name="logon" action="" method="POST" id="login_form" style="display: block;">
+                                <div class="login_row">
+                                    <div class="input_title">Steam 帐户名称</div>
+                                    <input class="text_input" type="text" name="username" id="input_username" value="">
+                                </div>
+                                <div class="login_row">
+                                    <div class="input_title">密码</div>
+                                    <input class="text_input" type="password" name="password" id="input_password" autocomplete="off">
+                                </div>
+                                <div class="login_row">
+                                    <div class="input_title" title="如果您选中此选项，我们会在今后 30 天内自动为您登录，除非您在帐户菜单中选中“注销”。此功能只适用于启用 Steam 令牌的帐户。">
+                                        <input type="checkbox" name="remember_login" id="remember_login">
+                                        <label for="remember_login">在这台电脑上记住我</label>
+                                    </div>
+                                </div>
+                                <div class="login_row" id="captcha_entry" style="display: none;">
+                                    <div id="captcha_image_row">
+                                        <img style="float: left;" id="captchaImg" src="https://store.st.dl.bscstorage.net/public/images/blank.gif" border="0" width="206" height="40">
+                                        <div id="captchaRefresh">
+                                            <span class="linkspan" id="captchaRefreshLink">刷新</span>
+                                        </div>
+                                        <div style="clear: left;"></div>
+                                    </div>
+                                    <br>
+                                    <div class="input_title">输入上述字符</div>
+                                    <input class="text_input" id="input_captcha" type="text" name="captcha_text">
+                                </div>
+                                <div style="display: none;"><input type="submit"></div>
+                            </form>
+
+                            <noscript><p>使用此站点必须先启用 Javascript</p></noscript>
+                            <script>
+                                document.getElementById('login_form').style.display = 'block';
+                            </script>
+                        </div>
+
+                        <div class="btn_ctn">
+                            <div id="login_btn_signin">
+                                <button type="submit" class="btnv6_blue_hoverfade  btn_medium">
+                                    <span>登录</span>
+                                </button>
+                            </div>
+                            <div id="login_btn_wait" style="display: none;">
+                                <img src="https://store.st.dl.bscstorage.net/public/images/login/throbber.gif">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="loginbox_sep">
+                    </div>
+                    <div class="loginbox_right">
+                        <div class="loginbox_content">
+                            <h2>创建</h2>
+                            <p>一个新的免费帐户</p>
+                            <br>
+                            <p>
+                                欢迎免费加入及轻松使用。继续创建 Steam 帐户并获取 Steam - 适合 PC 和 Mac 玩家的前沿数字解决方案。						</p>
+                            <div class="nonresponsive_hidden">
+                                <br>
+                                <p>
+                                    <a target="_top" href="https://store.steampowered.com/about">了解更多 Steam 的相关信息</a>
+                                </p>
+                            </div>
+                        </div>
+
+                        <a target="_top" href="https://store.steampowered.com/join/?&amp;snr=1_60_4__62" class="btnv6_blue_hoverfade btn_medium">
+                            <span>加入 Steam</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <br>
+
+
+            <a target="_top" href="https://help.steampowered.com/zh-cn/wizard/HelpWithLogin?redir=store%2Flogin%2F%3Fredir%3D%26redir_ssl%3D1" id="link_forgot_password">
+                忘记您的密码？		</a>
+            <br><br>
+
+        </div>
+        <!-- End Center Column -->
+
+        <!-- Right Column -->
+        <div class="rightcol">
+            <div class="block" style="margin-top: 0px">
+
+                <div class="block_content block_content_inner login">
+                    <h2>为什么加入 STEAM？</h2>
+                    <ul id="why_list">
+                        <li>购买和下载完整零售游戏</li>
+                        <li>加入 Steam 社区</li>
+                        <li>游戏时与好友聊天</li>
+                        <li>在任何电脑上都能玩</li>
+                        <li>安排游戏、比赛或 LAN 聚会</li>
+                        <li>获取自动游戏更新以及更多！</li>
+                    </ul>
+                    <br>
+                    <img src="https://store.st.dl.bscstorage.net/public/images/v6/why_join_preview.png" width="265" height="176" border="0">
+                    <br><br>
+                </div>
+                <div class="responsive_hidden" style="background: #1b2838">
+                    <br>
+                    <a target="_top" href="https://store.steampowered.com/about">了解更多 Steam 的相关信息</a>
+                </div>
+            </div>
+        </div>
+        <!-- End Right Column -->
+
+        <div style="clear: both;"></div>
+
+    </div>
+
+</div>
+
+<!--脚部-->
+<div th:replace="fragment_foot::#foot"></div>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>购物车</title>
+    <link href="css/motivo.css" rel="stylesheet" type="text/css" >
+    <th:block th:replace="fragment_header::#head"></th:block>
+    <link href="css/cart.css" rel="stylesheet" type="text/css" >
+    <link href="css/browse.css" rel="stylesheet" type="text/css">
+    <link href="css/discoveryqueue.css" rel="stylesheet" type="text/css">
+    <link href="css/tag.css" rel="stylesheet" type="text/css">
+    <link href="css/contenthub.css" rel="stylesheet" type="text/css">
+    <link href="css/creator.css" rel="stylesheet" type="text/css">
+    <link href="css/sharereponsive.css" rel="stylesheet" type="text/css">
+</head>
+<body class="v6 infinite_scrolling responsive_page">
+<!--头部-->
+<div class="v6 login responsive_page">
+    <div th:replace="fragment_top::#top"></div>
+</div>
+
+<div class="responsive_page_frame with_header">
+
+
+    <!--登陆主体-->
+    <div class="responsive_page_template_content">
+        <div class="page_background">
+
+            <div class="page_header_ctn search">
+
+                <div class="responsive_store_nav_ctn_spacer">
+                    <div id="store_header" class="">
+                    <div class="content">
+                        <!--菜单-->
+                        <div th:replace="fragment_menu::#menu"></div>
+                    </div>
+                </div></div>
+
+                <div class="page_content">
+                    <div class="breadcrumbs">
+                        <a href="https://store.steampowered.com/">所有产品</a> &gt;
+                        您的购物车			</div>
+                    <h2 class="pageheader">您的购物车</h2>
+                </div>
+            </div>
+
+            <div class="page_content">
+
+                <div style="clear: left;"></div>
+
+                <div style="clear: left;"></div>
+                <div class="leftcol">
+                    <div class="cart_area_body checkout_content_box">
+                        <form name="remove_line_item" action="https://store.steampowered.com/cart/" method="POST">
+                            <input type="hidden" name="snr" value="1_8_4__cart-remove">
+                            <input type="hidden" name="action" value="remove_line_item">
+                            <input type="hidden" name="sessionid" value="96fbcdce717238cdf663575b">
+                            <input type="hidden" id="line_item_to_remove_gid" name="lineitem_gid" value="-1">
+                            <input type="hidden" name="cart" value="2441423784998547957">
+                        </form>
+
+
+                        <div class="cart_item_list">
+                            <!-- cart item blocks -->
+
+
+
+                            <div class="cart_row even app_impression_tracked" id="cart_row_2441423784998547961" data-ds-appid="814380" data-ds-tagids="[19,29482,4026,4182,1688,1687,21]" data-ds-descids="[2,5]" data-ds-crtrids="[33770678]" onmouseover="GameHover( this, event, 'global_hover', {&quot;type&quot;:&quot;app&quot;,&quot;id&quot;:814380,&quot;v6&quot;:1} );" onmouseout="HideGameHover( this, event, 'global_hover' )">
+                                <div class="cart_item">
+
+                                    <div class="cart_item_price_container">
+
+
+                                        <div class="cart_item_price ">
+                                            <div class="price">¥ 268</div>
+                                            <a class="remove_link" href="javascript:removeFromCart('2441423784998547961')">移除</a>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="cart_item_img "><a href="https://store.steampowered.com/app/814380?snr=1_8_4__501"><img src="https://media.st.dl.bscstorage.net/steam/apps/814380/capsule_sm_120.jpg?t=1554918884" border="0"></a></div>
+                                    <div class="cart_item_desc">
+                                        <div class="cart_item_platform">
+                                            <span class="platform_img win"></span>									</div>
+                                        <a href="https://store.steampowered.com/app/814380?snr=1_8_4__501">Sekiro: Shadows Die Twice</a><br>
+                                    </div>
+                                    <div style="clear: left"></div>
+                                </div>
+
+
+                                <div class="ds_options"><div></div></div></div>
+                            <!-- /cart item blocks -->
+                        </div>
+
+
+                        <div>
+                        </div>
+
+                        <div class="checkout_content cart">
+                            <div class="cart_checkout_buttons">
+                                <a id="btn_purchase_gift" href="https://store.steampowered.com/checkout/?purchasetype=gift&amp;snr=1_8_4__503" class="btnv6_green_white_innerfade btn_medium continue">
+									<span>
+									作为礼物购买										</span>
+                                </a>
+                                <a id="btn_purchase_self" href="https://store.steampowered.com/checkout/?purchasetype=self&amp;snr=1_8_4__503" class="btnv6_green_white_innerfade btn_medium continue">
+									<span>
+									为自己购买										</span>
+                                </a>
+
+                                <div style="clear: right;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--移除所有购物车里面的订单-->
+                    <div class="checkout_notes">
+                        <div style="float:right;">
+                            <a class="remove_link" href="javascript:void(0);" onclick="ShowConfirmDialog( '', '您确定要移除所有您购物车中的物品吗？', '是', '否').done( function() { ForgetCart(); } );">移除所有物品</a>
+                        </div>
+
+                    </div>
+                    <br>
+                    <!--继续购物-->
+                    <div class="continue_shopping_ctn">
+                        <a href="https://store.steampowered.com/?snr=1_8_4__502" class="btn_medium btnv6_blue_hoverfade">
+						<span>
+							继续购物						</span>
+                        </a>
+                    </div>
+
+                </div>
+                <!-- End Center Column -->
+
+                <!-- Right Column -->
+                <div class="rightcol cart_rightcol">
+
+
+
+                    <!--今日优惠-->
+                    <div th:replace="fragment_spikegoods::#spike"></div>
+
+                    <!--推荐-->
+                    <div th:replace="fragment_recommendgoods::#recommend"></div>
+
+
+                </div>
+                <!-- End Right Column -->
+
+                <div style="clear: both;"></div>
+            </div>
+        </div>
+        <!-- End Main Background -->
+
+        <div id="coupon_selector_bg" style="display: none;"></div>
+
+    </div>	<!-- responsive_page_legacy_content -->
+
+
+</div>
+
+<!--脚部-->
+<div th:replace="fragment_foot::#foot"></div>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<th:block id="top">
+    <div id="global_header">
+        <div class="content">
+            <div class="logo">
+			<span id="logo_holder">
+                <a href="#">
+                    <img src="https://store.st.dl.bscstorage.net/public/shared/images/header/globalheader_logo.png?t=962016" width="176" height="44">
+                </a>
+            </span>
+            </div>
+
+            <div class="supernav_container">
+                <a class="menuitem supernav" href="#" data-tooltip-type="selector"
+                   data-tooltip-content=".submenu_store">
+                    商店
+                </a>
+                <a class="menuitem supernav" style="display: block" href="#"
+                   data-tooltip-type="selector" data-tooltip-content=".submenu_community">
+                    社区
+                </a>
+                <div class="submenu_community" style="display: none;" data-submenuid="community">
+                    <a class="submenuitem" href="https://steamcommunity.com/">主页</a>
+                    <a class="submenuitem" href="https://steamcommunity.com/discussions/">讨论</a>
+                    <a class="submenuitem" href="https://steamcommunity.com/workshop/">创意工坊</a>
+                    <a class="submenuitem" href="https://steamcommunity.com/market/">市场</a>
+                    <a class="submenuitem" href="https://steamcommunity.com/?subsection=broadcasts">实况直播</a>
+                </div>
+
+                <a class="menuitem" href="https://store.steampowered.com/about/">
+                    关于
+                </a>
+                <a class="menuitem" href="https://help.steampowered.com/zh-cn/">
+                    客服
+                </a>
+
+                <div class="supernav_content"
+                     style="position: absolute; z-index: 1500; opacity: 0; left: 1px; top: 64px; pointer-events: none;">
+                    <div class="submenu_store" style="" data-submenuid="store">
+                        <a class="submenuitem" href="https://store.steampowered.com/">精选</a>
+                        <a class="submenuitem" href="https://store.steampowered.com/explore/">探索</a>
+                        <a class="submenuitem" href="https://store.steampowered.com/curators/">鉴赏家</a>
+                        <a class="submenuitem" href="https://steamcommunity.com/my/wishlist/">愿望单</a>
+                        <a class="submenuitem" href="https://store.steampowered.com/news/">新闻</a>
+                        <a class="submenuitem" href="https://store.steampowered.com/stats/">统计</a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="global_actions">
+                <div id="global_action_menu">
+                    <div class="header_installsteam_btn header_installsteam_btn_green">
+
+                        <a class="header_installsteam_btn_content" href="https://store.steampowered.com/about/">
+                            安装 Steam </a>
+                    </div>
+
+                    <div style="display: none">
+                        <a class="global_action_link"
+                           href="https://store.steampowered.com/login/?redir=search%2F%3Ffilter%3Dtopsellers&amp;redir_ssl=1">登录</a>
+                        &nbsp;|&nbsp;
+                        <span class="pulldown global_action_link" id="language_pulldown"
+                              onclick="ShowMenu( this, 'language_dropdown', 'right' );">语言</span>
+                        <div class="popup_block_new" id="language_dropdown" style="display: none;">
+                            <div class="popup_body popup_menu">
+                                <a class="popup_menu_item tight" href="?l=tchinese&amp;filter=topsellers"
+                                   onclick="ChangeLanguage( 'tchinese' ); return false;">繁體中文（繁体中文）</a>
+                                <a class="popup_menu_item tight" href="?l=japanese&amp;filter=topsellers"
+                                   onclick="ChangeLanguage( 'japanese' ); return false;">日本語（日语）</a>
+                                <a class="popup_menu_item tight" href="?l=koreana&amp;filter=topsellers"
+                                   onclick="ChangeLanguage( 'koreana' ); return false;">한국어（韩语）</a>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <span class="pulldown global_action_link" id="account_pulldown" onclick="showMenu();">3162618364</span>
+                    <div class="popup_block_new" id="account_dropdown" style="visibility: visible; top: 25px; left: 98.5938px; display: none; opacity: 1;">
+                        <div class="popup_body popup_menu">
+                            <a class="popup_menu_item" href="javascript:Logout();">注销</a>
+                            <a class="popup_menu_item" href="#">个人中心</a>
+                            <!--<a class="popup_menu_item" href="https://store.steampowered.com/account/preferences/">偏好</a>-->
+                            <!--<span class="popup_menu_item" id="account_language_pulldown">更改语言</span>-->
+                            <!--<div class="popup_block_new" id="language_dropdown" style="visibility: visible; top: 90px; left: -309px; display: none; opacity: 0.0509862;">-->
+                                <!--<div class="popup_body popup_menu">-->
+                                    <!--<a class="popup_menu_item tight" href="?l=schinese" onclick="ChangeLanguage( 'schinese' ); return false;">简体中文</a>-->
+                                    <!--<a class="popup_menu_item tight" href="?l=tchinese" onclick="ChangeLanguage( 'tchinese' ); return false;">繁體中文（繁体中文）</a>-->
+                                    <!--<a class="popup_menu_item tight" href="?l=japanese" onclick="ChangeLanguage( 'japanese' ); return false;">日本語（日语）</a>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <!--<a class="popup_menu_item" href="https://steamcommunity.com/profiles/76561198399564591/">查看个人资料</a>-->
+                        </div>
+                    </div>
+
+
+                </div>
+                <a href="https://steamcommunity.com/profiles/76561198399564591/" class="user_avatar playerAvatar offline">
+                    <img src="https://media.st.dl.bscstorage.net/steamcommunity/public/images/avatars/95/959986934ff7a3782a0746a96d5f5df8524d9c2b.jpg">
+                </a>
+
+            </div>
+        </div>
+    </div>
+</th:block>

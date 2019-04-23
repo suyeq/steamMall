@@ -833,7 +833,7 @@ a#store_search_link img {
     display: inline-block;
     background-position: -9px 0px;
     background-repeat: no-repeat;
-    background-image: url('/public/images//v6/icon_cluster_controls.png');
+    background-image: url('https://store.steampowered.com/public/images//v6/icon_cluster_controls.png');
     width: 9px;
     height: 7px;
     margin-left: 15px;
@@ -843,7 +843,7 @@ a#store_search_link img {
     display: inline-block;
     background-position: -18px 0px;
     background-repeat: no-repeat;
-    background-image: url('/public/images//v6/icon_cluster_controls.png');
+    background-image: url('https://store.steampowered.com/public/images//v6/icon_cluster_controls.png');
     width: 9px;
     height: 7px;
     margin-left: 13px;

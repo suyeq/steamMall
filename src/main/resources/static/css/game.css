@@ -191,7 +191,7 @@ body.v6 #game_area_purchase h2.package_group {
     width: 32px;
     height: 32px;
 
-    background-image: url( /public/images/v5/ico_game_highlight_video.png );
+    background-image: url( https://store.steampowered.com/public/images/v5/ico_game_highlight_video.png );
 
 }
 /*
@@ -221,7 +221,7 @@ body.v6 #game_area_purchase h2.package_group {
 
 .highlight_selector {
     position: absolute;
-    background-image: url( /public/images/v5/game_highlight_activethumb.png );
+    background-image: url( https://store.steampowered.com/public/images/v5/game_highlight_activethumb.png );
     width: 116px;
     height: 77px;
     z-index: 50;
@@ -3364,7 +3364,7 @@ h2.bb_tag + br {
 }
 
 .app_tag_checkbox {
-    background: url( '/public/images/v6/tag_check.png' ) bottom center no-repeat;
+    background: url( 'https://store.steampowered.com/public/images/v6/tag_check.png' ) bottom center no-repeat;
     margin-left: 4px;
 }
 
@@ -3373,15 +3373,15 @@ h2.bb_tag + br {
 }
 
 .app_tag_control:hover .app_tag_report {
-    background: url( '/public/images/v6/tag_report.png' ) bottom center no-repeat;
+    background: url( 'https://store.steampowered.com/public/images/v6/tag_report.png' ) bottom center no-repeat;
 }
 
 .app_tag_control .app_tag_report.reported {
-    background: url( '/public/images/v6/tag_report.png' ) top center no-repeat;
+    background: url( 'https://store.steampowered.com/public/images/v6/tag_report.png' ) top center no-repeat;
 }
 
 .app_tag_control:hover .app_tag_ban {
-    background: url( '/public/images/v6/tag_report.png' ) bottom center no-repeat;
+    background: url( 'https://store.steampowered.com/public/images/v6/tag_report.png' ) bottom center no-repeat;
 }
 
 .glance_content_descriptors_ctn {

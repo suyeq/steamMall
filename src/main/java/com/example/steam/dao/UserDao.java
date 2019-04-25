@@ -1,5 +1,8 @@
 package com.example.steam.dao;
 
+import com.example.steam.entity.User;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -11,5 +14,8 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface UserDao {
+
+    @Select("select * from user where email=#{email}")
+    User findByEmail(@Param("email") String email);
 
 }

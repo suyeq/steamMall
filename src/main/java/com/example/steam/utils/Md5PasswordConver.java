@@ -22,4 +22,13 @@ public class Md5PasswordConver {
         String camouflagePassword=""+salt.charAt(0)+salt.charAt(4)+password+salt.charAt(5)+salt.charAt(2);
         return DigestUtils.md5Hex(camouflagePassword);
     }
+
+    public static String md5Conver(String password,String salt){
+        return secondMd5(firstMd5(password),salt);
+    }
+
+//    public static void main(String args[]){
+//        System.out.println(secondMd5("13003a209188123ae8bc492e19431e4f","1q2w3e"));
+//    }
+//
 }

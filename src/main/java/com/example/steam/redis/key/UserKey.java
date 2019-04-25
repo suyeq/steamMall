@@ -15,7 +15,7 @@ public class UserKey extends BaseKey {
         super();
     }
 
-    public static UserKey USER_OBJECT=new UserKey();
+    public static UserKey USER_ID=new UserKey();
 
 
 }

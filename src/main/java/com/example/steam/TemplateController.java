@@ -19,20 +19,7 @@ public class TemplateController {
 
     @Autowired
     TypeService typeService;
-    @RequestMapping("/")
-    public String index(){
-        return "index";
-    }
 
-    @RequestMapping("/login")
-    public String login(){
-        return "login";
-    }
-
-    @RequestMapping("/register")
-    public String register(){
-        return "register";
-    }
 
     @RequestMapping("/class")
     public String classify(){
@@ -52,7 +39,6 @@ public class TemplateController {
     @ResponseBody
     @RequestMapping("/test")
     public String test(){
-        System.out.println(typeService.findAllTyp().toString());
         Type type=new Type();
         type.setTypeName("欢乐");
         System.out.println(typeService.addType(type));

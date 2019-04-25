@@ -23,8 +23,8 @@ public class SteamApplicationTests {
 
     @Test
     public void test(){
-        redisService.set(UserKey.USER_OBJECT,"test","hhahahah");
-        System.out.println(redisService.get(UserKey.USER_OBJECT,"test",String.class));
+        redisService.set(UserKey.USER_ID,"test","hhahahah");
+        System.out.println(redisService.get(UserKey.USER_ID,"test",String.class));
     }
 
 }

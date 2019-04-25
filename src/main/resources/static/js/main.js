@@ -2,6 +2,7 @@ var featuredValue=12000;
 var specialValue=12000;
 var classRecommendValue=15000;
 var detailValue=12000;
+var salt="1q2w3e";
 var steam=
     {
         //精选
@@ -398,4 +399,40 @@ var steam=
     function showMorePublisher() {
         $('#publisherValue .summary.column')[0].setAttribute('style','overflow: visible; white-space: normal;');
         $('#publisherValue .more_btn')[0].setAttribute('style','display:none;');
+    }
+
+    //登录操作
+    function login() {
+        var email=$('#input_username').val();
+        var password=$('#input_password').val();
+        password=""+salt.charAt(0)+salt.charAt(4)+password+salt.charAt(5)+salt.charAt(2);
+        password=md5(password);
+        var loadId=layer.load(1, {
+            shade: [0.1,'#fff'] //0.1透明度的白色背景
+        });
+        $.ajax({
+            url:"/userVerification",
+            type:"POST",
+            data:{
+              email:email,
+              password:password  
+            },
+            success:function (data) {
+                layer.close(loadId);
+                data=eval('('+data+')');
+                if (data.code==201){
+                    layer.msg(data.msg)
+                }
+                if (data.code==501) {
+                    layer.msg(data.msg)
+                }
+                if (data.code==502){
+                    layer.msg(data.msg)
+                }
+
+            },
+            error:function () {
+                alert("失败")
+            }
+        });
     }

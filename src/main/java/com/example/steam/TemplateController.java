@@ -1,5 +1,6 @@
 package com.example.steam;
 
+import com.example.steam.entity.Type;
 import com.example.steam.service.TypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -51,7 +52,12 @@ public class TemplateController {
     @ResponseBody
     @RequestMapping("/test")
     public String test(){
-        return typeService.findAllTyp().toString();
+        System.out.println(typeService.findAllTyp().toString());
+        Type type=new Type();
+        type.setTypeName("欢乐");
+        System.out.println(typeService.addType(type));
+
+        return "ok";
     }
 
 

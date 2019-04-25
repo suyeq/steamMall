@@ -38,11 +38,7 @@ public class DynamicDataSourceHolder {
     }
 
     public static boolean isMaster(){
-        String temp=holder.get();
-        if (temp == null){
-            return false;
-        }
-        return temp.equals(MASTER);
+        return holder.get().equals(MASTER);
     }
 
 }

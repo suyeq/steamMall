@@ -1,5 +1,8 @@
 package com.example.steam;
 
+import com.example.steam.entity.Type;
+import com.example.steam.redis.RedisService;
+import com.example.steam.redis.key.UserKey;
 import com.example.steam.service.TypeService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,13 +15,16 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class SteamApplicationTests {
     @Autowired
     TypeService typeService;
-    @Test
-    public void contextLoads() {
-    }
+    @Autowired
+    RedisService redisService;
+//    @Test
+//    public void contextLoads() {
+//    }
 
     @Test
     public void test(){
-        System.out.println(typeService.findAllTyp().toString());
+        redisService.set(UserKey.USER_OBJECT,"test","hhahahah");
+        System.out.println(redisService.get(UserKey.USER_OBJECT,"test",String.class));
     }
 
 }

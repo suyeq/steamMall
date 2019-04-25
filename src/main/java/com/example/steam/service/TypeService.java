@@ -4,6 +4,7 @@ import com.example.steam.dao.TypeDao;
 import com.example.steam.entity.Type;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -20,8 +21,15 @@ public class TypeService {
     @Autowired
     TypeDao typeDao;
 
+
+    @Transactional(readOnly = true)
     public List<Type> findAllTyp(){
         return typeDao.findAllType();
+    }
+
+    //@Transactional
+    public int addType(Type type){
+        return typeDao.addType(type);
     }
 
 }

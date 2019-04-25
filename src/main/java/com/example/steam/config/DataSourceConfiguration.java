@@ -26,20 +26,20 @@ public class DataSourceConfiguration {
 
     @Primary
     @Bean(name = "master")
-    @ConfigurationProperties("spring.datasource.druid.one")
+    @ConfigurationProperties(prefix = "spring.datasource")
     public DataSource dataSourceOne(){
         return DruidDataSourceBuilder.create().build();
     }
 
     @Bean(name = "slave")
-    @ConfigurationProperties("spring.datasource.druid.two")
+    @ConfigurationProperties(prefix = "spring.datasource1")
     public DataSource dataSourceTwo(){
         return DruidDataSourceBuilder.create().build();
     }
 
     @Bean
     public DynamicDataSource dynamicDataSource(@Qualifier("master") DataSource masterDataSource,
-                                               @Qualifier("slave")DataSource slaveDataSource) {
+                                               @Qualifier("slave") DataSource slaveDataSource) {
         DynamicDataSource dynamicDataSource = new DynamicDataSource();
         Map<Object, Object> targetDataSources = new HashMap<Object, Object>(10);
         targetDataSources.put("master", masterDataSource);

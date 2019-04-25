@@ -1,6 +1,7 @@
 package com.example.steam.dao;
 
 import com.example.steam.entity.Type;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
@@ -18,4 +19,7 @@ public interface TypeDao {
 
     @Select("select * from type")
     List<Type> findAllType();
+
+    @Insert("insert into type(typename) value(#{typeName})")
+    int addType(Type type);
 }

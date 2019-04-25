@@ -30,7 +30,6 @@ public class PlatformDynamicDataSourceConfiguration {
         Properties properties = new Properties();
         properties.setProperty("sqlType", "mysql");
         sqlSessionFactoryBean.setConfigurationProperties(properties);
-//        sqlSessionFactoryBean.setPlugins(new Interceptor[]{new PaginationInterception()});
         return sqlSessionFactoryBean;
     }
 

@@ -1,7 +1,10 @@
 package com.example.steam;
 
+import com.example.steam.service.TypeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class TemplateController {
 
+    @Autowired
+    TypeService typeService;
     @RequestMapping("/")
     public String index(){
         return "index";
@@ -42,5 +47,13 @@ public class TemplateController {
     public String cart(){
         return "shoppingcart";
     }
+
+    @ResponseBody
+    @RequestMapping("/test")
+    public String test(){
+        return typeService.findAllTyp().toString();
+    }
+
+
 
 }

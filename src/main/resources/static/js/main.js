@@ -392,6 +392,10 @@ var steam=
             $('#tab_select_ComingSoon')[0].setAttribute('class','tab  tab_filler active');
             $('#tab_content_ComingSoon')[0].setAttribute('style','display: block;');
         }
+    }
 
-
+    //展示更多发行商
+    function showMorePublisher() {
+        $('#publisherValue .summary.column')[0].setAttribute('style','overflow: visible; white-space: normal;');
+        $('#publisherValue .more_btn')[0].setAttribute('style','display:none;');
     }

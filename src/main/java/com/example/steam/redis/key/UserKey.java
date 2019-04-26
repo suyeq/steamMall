@@ -17,5 +17,6 @@ public class UserKey extends BaseKey {
 
     public static UserKey USER_ID=new UserKey();
 
+    public static UserKey COOKIE_ID=new UserKey();
 
 }

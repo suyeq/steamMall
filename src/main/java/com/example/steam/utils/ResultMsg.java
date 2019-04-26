@@ -17,6 +17,8 @@ public class ResultMsg {
 
     public static ResultMsg PASS_ERROR=new ResultMsg("502","密码错误");
 
+    public static ResultMsg HAD_Login=new ResultMsg("503","已在其他客户端登录");
+
 
     private String code;
 

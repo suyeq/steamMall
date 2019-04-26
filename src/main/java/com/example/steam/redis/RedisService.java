@@ -79,7 +79,8 @@ public class RedisService {
 
     public static  <T> String beanToString(T value){
         if (value == null){
-            throw new NullPointerException("value  is null");
+            //throw new NullPointerException("value  is null");
+            return null;
         }
         Class clazz=value.getClass();
         if (clazz == int.class || clazz == Integer.class
@@ -95,7 +96,8 @@ public class RedisService {
 
     public static  <T> T stringToBean(String value,Class<T> tClass){
         if (value == null){
-            throw  new NullPointerException("value is null");
+            //throw  new NullPointerException("value is null");
+            return null;
         }
         if (tClass == String.class){
             return (T) value;

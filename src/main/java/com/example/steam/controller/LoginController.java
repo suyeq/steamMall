@@ -2,16 +2,24 @@ package com.example.steam.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.example.steam.entity.User;
+import com.example.steam.redis.RedisService;
+import com.example.steam.redis.key.UserKey;
 import com.example.steam.service.UserService;
 import com.example.steam.utils.Md5PasswordConver;
 import com.example.steam.utils.ResultMsg;
+import com.example.steam.utils.UUIDUntil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Created with IntelliJ IDEA.
@@ -23,8 +31,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class LoginController {
 
+    private final static String COOKIE_ID="token";
+
+    @Value("${server.servlet.session.cookie.max-age}")
+    int cookieMaxAge;
+
     @Autowired
     UserService userService;
+    @Autowired
+    RedisService redisService;
 
     Logger log= LoggerFactory.getLogger(LoginController.class);
 
@@ -41,23 +56,18 @@ public class LoginController {
     @ResponseBody
     @RequestMapping("/userVerification")
     public String userLogin(@RequestParam("email")String email,
-                            @RequestParam("password")String password){
+                            @RequestParam("password")String password,
+                            HttpServletResponse response,
+                            HttpServletRequest request){
 
-        User user=userService.findByEmail(email);
-        if (user == null){
-            return JSON.toJSONString(ResultMsg.NO_EMAIL);
-        }
-        String finalPass= Md5PasswordConver.secondMd5(password,user.getSalt());
-        if (!finalPass.equals(user.getPassword())){
-            return JSON.toJSONString(ResultMsg.PASS_ERROR);
-        }
-        log.error(email+" "+password);
-        //log.error(JSON.toJSONString(ResultMsg.LOGIN_SUCCESS));
-        return JSON.toJSONString(ResultMsg.LOGIN_SUCCESS);
+        return JSON.toJSONString(userService.handleLogin(email,password,request,response));
     }
 
     @RequestMapping("/register")
     public String register(){
         return "register";
     }
+
+
+
 }

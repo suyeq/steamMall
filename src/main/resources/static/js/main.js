@@ -422,6 +422,7 @@ var steam=
                 data=eval('('+data+')');
                 if (data.code==201){
                     layer.msg(data.msg)
+                    window.location.href="/";
                 }
                 if (data.code==501) {
                     layer.msg(data.msg)
@@ -429,10 +430,14 @@ var steam=
                 if (data.code==502){
                     layer.msg(data.msg)
                 }
+                if (data.code==503) {
+                    layer.msg(data.msg);
+                }
 
             },
             error:function () {
-                alert("失败")
+                layer.close(loadId);
+                layer.msg("网络错误");
             }
         });
     }

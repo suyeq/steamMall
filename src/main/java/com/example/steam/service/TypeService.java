@@ -27,7 +27,7 @@ public class TypeService {
         return typeDao.findAllType();
     }
 
-    //@Transactional
+
     public int addType(Type type){
         return typeDao.addType(type);
     }

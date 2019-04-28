@@ -6,6 +6,9 @@ import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  *
@@ -115,4 +118,15 @@ public class RedisService {
             jedis.close();
         }
     }
+
+
+//    public static void main(String args[]){
+//        List<String> list=new LinkedList<>();
+//        list.add("1");
+//        list.add("2");
+//        list.add("3");
+//        String test=beanToString(list);
+//        List<String> lll=stringToBean(test,List.class);
+//        System.out.println(lll.toString());
+//    }
 }

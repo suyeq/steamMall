@@ -10,6 +10,7 @@ import com.example.steam.utils.Md5PasswordConver;
 import com.example.steam.utils.ResultMsg;
 import com.example.steam.utils.StaticField;
 import com.example.steam.utils.UUIDUntil;
+import com.example.steam.vo.LoginUser;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,6 +44,9 @@ public class UserService {
 
     @Autowired
     RedisService redisService;
+
+    @Autowired
+    ImageService imageService;
 
     @Autowired
     ApplicationContext applicationContext;
@@ -79,7 +83,9 @@ public class UserService {
      */
     public ResultMsg handleLogin(String email, String password,HttpServletRequest request,HttpServletResponse response) {
         log.error(email+" "+password);
-        if (redisService.get(CookieKey.EMAIL,email,String.class)!=null){
+        String cookieId=redisService.get(CookieKey.EMAIL,email,String.class);
+        Cookie cookie=findCookie(request);
+        if (StringUtils.isNotEmpty(cookieId) && cookie == null){
             return ResultMsg.HAD_Login;
         }
         /**
@@ -100,8 +106,8 @@ public class UserService {
 
     private void cookieIsNullAndCreate(HttpServletRequest request, HttpServletResponse response, User user){
         Cookie cookie=findCookie(request);
-        String cookieId=null;
-        if (cookie == null){
+        String cookieId=cookie.getValue();
+        if (cookie == null || StringUtils.isEmpty(cookieId)){
             cookieId=UUIDUntil.randomUUID();
         }
         addCookie(response,cookieId,user);
@@ -110,6 +116,7 @@ public class UserService {
     private void addCookie(HttpServletResponse response,String cookieId,User user){
         Cookie cookie=new Cookie(StaticField.COOKIE_KEY,cookieId);
         cookie.setMaxAge(cookieMaxAge);
+        log.error(cookieMaxAge+"");
         response.addCookie(cookie);
         UserKey.COOKIE_ID.setExpiredTime(cookieMaxAge);
         redisService.set(UserKey.COOKIE_ID,cookieId,user);
@@ -123,6 +130,13 @@ public class UserService {
             if (cookies[i].getName().equals(StaticField.COOKIE_KEY)){
                 return cookies[i];
             }
+        }
+        return null;
+    }
+
+    public LoginUser converViewLoginUser(User user) {
+        if (user != null){
+            return new LoginUser(user,imageService.findImageById(user.getAvatar()));
         }
         return null;
     }

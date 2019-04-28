@@ -23,6 +23,7 @@ var steam=
 
         init:function() {
             var that = this;
+            this.showFeturedData();
             this.featuredLeft.click(function () {
                 that.featuredLeftCarouselLeft();
             });
@@ -57,6 +58,113 @@ var steam=
             this.mouseClassListPause();
             this.detailCarouselStart(that);
             this.mouseDetailPause(that);
+        },
+
+        showFeturedData:function(){
+            $.ajax({
+                url:"/feturedCarousel",
+                type:"POST",
+                async:false,
+                data:{
+
+                },
+                success:function (data) {
+                    data=eval('('+data+')');
+                    $('#featuredCarousel').empty();
+                    if (data.code == 200){
+                        console.log(data)
+                        for (var i=0;i<data.msg.length;i++){
+                            console.log(i)
+                            var parent;
+                            if (i == 0){
+                                parent='<a class="store_main_capsule broadcast_capsule app_impression_tracked focus" href="';
+                            }else{
+                                parent='<a class="store_main_capsule broadcast_capsule app_impression_tracked" href="';
+                            }
+                            parent+='/app/'+data.msg[i].id;
+                            parent+='"></a>';
+                            //存贮四张介绍图信息
+                            var elementChild1='<div class="capsule main_capsule" data-background-image-url="';
+                            elementChild1+=data.msg[i].posterImage;
+                            elementChild1+='" style="background-image: url(&quot;';
+                            elementChild1+=data.msg[i].posterImage;
+                            elementChild1+='&quot;);"><div class="screenshot" data-background-image-url="';
+                            elementChild1+=data.msg[i].imageIntro1;
+                            elementChild1+='" style="background-image: url(&quot;';
+                            elementChild1+=data.msg[i].imageIntro1;
+                            elementChild1+='&quot;);"></div><div class="screenshot" data-background-image-url="';
+                            elementChild1+=data.msg[i].imageIntro2;
+                            elementChild1+='" style="background-image: url(&quot;';
+                            elementChild1+=data.msg[i].imageIntro2;
+                            elementChild1+='&quot;);"></div><div class="screenshot" data-background-image-url="';
+                            elementChild1+=data.msg[i].imageIntro3;
+                            elementChild1+='" style="background-image: url(&quot;';
+                            elementChild1+=data.msg[i].imageIntro3;
+                            elementChild1+='&quot;);"></div><div class="screenshot"data-background-image-url="';
+                            elementChild1+=data.msg[i].imageIntro4;
+                            elementChild1+='" style="background-image: url(&quot;';
+                            elementChild1+=data.msg[i].imageIntro4;
+                            elementChild1+='&quot;);"></div></div>';
+                            //游戏信息
+                            var elementChild2='<div class="info"><div class="app_name"><div>';
+                            elementChild2+=data.msg[i].gameName;
+                            elementChild2+='</div></div></div>';
+                            //四张介绍图
+                            var intro='<div class="screenshots"><div><div data-background-image-url="';
+                            intro+=data.msg[i].imageIntro1;
+                            intro+='" style="background-image: url(&quot;';
+                            intro+=data.msg[i].imageIntro1;
+                            intro+='&quot;);"></div></div><div><div data-background-image-url="';
+                            intro+=data.msg[i].imageIntro2;
+                            intro+='" style="background-image: url(&quot;';
+                            intro+=data.msg[i].imageIntro2;
+                            intro+='&quot;);"></div></div><div><div data-background-image-url="';
+                            intro+=data.msg[i].imageIntro3;
+                            intro+='" style="background-image: url(&quot;';
+                            intro+=data.msg[i].imageIntro3;
+                            intro+='&quot;);"></div></div><div><div data-background-image-url="';
+                            intro+=data.msg[i].imageIntro4;
+                            intro+='" style="background-image: url(&quot;';
+                            intro+=data.msg[i].imageIntro4;
+                            intro+='&quot;);"></div></div></div>';
+                            //热销
+                            var hotseller='<div class="reason"><div class="main default">';
+                            if (data.msg[i].issuedStatu==1){
+                                hotseller+='现已推出';
+                            }else {
+                                hotseller+='立即预购';
+                            }
+                            hotseller+='</div><div class="additional"><div>热销商品</div></div></div>';
+                            //折扣
+                            var discount='<div class="discount_block  discount_block_inline" data-price-final="6500"><div class="discount_pct">';
+                            discount+='-'+data.msg[i].discount+'%';
+                            discount+='</div><div class="discount_prices"><div class="discount_original_price">';
+                            discount+='¥ '+data.msg[i].gamePrice;
+                            discount+='</div><div class="discount_final_price">';
+                            discount+='¥ '+data.msg[i].gamePrice;
+                            discount+='</div></div></div>';
+                            //平台
+                            var platform='<div class="platforms"><span class="platform_img win"></span></div>'
+
+                            var parent=$(parent);
+                            var element1=$(elementChild1);
+                            var element2=$(elementChild2);
+                            var intro=$(intro);
+                            var hotseller=$(hotseller);
+                            var discount=$(discount);
+                            var platform=$(platform);
+                            element2.append(intro,hotseller,discount,platform);
+                            parent.append(element1,element2);
+                            $('#featuredCarousel').append(parent);
+                        }
+
+                    }
+
+                },
+                error:function () {
+                    layer.msg('网络错误')
+                }
+            })
         },
 
         mouseDetailPause:function(th){

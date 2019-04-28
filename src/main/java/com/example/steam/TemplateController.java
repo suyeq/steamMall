@@ -1,11 +1,16 @@
 package com.example.steam;
 
 import com.example.steam.entity.Type;
+import com.example.steam.service.GameService;
+import com.example.steam.service.ImageService;
 import com.example.steam.service.TypeService;
+import com.example.steam.vo.SpecialGame;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,6 +24,10 @@ public class TemplateController {
 
     @Autowired
     TypeService typeService;
+    @Autowired
+    GameService gameService;
+    @Autowired
+    ImageService imageService;
 
 
     @RequestMapping("/class")
@@ -39,10 +48,11 @@ public class TemplateController {
     @ResponseBody
     @RequestMapping("/test")
     public String test(){
-        Type type=new Type();
-        type.setTypeName("欢乐");
-        System.out.println(typeService.addType(type));
-
+        long start=System.currentTimeMillis();
+        imageService.findImageById(1);
+        long end=System.currentTimeMillis();
+        long result=end-start;
+        System.out.println(result);
         return "ok";
     }
 

@@ -40,7 +40,7 @@ public class DynamicDataSourceAop {
 
     @Before("execution(* com.example.steam.service.*.find*(..))")
     public void dynamicDataSourceFindMethod(){
-        log.error("设置为从节点");
+        //log.error("设置为从节点");
         DynamicDataSourceHolder.putDataSource(DynamicDataSourceHolder.SLAVE);
     }
 

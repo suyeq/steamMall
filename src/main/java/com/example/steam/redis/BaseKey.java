@@ -19,7 +19,7 @@ public abstract class BaseKey implements RedisPrefixKey {
     }
 
     public void setExpiredTime(int second){
-        this.expiredTime=expiredTime;
+        this.expiredTime=second;
     }
 
     @Override

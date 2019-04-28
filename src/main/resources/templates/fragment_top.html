@@ -54,47 +54,35 @@
                             安装 Steam </a>
                     </div>
 
-                    <div style="display: none">
-                        <a class="global_action_link"
-                           href="https://store.steampowered.com/login/?redir=search%2F%3Ffilter%3Dtopsellers&amp;redir_ssl=1">登录</a>
+
+                        <a class="global_action_link" th:if="${user}==null"
+                           href="/login">登录</a>
                         &nbsp;|&nbsp;
-                        <span class="pulldown global_action_link" id="language_pulldown"
+                        <span class="pulldown global_action_link" id="language_pulldown" th:if="${user}==null"
                               onclick="ShowMenu( this, 'language_dropdown', 'right' );">语言</span>
-                        <div class="popup_block_new" id="language_dropdown" style="display: none;">
+                        <div class="popup_block_new" id="language_dropdown" style="display: none;" th:if="${user}==null">
                             <div class="popup_body popup_menu">
-                                <a class="popup_menu_item tight" href="?l=tchinese&amp;filter=topsellers"
-                                   onclick="ChangeLanguage( 'tchinese' ); return false;">繁體中文（繁体中文）</a>
+                                 <a class="popup_menu_item tight" href="?l=tchinese&amp;filter=topsellers"
+                                    onclick="ChangeLanguage( 'tchinese' ); return false;">繁體中文（繁体中文）</a>
                                 <a class="popup_menu_item tight" href="?l=japanese&amp;filter=topsellers"
-                                   onclick="ChangeLanguage( 'japanese' ); return false;">日本語（日语）</a>
+                                    onclick="ChangeLanguage( 'japanese' ); return false;">日本語（日语）</a>
                                 <a class="popup_menu_item tight" href="?l=koreana&amp;filter=topsellers"
-                                   onclick="ChangeLanguage( 'koreana' ); return false;">한국어（韩语）</a>
+                                    onclick="ChangeLanguage( 'koreana' ); return false;">한국어（韩语）</a>
                             </div>
                         </div>
-                    </div>
 
 
-                    <span class="pulldown global_action_link" id="account_pulldown" onclick="showMenu();">3162618364</span>
-                    <div class="popup_block_new" id="account_dropdown" style="visibility: visible; top: 25px; left: 98.5938px; display: none; opacity: 1;">
+
+                    <span th:if="${user}!=null" class="pulldown global_action_link" id="account_pulldown" onclick="showMenu();" th:text="${user.email}">3162618364</span>
+                    <div th:if="${user}!=null" class="popup_block_new" id="account_dropdown" style="visibility: visible; top: 25px; left: 98.5938px; display: none; opacity: 1;">
                         <div class="popup_body popup_menu">
-                            <a class="popup_menu_item" href="javascript:Logout();">注销</a>
-                            <a class="popup_menu_item" href="#">个人中心</a>
-                            <!--<a class="popup_menu_item" href="https://store.steampowered.com/account/preferences/">偏好</a>-->
-                            <!--<span class="popup_menu_item" id="account_language_pulldown">更改语言</span>-->
-                            <!--<div class="popup_block_new" id="language_dropdown" style="visibility: visible; top: 90px; left: -309px; display: none; opacity: 0.0509862;">-->
-                                <!--<div class="popup_body popup_menu">-->
-                                    <!--<a class="popup_menu_item tight" href="?l=schinese" onclick="ChangeLanguage( 'schinese' ); return false;">简体中文</a>-->
-                                    <!--<a class="popup_menu_item tight" href="?l=tchinese" onclick="ChangeLanguage( 'tchinese' ); return false;">繁體中文（繁体中文）</a>-->
-                                    <!--<a class="popup_menu_item tight" href="?l=japanese" onclick="ChangeLanguage( 'japanese' ); return false;">日本語（日语）</a>-->
-                                <!--</div>-->
-                            <!--</div>-->
-                            <!--<a class="popup_menu_item" href="https://steamcommunity.com/profiles/76561198399564591/">查看个人资料</a>-->
+                              <a class="popup_menu_item" href="javascript:Logout();">注销</a>
+                              <a class="popup_menu_item" href="#">个人中心</a>
                         </div>
                     </div>
-
-
                 </div>
-                <a href="https://steamcommunity.com/profiles/76561198399564591/" class="user_avatar playerAvatar offline">
-                    <img src="https://media.st.dl.bscstorage.net/steamcommunity/public/images/avatars/95/959986934ff7a3782a0746a96d5f5df8524d9c2b.jpg">
+                <a th:if="${user}!=null" href="https://steamcommunity.com/profiles/76561198399564591/" class="user_avatar playerAvatar offline">
+                    <img src="" th:src="${user.avatar}">
                 </a>
 
             </div>

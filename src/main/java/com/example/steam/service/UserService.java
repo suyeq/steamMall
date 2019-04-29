@@ -118,9 +118,9 @@ public class UserService {
         cookie.setMaxAge(cookieMaxAge);
         log.error(cookieMaxAge+"");
         response.addCookie(cookie);
-        UserKey.COOKIE_ID.setExpiredTime(cookieMaxAge);
+        //UserKey.COOKIE_ID.setExpiredTime(cookieMaxAge);
         redisService.set(UserKey.COOKIE_ID,cookieId,user);
-        CookieKey.EMAIL.setExpiredTime(cookieMaxAge);
+        //CookieKey.EMAIL.setExpiredTime(cookieMaxAge);
         redisService.set(CookieKey.EMAIL,user.getEmail(),cookieId);
     }
 

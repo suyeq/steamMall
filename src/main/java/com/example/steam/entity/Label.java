@@ -10,13 +10,15 @@ import org.springframework.stereotype.Component;
  * @time: 10:55
  */
 @Component
-public class Type {
+public class Label {
 
     private Long id;
 
-    private String typeName;
+    private String name;
 
-    public Type(){}
+    private int hotNum;
+
+    public Label(){}
 
     public Long getId() {
         return id;
@@ -26,16 +28,20 @@ public class Type {
         this.id = id;
     }
 
-    public String getTypeName() {
-        return typeName;
+
+    public String getName() {
+        return name;
     }
 
-    public void setTypeName(String typeName) {
-        this.typeName = typeName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    @Override
-    public String toString(){
-        return "[id:"+id+",typeName:"+typeName+"]";
+    public int getHotNum() {
+        return hotNum;
+    }
+
+    public void setHotNum(int hotNum) {
+        this.hotNum = hotNum;
     }
 }

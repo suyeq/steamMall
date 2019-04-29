@@ -1,6 +1,5 @@
 package com.example.steam;
 
-import com.example.steam.entity.Type;
 import com.example.steam.redis.RedisService;
 import com.example.steam.redis.key.UserKey;
 import com.example.steam.service.TypeService;

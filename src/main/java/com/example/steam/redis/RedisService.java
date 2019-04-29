@@ -8,6 +8,7 @@ import redis.clients.jedis.JedisPool;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -63,6 +64,20 @@ public class RedisService {
         }
     }
 
+
+//    public <T> void zadd(RedisPrefixKey keyPrefix, String key, List<T> list){
+//        Jedis jedis=null;
+//        try {
+//            jedis=pool.getResource();
+//            String realKey=keyPrefix.getThisPrefix()+key;
+//            for (int i=0;i<)
+//
+//        }finally {
+//            jedis.close();
+//        }
+//    }
+
+
     /**
      * 判断键是否存在
      * @param keyPrefix
@@ -108,7 +123,7 @@ public class RedisService {
         return JSON.parseObject(value,tClass);
     }
 
-    public Long der(RedisPrefixKey keyPrefix,String key) {
+    public Long decr(RedisPrefixKey keyPrefix,String key) {
         Jedis jedis=null;
         try {
             jedis=pool.getResource();

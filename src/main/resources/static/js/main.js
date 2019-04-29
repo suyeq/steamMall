@@ -24,6 +24,7 @@ var steam=
         init:function() {
             var that = this;
             this.showFeturedData();
+            this.showSpecialData();
             this.featuredLeft.click(function () {
                 that.featuredLeftCarouselLeft();
             });
@@ -60,6 +61,56 @@ var steam=
             this.mouseDetailPause(that);
         },
 
+        showSpecialData:function(){
+            $.ajax({
+                url:"/specialCarousel",
+                type:"POST",
+                async:false,
+                data:{
+
+                },
+                success:function (data) {
+                    data=eval("("+data+")");
+                    var element=new Array(data.msg.length);
+                    for (var i=0;i<data.msg.length;i++){
+                        element[i]='<div class="specials_target"><a class="store_capsule broadcast_capsule app_impression_tracked" href="';
+                        element[i]+="/app/"+data.msg[i].id;
+                        element[i]+='"> <div class="capsule header"><img style="width: 306px;height: 143.02px;" src="';
+                        element[i]+=data.msg[i].posterImage;
+                        element[i]+='"></div><div><div class="discount_block  daily_deal_discount discount_block_large"><div class="discount_pct">';
+                        element[i]+="-"+(100-data.msg[i].discount)+"%";
+                        element[i]+='</div><div class="discount_prices"><div class="discount_original_price">';
+                        element[i]+='¥ '+data.msg[i].gamePrice;
+                        element[i]+='</div><div class="discount_final_price">';
+                        var finalPrice=Math.ceil(data.msg[i].gamePrice*(data.msg[i].discount/100));
+                        element[i]+='¥ '+finalPrice;
+                        element[i]+='</div></div></div></div></a></div>';
+                    }
+                    var child1=$('<div class="focus"></div>');
+                    var child2=$('<div></div>');
+                    var child1_element1=$('<div></div>');
+                    var child1_element2=$('<div></div>');
+                    var child1_element3=$('<div></div>');
+                    var child2_element1=$('<div></div>');
+                    var child2_element2=$('<div></div>');
+                    var child2_element3=$('<div></div>');
+                    child1_element1.append(element[0],element[1]);
+                    child1_element2.append(element[2],element[3]);
+                    child1_element3.append(element[4],element[5]);
+                    child1.append(child1_element1,child1_element2,child1_element3);
+                    child2_element1.append(element[6],element[7]);
+                    child2_element2.append(element[8],element[9]);
+                    child2_element3.append(element[10],element[11]);
+                    child2.append(child2_element1,child2_element2,child2_element3);
+                    $('#specialCarous').empty();
+                    $('#specialCarous').append(child1,child2);
+                },
+                error:function () {
+                    layer.msg('网络错误');
+                }
+            });
+        },
+
         showFeturedData:function(){
             $.ajax({
                 url:"/feturedCarousel",
@@ -69,12 +120,10 @@ var steam=
 
                 },
                 success:function (data) {
-                    data=eval('('+data+')');
                     $('#featuredCarousel').empty();
+                    data=eval("("+data+")");
                     if (data.code == 200){
-                        console.log(data)
                         for (var i=0;i<data.msg.length;i++){
-                            console.log(i)
                             var parent;
                             if (i == 0){
                                 parent='<a class="store_main_capsule broadcast_capsule app_impression_tracked focus" href="';
@@ -136,16 +185,30 @@ var steam=
                             }
                             hotseller+='</div><div class="additional"><div>热销商品</div></div></div>';
                             //折扣
-                            var discount='<div class="discount_block  discount_block_inline" data-price-final="6500"><div class="discount_pct">';
-                            discount+='-'+data.msg[i].discount+'%';
-                            discount+='</div><div class="discount_prices"><div class="discount_original_price">';
-                            discount+='¥ '+data.msg[i].gamePrice;
-                            discount+='</div><div class="discount_final_price">';
-                            discount+='¥ '+data.msg[i].gamePrice;
-                            discount+='</div></div></div>';
+                            var discount='<div class="discount_block  discount_block_inline" data-price-final="6500">';
+                            if (data.msg[i].discount>0){
+                                discount+='<div class="discount_pct">';
+                                discount+='-'+(100-data.msg[i].discount)+'%';
+                                discount+='</div>';
+                            }
+                            if (data.msg[i].discount>0){
+                                discount+='<div class="discount_prices"><div class="discount_original_price">';
+                                discount+='¥ '+data.msg[i].gamePrice;
+                                discount+='</div>';
+                            }
+                            if (data.msg[i].discount>0){
+                                discount+='<div class="discount_final_price">';
+                                var finalPrice=Math.ceil(data.msg[i].gamePrice*(data.msg[i].discount/100));
+                                discount+='¥ '+finalPrice;
+                                discount+='</div>';
+                            }else {
+                                discount+='<div class="discount_final_price">';
+                                discount+='¥ '+data.msg[i].gamePrice;
+                                discount+='</div>';
+                            }
+                            discount+='</div></div>';
                             //平台
                             var platform='<div class="platforms"><span class="platform_img win"></span></div>'
-
                             var parent=$(parent);
                             var element1=$(elementChild1);
                             var element2=$(elementChild2);

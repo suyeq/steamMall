@@ -24,7 +24,6 @@ public class DynamicDataSourceTransactionManager extends DataSourceTransactionMa
     protected void doBegin(Object transaction, TransactionDefinition definition) {
         //设置数据源
         boolean readOnly = definition.isReadOnly();
-        System.out.println(readOnly);
         if(readOnly) {
             DynamicDataSourceHolder.putDataSource(DynamicDataSourceHolder.SLAVE);
         } else {

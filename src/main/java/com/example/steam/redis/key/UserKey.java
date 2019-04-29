@@ -11,12 +11,14 @@ import com.example.steam.redis.BaseKey;
  */
 public class UserKey extends BaseKey {
 
-    private UserKey(){
-        super();
+    private final static int expireTime=7200;
+
+    private UserKey(int expireTime){
+        super(expireTime);
     }
 
-    public static UserKey USER_ID=new UserKey();
+    public static UserKey USER_ID=new UserKey(0);
 
-    public static UserKey COOKIE_ID=new UserKey();
+    public static UserKey COOKIE_ID=new UserKey(expireTime);
 
 }

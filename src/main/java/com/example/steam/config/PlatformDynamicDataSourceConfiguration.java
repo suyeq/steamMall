@@ -33,10 +33,10 @@ public class PlatformDynamicDataSourceConfiguration {
         return sqlSessionFactoryBean;
     }
 
-    @Bean
-    public DynamicDataSourceTransactionManager transactionManager(@Qualifier("dynamicDataSource") DynamicDataSource dataSource) {
-        DynamicDataSourceTransactionManager dynamicDataSourceTransactionManager = new DynamicDataSourceTransactionManager();
-        dynamicDataSourceTransactionManager.setDataSource(dataSource);
-        return dynamicDataSourceTransactionManager;
-    }
+//    @Bean
+//    public DynamicDataSourceTransactionManager transactionManager(@Qualifier("dynamicDataSource") DynamicDataSource dataSource) {
+//        DynamicDataSourceTransactionManager dynamicDataSourceTransactionManager = new DynamicDataSourceTransactionManager();
+//        dynamicDataSourceTransactionManager.setDataSource(dataSource);
+//        return dynamicDataSourceTransactionManager;
+//    }
 }

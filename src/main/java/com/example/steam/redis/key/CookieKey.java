@@ -11,10 +11,12 @@ import com.example.steam.redis.BaseKey;
  */
 public class CookieKey extends BaseKey {
 
-    private CookieKey(){
-        super();
+    private final static int expireTime=7200;
+
+    private CookieKey(int expireTime){
+        super(expireTime);
     }
 
-    public static CookieKey EMAIL=new CookieKey();
+    public static CookieKey EMAIL=new CookieKey(expireTime);
 
 }

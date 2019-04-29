@@ -44,7 +44,7 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
             key = getSlaveKey();
             //key=DynamicDataSourceHolder.SLAVE;
         }
-        logger.error("==> select datasource key [{}]", key);
+        logger.info("==> select datasource key [{}]", key);
         return key;
     }
 

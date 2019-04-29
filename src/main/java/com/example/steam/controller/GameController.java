@@ -31,13 +31,27 @@ public class GameController {
     @ResponseBody
     @RequestMapping("/feturedCarousel")
     public String feturedCarousel(){
+        return JSON.toJSONString(ResultMsg.SUCCESS(gameService.findGamesFetured()));
+    }
+
+    @ResponseBody
+    @RequestMapping("/specialCarousel")
+    public String specialCarousel(){
         long start=System.currentTimeMillis();
-        List<SpecialGame> list=gameService.findGamesFetured();
+        List<SpecialGame> list=gameService.findSpecialGames();
         long end=System.currentTimeMillis();
         long result=end-start;
         log.error(result+"");
-        return JSON.toJSONString(ResultMsg.SUCCESS(gameService.findGamesFetured()));
+        return JSON.toJSONString(ResultMsg.SUCCESS(list));
     }
+
+    @ResponseBody
+    @RequestMapping("/newRelease_index")
+    public String newRelease(){
+        return JSON.toJSONString(gameService.findNewRelease());
+    }
+
+
 
 
 

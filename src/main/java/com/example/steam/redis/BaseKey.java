@@ -13,9 +13,9 @@ public abstract class BaseKey implements RedisPrefixKey {
 
     protected int expiredTime;
 
-    public BaseKey(){
+    public BaseKey(int expiredTime){
         this.prefixKey=getClass().getSimpleName();
-        this.expiredTime=0;
+        this.expiredTime=expiredTime;
     }
 
     public void setExpiredTime(int second){

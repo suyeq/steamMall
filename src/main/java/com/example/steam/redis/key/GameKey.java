@@ -11,11 +11,19 @@ import com.example.steam.redis.BaseKey;
  */
 public class GameKey extends BaseKey {
 
+    private final static int FUTURED_KEY_TIME=30;
+
     public final static String FUTURED_KEY="futured";
 
-    private GameKey(){
-        super();
+    public final static String SPECIAL_INDEX_KEY="special_index";
+
+    private final static int SPECIAL_KEY_TIME=30;
+
+    private GameKey(int expiredTime){
+        super(expiredTime);
     }
 
-    public static GameKey FETURED_GAME=new GameKey();
+    public static GameKey FETURED_GAME=new GameKey(0);
+
+    public static GameKey SPECIAL_INDEX_GAME=new GameKey(SPECIAL_KEY_TIME);
 }

@@ -27,12 +27,13 @@ public interface GameDao {
     @Select("select * from game where discount>0 limit 0,12")
     List<Game> findSpecialGames();
 
-    @Select("select * from game order by issueddate desc limit 0,10")
+    @Select("select * from game where issuedstatu>0 order by issueddate desc limit 0,10")
     List<Game> findNewReleaseGameToIndex();
 
-    @Select("select * from game order by sellnum desc limit 0,10")
+    @Select("select * from game where issuedstatu>0 order by sellnum desc limit 0,10")
     List<Game> findHotSellGameToIndex();
 
     @Select("select * from game where issuedstatu=0 order by issueddate desc limit 0,10")
     List<Game> findUpComingGameToIndex();
+
 }

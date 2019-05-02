@@ -25,6 +25,8 @@ var steam=
             var that = this;
             this.showFeturedData();
             this.showSpecialData();
+            this.showNewReleaseData(that);
+            this.showTopSellerData(that);
             this.featuredLeft.click(function () {
                 that.featuredLeftCarouselLeft();
             });
@@ -53,13 +55,254 @@ var steam=
             //console.log(this.timer);
             this.mouseFeturedCarouselPause(that);
             this.mouseChangeImage();
-            this.mouseTabPause();
+            this.mouseTabPause(that);
             this.classCarouselStart(that);
             this.mouseClassCarouselPause(that);
             this.mouseClassListPause();
             this.detailCarouselStart(that);
             this.mouseDetailPause(that);
         },
+
+        showGameDetailLayer:function(id){
+            $.ajax({
+                url:"/gameDetail/"+id,
+                type:"POST",
+                async:false,
+                success:function (data) {
+                    data=eval("("+data+")");
+                    console.log(data);
+                    $('#tab_preview_container').empty();
+                    var parent=$('<div class="tab_preview focus"></div>')
+                    var title='<h2>'+data.msg.gameName+'</h2>';
+                    title=$(title);
+                    var review='<div class="tab_review_summary"><div class="title">总体用户评测：</div><span class="game_review_summary positive">特别好评</span><span>&nbsp;(440)</span></div>';
+                    review=$(review);
+                    var tag='<div class="tags">';
+                    for (var i=0;i<data.msg.label.length;i++){
+                        tag+='<a>'+data.msg.label[i]+'</a>';
+                    }
+                    tag+='</div>';
+                    tag=$(tag);
+                    var intro1='<div class="screenshot" style="background-image: url(&quot;';
+                    intro1+=data.msg.imageIntro1;
+                    intro1+='&quot;);"></div>';
+                    var intro2='<div class="screenshot" style="background-image: url(&quot;';
+                    intro2+=data.msg.imageIntro2;
+                    intro2+='&quot;);"></div>';
+                    var intro3='<div class="screenshot" style="background-image: url(&quot;';
+                    intro3+=data.msg.imageIntro3;
+                    intro3+='&quot;);"></div>';
+                    var intro4='<div class="screenshot" style="background-image: url(&quot;';
+                    intro4+=data.msg.imageIntro4;
+                    intro4+='&quot;);"></div>';
+                    intro1=$(intro1);
+                    intro2=$(intro2);
+                    intro3=$(intro3);
+                    intro4=$(intro4);
+                    parent.append(title,review,tag,intro1,intro2,intro3,intro4);
+                    $('#tab_preview_container').append(parent);
+                },
+                error:function () {
+
+                }
+            })
+        },
+
+        showNewReleaseData:function(that){
+            $.ajax({
+                url:"/newRelease_index",
+                type:"POST",
+                async:false,
+                success:function (data) {
+                    data=eval("("+data+")");
+                    $('#tab_newreleases_content').empty();
+                    for (var i=0;i<data.msg.length;i++){
+                        var parent='<a href="'
+                        parent+='/app/'+data.msg[i].id+'"';
+                        parent+='app-id="'+data.msg[i].id+'"';
+
+                        if (i==0){
+                            parent+=' class="tab_item app_impression_tracked focus"></a>';
+                        } else {
+                            parent+=' class="tab_item app_impression_tracked"></a>';
+                        }
+                        var child1='<div class="tab_item_cap"><img class="tab_item_cap_img" style="width: 184px;height: 69px;" src="';
+                        child1+=data.msg[i].posterImage;
+                        child1+='"></div>';
+                        var child2='<div class="discount_block tab_item_discount">';
+                        if (data.msg[i].discount>0){
+                            child2+='<div class="discount_pct">';
+                            child2+='-'+(100-data.msg[i].discount)+'%';
+                            child2+='</div>';
+                        }
+                        child2+='<div class="discount_prices">';
+                        if (data.msg[i].discount>0){
+                            child2+='<div class="discount_original_price">';
+                            child2+='¥ '+data.msg[i].gamePrice;
+                            child2+='</div>';
+                        }
+                        if (data.msg[i].discount>0){
+                            child2+='<div class="discount_final_price">';
+                            child2+='¥ '+Math.ceil(data.msg[i].gamePrice*(data.msg[i].discount/100));
+                        }else {
+                            child2+='<div class="discount_final_price">';
+                            child2+='¥ '+data.msg[i].gamePrice;
+                        }
+                        child2+='</div></div></div>';
+                        var child3='<div class="tab_item_content"><div class="tab_item_name">';
+                        child3+=data.msg[i].gameName;
+                        child3+='</div><div class="tab_item_details"><span class="platform_img win"></span><span class="platform_img mac"></span><span class="platform_img linux"></span><div class="tab_item_top_tags">';
+                        for (var j=0;j<data.msg[i].label.length;j++){
+                            if (j==0){
+                                child3+='<span class="top_tag">'+data.msg[i].label[j]+'</span>';
+                            }else {
+                                child3+='<span class="top_tag">, '+data.msg[i].label[j]+'</span>';
+                            }
+                        }
+                        child3+='</div></div></div>';
+                        var child4='<div style="clear: both;"></div>';
+                        parent=$(parent);
+                        child1=$(child1);
+                        child2=$(child2);
+                        child3=$(child3);
+                        child4=$(child4);
+                        parent.append(child1,child2,child3,child4);
+                        $('#tab_newreleases_content').append(parent);
+                    }
+                    var seeMore='<div class="tab_see_more">查看更多： <a href="#" class="btnv6_white_transparent btn_small_tall"><span>新品</span></a></div>'
+                    $('#tab_newreleases_content').append(seeMore);
+                    var flag='#tab_app_'+data.msg[0].id;
+                    if ($(flag).length==0){
+                        that.showGameDetailLayer(data.msg[0].id);
+                    }
+                },
+                error:function () {
+                    layer.msg("网络错误");
+                }
+            });
+        },
+
+        showTopSellerData:function(th){
+            $.ajax({
+                url:"/hotSell_index",
+                type:"POST",
+                success:function (data) {
+                    data=eval("("+data+")");
+                    $('#tab_topsellers_content').empty();
+                    for (var i=0;i<data.msg.length;i++){
+                        var parent='<a href="'
+                        parent+='/app/'+data.msg[i].id+'"';
+                        parent+='app-id="'+data.msg[i].id+'"';
+                        if (i==0){
+                            parent+=' class="tab_item app_impression_tracked focus"></a>';
+                        } else {
+                            parent+=' class="tab_item app_impression_tracked"></a>';
+                        }
+                        var child1='<div class="tab_item_cap"><img class="tab_item_cap_img" style="width: 184px;height: 69px;" src="';
+                        child1+=data.msg[i].posterImage;
+                        child1+='"></div>';
+                        var child2='<div class="discount_block tab_item_discount">';
+                        if (data.msg[i].discount>0){
+                            child2+='<div class="discount_pct">';
+                            child2+='-'+(100-data.msg[i].discount)+'%';
+                            child2+='</div>';
+                        }
+                        child2+='<div class="discount_prices">';
+                        if (data.msg[i].discount>0){
+                            child2+='<div class="discount_original_price">';
+                            child2+='¥ '+data.msg[i].gamePrice;
+                            child2+='</div>';
+                        }
+                        if (data.msg[i].discount>0){
+                            child2+='<div class="discount_final_price">';
+                            child2+='¥ '+Math.ceil(data.msg[i].gamePrice*(data.msg[i].discount/100));
+                        }else {
+                            child2+='<div class="discount_final_price">';
+                            child2+='¥ '+data.msg[i].gamePrice;
+                        }
+                        child2+='</div></div></div>';
+                        var child3='<div class="tab_item_content"><div class="tab_item_name">';
+                        child3+=data.msg[i].gameName;
+                        child3+='</div><div class="tab_item_details"><span class="platform_img win"></span><span class="platform_img mac"></span><span class="platform_img linux"></span><div class="tab_item_top_tags">';
+                        for (var j=0;j<data.msg[i].label.length;j++){
+                            if (j==0){
+                                child3+='<span class="top_tag">'+data.msg[i].label[j]+'</span>';
+                            }else {
+                                child3+='<span class="top_tag">, '+data.msg[i].label[j]+'</span>';
+                            }
+                        }
+                        child3+='</div></div></div>';
+                        var child4='<div style="clear: both;"></div>';
+                        parent=$(parent);
+                        child1=$(child1);
+                        child2=$(child2);
+                        child3=$(child3);
+                        child4=$(child4);
+                        parent.append(child1,child2,child3,child4);
+                        $('#tab_topsellers_content').append(parent);
+                    }
+                    var seeMore='<div class="tab_see_more">查看更多： <a href="#" class="btnv6_white_transparent btn_small_tall"><span>热销商品</span></a></div>'
+                    $('#tab_topsellers_content').append(seeMore);
+                    th.mouseTabPause(th);
+                },
+                error:function () {
+                    layer.msg("网络错误");
+                }
+            });
+        },
+
+        // showGlobalData:function(data){
+        //     for (var i=0;i<data.msg.length;i++){
+        //         var parent='<a href="'
+        //         parent+='/app/'+data.msg[i].id;
+        //         if (i==0){
+        //             parent+='" class="tab_item app_impression_tracked focus"></a>';
+        //         } else {
+        //             parent+='" class="tab_item app_impression_tracked"></a>';
+        //         }
+        //         var child1='<div class="tab_item_cap"><img class="tab_item_cap_img" style="width: 184px;height: 69px;" src="';
+        //         child1+=data.msg[i].posterImage;
+        //         child1+='"></div>';
+        //         var child2='<div class="discount_block tab_item_discount">';
+        //         if (data.msg[i].discount>0){
+        //             child2+='<div class="discount_pct">';
+        //             child2+='-'+(100-data.msg[i].discount)+'%';
+        //             child2+='</div>';
+        //         }
+        //         child2+='<div class="discount_prices">';
+        //         if (data.msg[i].discount>0){
+        //             child2+='<div class="discount_original_price">';
+        //             child2+='¥ '+data.msg[i].gamePrice;
+        //             child2+='</div>';
+        //         }
+        //         if (data.msg[i].discount>0){
+        //             child2+='<div class="discount_final_price">';
+        //             child2+='¥ '+Math.ceil(data.msg[i].gamePrice*(data.msg[i].discount/100));
+        //         }else {
+        //             child2+='<div class="discount_final_price">';
+        //             child2+='¥ '+data.msg[i].gamePrice;
+        //         }
+        //         child2+='</div></div></div>';
+        //         var child3='<div class="tab_item_content"><div class="tab_item_name">';
+        //         child3+=data.msg[i].gameName;
+        //         child3+='</div><div class="tab_item_details"><span class="platform_img win"></span><span class="platform_img mac"></span><span class="platform_img linux"></span><div class="tab_item_top_tags">';
+        //         for (var j=0;j<data.msg[i].label.length;j++){
+        //             if (j==0){
+        //                 child3+='<span class="top_tag">'+data.msg[i].label[j]+'</span>';
+        //             }else {
+        //                 child3+='<span class="top_tag">, '+data.msg[i].label[j]+'</span>';
+        //             }
+        //         }
+        //         child3+='</div></div></div>';
+        //         var child4='<div style="clear: both;"></div>';
+        //         parent=$(parent);
+        //         child1=$(child1);
+        //         child2=$(child2);
+        //         child3=$(child3);
+        //         child4=$(child4);
+        //         parent.append(child1,child2,child3,child4);
+        //         return parent;
+        // },
 
         showSpecialData:function(){
             $.ajax({
@@ -314,18 +557,23 @@ var steam=
             classRecommendValue--;
         },
 
-        mouseTabPause:function(){
+        mouseTabPause:function(that){
             var indexPreNewReleases=0;
             var indexPreHotSeller=0;
             var indexUpComing=0;
             $('#tab_newreleases_content>a').hover(function () {
                 var classValue=$(this)[0].getAttribute('class');
+                var appId=$(this)[0].getAttribute('app-id');
                 if (classValue.indexOf('focus')!=-1)
                     return;
                 var indexNext=$('#tab_newreleases_content>a').index(this);
                 $('#tab_newreleases_content>a').eq(indexPreNewReleases)[0].setAttribute('class','tab_item app_impression_tracked');
                 $(this)[0].setAttribute('class','tab_item app_impression_tracked focus');
                 indexPreNewReleases=indexNext;
+                var flag='#tab_app_'+appId;
+                if ($(flag).length==0){
+                    that.showGameDetailLayer(appId);
+                }
             },function () {
             });
 
@@ -337,6 +585,11 @@ var steam=
                 $('#tab_topsellers_content>a').eq(indexPreHotSeller)[0].setAttribute('class','tab_item app_impression_tracked');
                 $(this)[0].setAttribute('class','tab_item app_impression_tracked focus');
                 indexPreHotSeller=indexNext;
+                var appId=$(this)[0].getAttribute('app-id');
+                var flag='#tab_app_'+appId;
+                if ($(flag).length==0){
+                    that.showGameDetailLayer(appId);
+                }
             },function () {
             });
 
@@ -348,6 +601,11 @@ var steam=
                 $('#tab_upcoming_content>a').eq(indexUpComing)[0].setAttribute('class','tab_item app_impression_tracked');
                 $(this)[0].setAttribute('class','tab_item app_impression_tracked focus');
                 indexUpComing=indexNext;
+                var appId=$(this)[0].getAttribute('app-id');
+                var flag='#tab_app_'+appId;
+                if ($(flag).length==0){
+                    that.showGameDetailLayer(appId);
+                }
             },function () {
             });
         },

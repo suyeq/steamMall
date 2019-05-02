@@ -32,7 +32,7 @@ public class Game {
 
     private Long lowestSystem;
 
-    private Long recommentSystem;
+    private Long recommendSystem;
 
     private int sellNum;
 
@@ -112,13 +112,6 @@ public class Game {
         this.lowestSystem = lowestSystem;
     }
 
-    public Long getRecommentSystem() {
-        return recommentSystem;
-    }
-
-    public void setRecommentSystem(Long recommentSystem) {
-        this.recommentSystem = recommentSystem;
-    }
 
     public int getSellNum() {
         return sellNum;
@@ -134,5 +127,13 @@ public class Game {
 
     public void setDiscount(int discount) {
         this.discount = discount;
+    }
+
+    public Long getRecommendSystem() {
+        return recommendSystem;
+    }
+
+    public void setRecommendSystem(Long recommendSystem) {
+        this.recommendSystem = recommendSystem;
     }
 }

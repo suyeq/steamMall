@@ -22,4 +22,6 @@ public interface ImageDao {
     @Select("select * from game_image where gameid=#{gameId}")
     GameImage findImagesByGameId(@Param("gameId") long gameId);
 
+    @Select("select url from image where id=#{id}")
+    String findImageUrlById(@Param("id") long id);
 }

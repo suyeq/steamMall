@@ -32,4 +32,15 @@ public class LabelService {
         }
         return labelList;
     }
+
+    @Transactional
+    public List<String> findLabelNamesByGameId(long gameId){
+        List<GameLabel> gameLabelList=labelDao.findLabelsByGameId(gameId);
+        List<String> labelList=new LinkedList<>();
+        for (int i=0;i<gameLabelList.size();i++){
+            GameLabel gameLabel=gameLabelList.get(i);
+            labelList.add(labelDao.findLabelNameById(gameLabel.getLabelId()));
+        }
+        return labelList;
+    }
 }

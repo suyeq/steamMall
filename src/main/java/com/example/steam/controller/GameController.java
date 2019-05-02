@@ -8,6 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -48,11 +50,26 @@ public class GameController {
     @ResponseBody
     @RequestMapping("/newRelease_index")
     public String newRelease(){
-        return JSON.toJSONString(gameService.findNewRelease());
+        return JSON.toJSONString(ResultMsg.SUCCESS(gameService.findNewRelease()));
     }
 
+    @ResponseBody
+    @RequestMapping("/hotSell_index")
+    public String hotSell(){
+        return JSON.toJSONString(ResultMsg.SUCCESS(gameService.findHotSell()));
+    }
 
+    @ResponseBody
+    @RequestMapping("/upComing_index")
+    public String upComing(){
+        return JSON.toJSONString(ResultMsg.SUCCESS(gameService.findUpComing()));
+    }
 
+    @ResponseBody
+    @RequestMapping("/gameDetail/{id}")
+    public String OnegameDetail(@PathVariable("id")long id){
+        return JSON.toJSONString(ResultMsg.SUCCESS(gameService.findGameById(id)));
+    }
 
 
 }

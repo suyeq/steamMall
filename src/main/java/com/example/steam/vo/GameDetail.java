@@ -26,9 +26,9 @@ public class GameDetail extends SpecialGame {
 
     private List<String> type;
 
-    private Integer lowestSystem;
+    private Long lowestSystem;
 
-    private Integer recommendSystem;
+    private Long recommendSystem;
 
     public GameDetail(){}
 
@@ -89,19 +89,21 @@ public class GameDetail extends SpecialGame {
         this.type = type;
     }
 
-    public Integer getLowestSystem() {
+
+    public Long getLowestSystem() {
         return lowestSystem;
     }
 
-    public void setLowestSystem(Integer lowestSystem) {
+    public void setLowestSystem(Long lowestSystem) {
         this.lowestSystem = lowestSystem;
     }
 
-    public Integer getRecommendSystem() {
+
+    public Long getRecommendSystem() {
         return recommendSystem;
     }
 
-    public void setRecommendSystem(Integer recommendSystem) {
+    public void setRecommendSystem(Long recommendSystem) {
         this.recommendSystem = recommendSystem;
     }
 }

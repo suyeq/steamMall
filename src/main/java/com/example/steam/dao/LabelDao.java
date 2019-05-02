@@ -18,6 +18,9 @@ import java.util.List;
 @Repository
 public interface LabelDao {
 
+    @Select("select name from label where id=#{id}")
+    String findLabelNameById(@Param("id") long id);
+
     @Select("select * from game_label where gameid=#{gameId}")
     List<GameLabel> findLabelsByGameId(@Param("gameId") long gameId);
 

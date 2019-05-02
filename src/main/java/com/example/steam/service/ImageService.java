@@ -27,6 +27,21 @@ public class ImageService {
         return imageDao.findImageById(id);
     }
 
+    public String findImageUrlById(long id){
+          return imageDao.findImageUrlById(id);
+    }
+
+    public List<String> findGameImageUrlsByGameId(long gameId){
+        GameImage gameImage=imageDao.findImagesByGameId(gameId);
+        List<String> images=new LinkedList<>();
+        images.add(imageDao.findImageUrlById(gameImage.getImage1()));
+        images.add(imageDao.findImageUrlById(gameImage.getImage2()));
+        images.add(imageDao.findImageUrlById(gameImage.getImage3()));
+        images.add(imageDao.findImageUrlById(gameImage.getImage4()));
+        images.add(imageDao.findImageUrlById(gameImage.getImage5()));
+        return images;
+    }
+
     @Transactional(readOnly = true)
     public List<Image> findGameImagesByGameId(long gameId){
         GameImage gameImage=imageDao.findImagesByGameId(gameId);

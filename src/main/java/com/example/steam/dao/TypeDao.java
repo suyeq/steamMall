@@ -1,6 +1,12 @@
 package com.example.steam.dao;
 
+import com.example.steam.entity.GameType;
+import com.example.steam.entity.Type;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,9 +18,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TypeDao {
 
-//    @Select("select * from type")
-//    List<Type> findAllType();
-//
-//    @Insert("insert into type(typename) value(#{typeName})")
-//    int addType(Type type);
+    @Select("select * from game_type where gameid=#{gameId}")
+    List<GameType> findTypesByGameId(@Param("gameId") long gameId);
+
+    @Select("select * from type where id=#{id}")
+    Type findTypeById(@Param("id") long id);
+
+    @Select("select typename from type where id=#{id}")
+    String findTypeNameById(@Param("id") long id);
 }

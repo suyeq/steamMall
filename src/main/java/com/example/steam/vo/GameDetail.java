@@ -106,4 +106,26 @@ public class GameDetail extends SpecialGame {
     public void setRecommendSystem(Long recommendSystem) {
         this.recommendSystem = recommendSystem;
     }
+
+    @Override
+    public int hashCode(){
+        return Integer.parseInt(getId()+"");
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if (o==this){
+            return false;
+        }
+        GameDetail gameDetail=(GameDetail)o;
+        if (gameDetail.getId().equals(getId())){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public String toString(){
+        return getId()+"";
+    }
 }

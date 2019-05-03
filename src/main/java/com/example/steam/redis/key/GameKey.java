@@ -31,6 +31,8 @@ public class GameKey extends BaseKey {
 
     private final static int UP_COMING_INDEX_KEY_TIME=60;
 
+    public final static String GAME_SUM_KEY="gameSum";
+
     private GameKey(int expiredTime){
         super(expiredTime);
     }
@@ -46,4 +48,6 @@ public class GameKey extends BaseKey {
     public static GameKey HOT_SELL_INDEX_GAME=new GameKey(HOT_SELL_INDEX_KEY_TIME);
 
     public static GameKey UP_COMING_INDEX_GAME=new GameKey(UP_COMING_INDEX_KEY_TIME);
+
+    public static GameKey GAME_SUM=new GameKey(0);
 }

@@ -1,6 +1,6 @@
 var featuredValue=12000;
 var specialValue=12000;
-var classRecommendValue=15000;
+var classRecommendValue=12000;
 var detailValue=12000;
 var salt="1q2w3e";
 var steam=
@@ -28,6 +28,7 @@ var steam=
             this.showNewReleaseData(that);
             this.showTopSellerData(that);
             this.showUpComingData(that);
+            this.showClassCarouselData('动作');
             this.featuredLeft.click(function () {
                 that.featuredLeftCarouselLeft();
             });
@@ -62,6 +63,69 @@ var steam=
             this.mouseClassListPause();
             this.detailCarouselStart(that);
             this.mouseDetailPause(that);
+        },
+
+        showClassCarouselData:function(typeName){
+            $.ajax({
+                url:"/classGame/"+typeName,
+                type:"POST",
+                async:false,
+                success:function (data) {
+                    data=eval("("+data+")");
+                    $('#genre_large_cluster div.carousel_items.store_capsule_container').empty();
+                    for (var i=0;i<data.msg.length;i++){
+                        var parent='<a href="';
+                        parent+='/app/'+data.msg[i].id;
+                        if (i==0){
+                            parent+='" class="focus"></a>';
+                        } else {
+                            parent+='" class=""></a>';
+                        }
+                        parent=$(parent);
+                        var child=$('<div class="main"></div>');
+                        var maincap='<img class="maincap" style="width:465px;height:266px;" src="';
+                        maincap+=data.msg[i].posterImage;
+                        maincap+='">';
+                        maincap=$(maincap);
+                        var bg='<div class="bg">';
+                        bg+='<div style="background-image: url('+data.msg[i].imageIntro1+')"></div>';
+                        bg+='<div style="background-image: url('+data.msg[i].imageIntro2+')"></div>';
+                        bg+='<div style="background-image: url('+data.msg[i].imageIntro3+')"></div>';
+                        bg+='<div style="background-image: url('+data.msg[i].imageIntro4+')"></div>';
+                        bg+='</div>';
+                        bg=$(bg);
+                        var recommendation_reason='<div class="recommendation_reason default">';
+                        if (data.msg[i].discount>0){
+                            recommendation_reason+='<div><p>打折商品</p></div>';
+                        }else {
+                            recommendation_reason+='<div><p>热销商品</p></div>';
+                        }
+                        recommendation_reason+='</div>';
+                        recommendation_reason=$(recommendation_reason);
+                        var appTitle='<div class="appTitle">';
+                        appTitle+='<h2>'+data.msg[i].gameName+'</h2>';
+                        appTitle+='<div class="discount_block_large"><div class="discount_block">';
+                        if (data.msg[i].discount>0){
+                            appTitle+='<div class="discount_pct">'+'-'+data.msg[i].discount+'%'+'</div>';
+                        }
+                        appTitle+='<div class="discount_prices">';
+                        if (data.msg[i].discount>0){
+                            appTitle+='<div class="discount_original_price">¥ '+data.msg[i].gamePrice+'</div>';
+                            appTitle+='<div class="discount_final_price">¥'+Math.ceil(data.msg[i].gamePrice*(data.msg[i].discount/100))+'</div>';
+                        }else {
+                            appTitle+='<div class="discount_final_price">¥'+(data.msg[i].gamePrice)+'</div>';
+                        }
+                        appTitle+='</div></div></div></div>';
+                        appTitle=$(appTitle);
+                        child.append(maincap,bg,recommendation_reason,appTitle);
+                        parent.append(child);
+                        $('#genre_large_cluster div.carousel_items.store_capsule_container').append(parent);
+                    }
+                },
+                error:function () {
+                    layer.msg("网络错误");
+                }
+            })
         },
 
         showGameDetailLayer:function(id){
@@ -612,18 +676,18 @@ var steam=
         },
 
         classRightCarousel:function(){
-            $('#genre_large_cluster .carousel_items.store_capsule_container>a')[classRecommendValue%15].setAttribute('class','');
-            $('#genre_large_cluster .carousel_items.store_capsule_container>a')[(classRecommendValue+1)%15].setAttribute('class','focus');
-            $('#genre_large_cluster .carousel_thumbs>div')[classRecommendValue%15].setAttribute('class','');
-            $('#genre_large_cluster .carousel_thumbs>div')[(classRecommendValue+1)%15].setAttribute('class','focus');
+            $('#genre_large_cluster .carousel_items.store_capsule_container>a')[classRecommendValue%10].setAttribute('class','');
+            $('#genre_large_cluster .carousel_items.store_capsule_container>a')[(classRecommendValue+1)%10].setAttribute('class','focus');
+            $('#genre_large_cluster .carousel_thumbs>div')[classRecommendValue%10].setAttribute('class','');
+            $('#genre_large_cluster .carousel_thumbs>div')[(classRecommendValue+1)%10].setAttribute('class','focus');
             classRecommendValue++;
         },
 
         classLeftCarousel:function(){
-            $('#genre_large_cluster .carousel_items.store_capsule_container>a')[classRecommendValue%15].setAttribute('class','');
-            $('#genre_large_cluster .carousel_items.store_capsule_container>a')[(classRecommendValue-1)%15].setAttribute('class','focus');
-            $('#genre_large_cluster .carousel_thumbs>div')[classRecommendValue%15].setAttribute('class','');
-            $('#genre_large_cluster .carousel_thumbs>div')[(classRecommendValue-1)%15].setAttribute('class','focus');
+            $('#genre_large_cluster .carousel_items.store_capsule_container>a')[classRecommendValue%10].setAttribute('class','');
+            $('#genre_large_cluster .carousel_items.store_capsule_container>a')[(classRecommendValue-1)%10].setAttribute('class','focus');
+            $('#genre_large_cluster .carousel_thumbs>div')[classRecommendValue%10].setAttribute('class','');
+            $('#genre_large_cluster .carousel_thumbs>div')[(classRecommendValue-1)%10].setAttribute('class','focus');
             classRecommendValue--;
         },
 

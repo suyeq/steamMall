@@ -71,5 +71,11 @@ public class GameController {
         return JSON.toJSONString(ResultMsg.SUCCESS(gameService.findGameById(id)));
     }
 
+    @ResponseBody
+    @RequestMapping("/classGame/{typeName}")
+    public String findGamesToClassCarouselBy(@PathVariable("typeName")String typeName){
+        return JSON.toJSONString(ResultMsg.SUCCESS(gameService.findGamesToClassCarousel(typeName)));
+    }
+
 
 }

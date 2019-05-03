@@ -32,4 +32,16 @@ public class TypeService {
         }
         return typeNameList;
     }
+
+//    public String find
+//
+//
+    public boolean isExists(List<String> types,String typeName){
+        for (int i=0;i<types.size();i++){
+            if (types.get(i).equals(typeName)){
+                return true;
+            }
+        }
+        return false;
+    }
 }

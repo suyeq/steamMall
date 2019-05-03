@@ -36,4 +36,6 @@ public interface GameDao {
     @Select("select * from game where issuedstatu=0 order by issueddate desc limit 0,10")
     List<Game> findUpComingGameToIndex();
 
+    @Select("select count(*) from game")
+    int gamesSum();
 }

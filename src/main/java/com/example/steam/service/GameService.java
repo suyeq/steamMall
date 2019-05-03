@@ -11,12 +11,13 @@ import com.example.steam.vo.GameDetail;
 import com.example.steam.vo.SpecialGame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -26,7 +27,7 @@ import java.util.List;
  * @time: 11:04
  */
 @Service
-public class GameService {
+public class GameService implements InitializingBean {
 
     Logger log= LoggerFactory.getLogger(GameService.class);
 
@@ -40,6 +41,25 @@ public class GameService {
     LabelService labelService;
     @Autowired
     TypeService typeService;
+    @Autowired
+    ApplicationContext applicationContext;
+
+    @Transactional
+    public List<SpecialGame> findGamesToClassCarousel(String typeName){
+        int sum=redisService.get(GameKey.GAME_SUM,GameKey.GAME_SUM_KEY,int.class);
+        log.error(sum+"");
+        Random random=new Random();
+        Set<GameDetail> gameDetailSet=new HashSet<>();
+        while (gameDetailSet.size()<10){
+            int seed=random.nextInt(sum)+1;
+            GameDetail gameDetail=redisService.get(GameKey.GAME_ID,seed+"",GameDetail.class);
+            if (gameDetail!=null && typeService.isExists(gameDetail.getType(),typeName)){
+                gameDetailSet.add(gameDetail);
+            }
+        }
+        log.error(gameDetailSet.toString());
+        return new LinkedList<>(gameDetailSet);
+    }
 
     @Transactional
     public GameDetail findGameById(long id){
@@ -166,6 +186,10 @@ public class GameService {
         return gameDetailList;
     }
 
+    public int findGamesSum(){
+        return gameDao.gamesSum();
+    }
+
     private List<GameDetail> indexGameToGameDetail(List<Game> gameList){
         List<GameDetail> gameDetailList=new LinkedList<>();
         for (int i=0;i<gameList.size();i++){
@@ -186,5 +210,11 @@ public class GameService {
             gameDetailList.add(gameDetail);
         }
         return gameDetailList;
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        int sum=((GameService)applicationContext.getBean("gameService")).findGamesSum();
+        redisService.set(GameKey.GAME_SUM,GameKey.GAME_SUM_KEY,sum);
     }
 }

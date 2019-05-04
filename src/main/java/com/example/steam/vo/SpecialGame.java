@@ -112,4 +112,26 @@ public class SpecialGame {
     public void setImageIntro4(String imageIntro4) {
         this.imageIntro4 = imageIntro4;
     }
+
+    @Override
+    public boolean equals(Object o){
+        if (o==this){
+            return false;
+        }
+        GameDetail gameDetail=(GameDetail)o;
+        if (gameDetail.getId().equals(getId())){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public String toString(){
+        return getId()+"";
+    }
+
+    @Override
+    public int hashCode(){
+        return Integer.parseInt(getId()+"");
+    }
 }

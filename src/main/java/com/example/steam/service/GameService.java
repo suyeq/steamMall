@@ -5,8 +5,12 @@ import com.example.steam.entity.Game;
 import com.example.steam.entity.GameImage;
 import com.example.steam.entity.Image;
 import com.example.steam.entity.Label;
+import com.example.steam.localstore.LocalStoreKey;
+import com.example.steam.localstore.LocalStoreService;
 import com.example.steam.redis.RedisService;
 import com.example.steam.redis.key.GameKey;
+import com.example.steam.utils.GamePriorityQueue;
+import com.example.steam.utils.TimeComparator;
 import com.example.steam.vo.GameDetail;
 import com.example.steam.vo.SpecialGame;
 import org.slf4j.Logger;
@@ -42,12 +46,13 @@ public class GameService implements InitializingBean {
     @Autowired
     TypeService typeService;
     @Autowired
+    LocalStoreService localStoreService;
+    @Autowired
     ApplicationContext applicationContext;
 
     @Transactional
     public List<SpecialGame> findGamesToClassCarousel(String typeName){
         int sum=redisService.get(GameKey.GAME_SUM,GameKey.GAME_SUM_KEY,int.class);
-        log.error(sum+"");
         Random random=new Random();
         Set<GameDetail> gameDetailSet=new HashSet<>();
         while (gameDetailSet.size()<10){
@@ -57,9 +62,16 @@ public class GameService implements InitializingBean {
                 gameDetailSet.add(gameDetail);
             }
         }
-        log.error(gameDetailSet.toString());
         return new LinkedList<>(gameDetailSet);
     }
+
+    public List<SpecialGame> findGamesNewReleaseByType(long typeId){
+        //GamePriorityQueue<GameDetail> priorityQueue=new GamePriorityQueue<>(new TimeComparator());
+
+        return null;
+    }
+
+
 
     @Transactional
     public GameDetail findGameById(long id){
@@ -95,59 +107,46 @@ public class GameService implements InitializingBean {
 
     @Transactional
     public List<SpecialGame> findGamesFetured(){
-        long start=System.currentTimeMillis();
-        List<SpecialGame> specialGameList=redisService.get(GameKey.FETURED_GAME,GameKey.FUTURED_KEY,List.class);
-        long end=System.currentTimeMillis();
-        long result=end-start;
-        log.error(result+"redis");
-        if (specialGameList!=null){
-            return specialGameList;
+//        long start=System.currentTimeMillis();
+        Set<GameDetail> gameDetailSet=localStoreService.get(LocalStoreKey.FETURED_CAROUSEL_KEY(),Set.class);
+        if (gameDetailSet != null) {
+            return new LinkedList<>(gameDetailSet);
         }
-        start=System.currentTimeMillis();
-        List<Game> gameList=gameDao.findGamesFeatured();
-        end=System.currentTimeMillis();
-        log.error(end-start+"查询数据库了");
-        specialGameList=new LinkedList<>();
-        for (int i=0;i<gameList.size();i++){
-            Game game=gameList.get(i);
-            SpecialGame specialGame=new SpecialGame();
-            specialGame.setId(game.getId());
-            specialGame.setDiscount(game.getDiscount());
-            specialGame.setGameName(game.getGameName());
-            specialGame.setGamePrice(game.getGamePrice());
-            specialGame.setIssuedStatu(game.getIssuedStatu());
-            specialGame.setPosterImage(imageService.findImageById(game.getPosterImage()).getUrl());
-            List<Image> imageList=imageService.findGameImagesByGameId(game.getId());
-            specialGame.setImageIntro1(imageList.get(0).getUrl());
-            specialGame.setImageIntro2(imageList.get(1).getUrl());
-            specialGame.setImageIntro3(imageList.get(2).getUrl());
-            specialGame.setImageIntro4(imageList.get(3).getUrl());
-            specialGameList.add(specialGame);
+        int sum=redisService.get(GameKey.GAME_SUM,GameKey.GAME_SUM_KEY,int.class);
+        Random random=new Random();
+        gameDetailSet=new HashSet<>();
+        while (gameDetailSet.size()<12){
+            int seed=random.nextInt(sum)+1;
+            GameDetail gameDetail=redisService.get(GameKey.GAME_ID,seed+"",GameDetail.class);
+            if (gameDetail!=null){
+                gameDetailSet.add(gameDetail);
+            }
         }
-        redisService.set(GameKey.FETURED_GAME,GameKey.FUTURED_KEY,specialGameList);
-        return specialGameList;
+//        long end=System.currentTimeMillis();
+//        long result=end-start;
+        localStoreService.set(LocalStoreKey.FETURED_CAROUSEL_KEY(),gameDetailSet);
+//        log.error(result+"ll");
+        return new LinkedList<>(gameDetailSet);
     }
 
     @Transactional
     public List<SpecialGame> findSpecialGames(){
-        List<SpecialGame> specialGameList=redisService.get(GameKey.SPECIAL_INDEX_GAME,GameKey.SPECIAL_INDEX_KEY,List.class);
-        if (specialGameList!=null){
-            return specialGameList;
+        Set<GameDetail> gameDetailSet=localStoreService.get(LocalStoreKey.SPECIAL_CAROUSEL_KEY(),Set.class);
+        if (gameDetailSet!=null){
+            return new LinkedList<>(gameDetailSet);
         }
-        List<Game> gameList=gameDao.findSpecialGames();
-        specialGameList=new LinkedList<>();
-        for (int i=0;i<gameList.size();i++){
-            Game game=gameList.get(i);
-            SpecialGame specialGame=new SpecialGame();
-            specialGame.setId(game.getId());
-            specialGame.setGameName(game.getGameName());
-            specialGame.setPosterImage(imageService.findImageById(game.getPosterImage()).getUrl());
-            specialGame.setDiscount(game.getDiscount());
-            specialGame.setGamePrice(game.getGamePrice());
-            specialGameList.add(specialGame);
+        int sum=redisService.get(GameKey.GAME_SUM,GameKey.GAME_SUM_KEY,int.class);
+        Random random=new Random();
+        gameDetailSet=new HashSet<>();
+        while (gameDetailSet.size()<12){
+            int seed=random.nextInt(sum)+1;
+            GameDetail gameDetail=redisService.get(GameKey.GAME_ID,seed+"",GameDetail.class);
+            if (gameDetail!=null && gameDetail.getDiscount()>0){
+                gameDetailSet.add(gameDetail);
+            }
         }
-        redisService.set(GameKey.SPECIAL_INDEX_GAME,GameKey.SPECIAL_INDEX_KEY,specialGameList);
-        return specialGameList;
+        localStoreService.set(LocalStoreKey.SPECIAL_CAROUSEL_KEY(),gameDetailSet);
+        return new LinkedList<>(gameDetailSet);
     }
 
     @Transactional

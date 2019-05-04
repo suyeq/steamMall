@@ -7,9 +7,11 @@ import com.example.steam.entity.Image;
 import com.example.steam.entity.Label;
 import com.example.steam.localstore.LocalStoreKey;
 import com.example.steam.localstore.LocalStoreService;
+import com.example.steam.redis.RedisPrefixKey;
 import com.example.steam.redis.RedisService;
 import com.example.steam.redis.key.GameKey;
 import com.example.steam.utils.GamePriorityQueue;
+import com.example.steam.utils.RankScoreValue;
 import com.example.steam.utils.TimeComparator;
 import com.example.steam.vo.GameDetail;
 import com.example.steam.vo.SpecialGame;
@@ -50,7 +52,7 @@ public class GameService implements InitializingBean {
     @Autowired
     ApplicationContext applicationContext;
 
-    @Transactional
+
     public List<SpecialGame> findGamesToClassCarousel(String typeName){
         int sum=redisService.get(GameKey.GAME_SUM,GameKey.GAME_SUM_KEY,int.class);
         Random random=new Random();
@@ -72,8 +74,6 @@ public class GameService implements InitializingBean {
     }
 
 
-
-    @Transactional
     public GameDetail findGameById(long id){
         GameDetail gameDetail=redisService.get(GameKey.GAME_ID,id+"",GameDetail.class);
         if (gameDetail!=null){
@@ -105,9 +105,8 @@ public class GameService implements InitializingBean {
         return gameDetail;
     }
 
-    @Transactional
+
     public List<SpecialGame> findGamesFetured(){
-//        long start=System.currentTimeMillis();
         Set<GameDetail> gameDetailSet=localStoreService.get(LocalStoreKey.FETURED_CAROUSEL_KEY(),Set.class);
         if (gameDetailSet != null) {
             return new LinkedList<>(gameDetailSet);
@@ -122,14 +121,11 @@ public class GameService implements InitializingBean {
                 gameDetailSet.add(gameDetail);
             }
         }
-//        long end=System.currentTimeMillis();
-//        long result=end-start;
         localStoreService.set(LocalStoreKey.FETURED_CAROUSEL_KEY(),gameDetailSet);
-//        log.error(result+"ll");
         return new LinkedList<>(gameDetailSet);
     }
 
-    @Transactional
+
     public List<SpecialGame> findSpecialGames(){
         Set<GameDetail> gameDetailSet=localStoreService.get(LocalStoreKey.SPECIAL_CAROUSEL_KEY(),Set.class);
         if (gameDetailSet!=null){
@@ -149,31 +145,43 @@ public class GameService implements InitializingBean {
         return new LinkedList<>(gameDetailSet);
     }
 
-    @Transactional
+
     public List<GameDetail> findNewRelease(){
-        List<GameDetail> gameDetailList=redisService.get(GameKey.NEW_RELEASE_INDEX_GAME,GameKey.NEW_RELEASE_INDEX_KEY,List.class);
+        List<GameDetail> gameDetailList=localStoreService.get(LocalStoreKey.NEW_RELEASE_INDEX_KEY(),List.class);
         if (gameDetailList!=null){
             return gameDetailList;
         }
-        List<Game> gameList=gameDao.findNewReleaseGameToIndex();
-        gameDetailList=indexGameToGameDetail(gameList);
-        redisService.set(GameKey.NEW_RELEASE_INDEX_GAME,GameKey.NEW_RELEASE_INDEX_KEY,gameDetailList);
+        gameDetailList=new LinkedList<>();
+        Set<String> rankTimeGame=redisService.zrange(GameKey.RANK_TIME,GameKey.GAME_RANK_TIME,0,9);
+        Iterator<String> iterator=rankTimeGame.iterator();
+        while (iterator.hasNext()){
+            String id=iterator.next();
+            GameDetail gameDetail=((GameService)applicationContext.getBean("gameService")).findGameById(Long.parseLong(id));
+            gameDetailList.add(gameDetail);
+        }
+        localStoreService.set(LocalStoreKey.NEW_RELEASE_INDEX_KEY(),gameDetailList);
         return gameDetailList;
     }
 
-    @Transactional
+
     public List<GameDetail> findHotSell() {
-        List<GameDetail> gameDetailList=redisService.get(GameKey.HOT_SELL_INDEX_GAME,GameKey.HOT_SELL_INDEX_KEY,List.class);
+        List<GameDetail> gameDetailList=localStoreService.get(LocalStoreKey.HOT_SELL_INDEX_KEY(),List.class);
         if (gameDetailList!=null){
             return gameDetailList;
         }
-        List<Game> gameList=gameDao.findHotSellGameToIndex();
-        gameDetailList=indexGameToGameDetail(gameList);
-        redisService.set(GameKey.HOT_SELL_INDEX_GAME,GameKey.HOT_SELL_INDEX_KEY,gameDetailList);
+        gameDetailList=new LinkedList<>();
+        Set<String> rankTimeGame=redisService.zrange(GameKey.RANK_SELLNUM,GameKey.GAME_RANK_SELLNUM,0,9);
+        Iterator<String> iterator=rankTimeGame.iterator();
+        while (iterator.hasNext()){
+            String id=iterator.next();
+            GameDetail gameDetail=((GameService)applicationContext.getBean("gameService")).findGameById(Long.parseLong(id));
+            gameDetailList.add(gameDetail);
+        }
+        localStoreService.set(LocalStoreKey.HOT_SELL_INDEX_KEY(),gameDetailList);
         return gameDetailList;
     }
 
-    @Transactional
+
     public List<GameDetail> findUpComing() {
         List<GameDetail> gameDetailList=redisService.get(GameKey.UP_COMING_INDEX_GAME,GameKey.UP_COMING_INDEX_KEY,List.class);
         if (gameDetailList!=null){
@@ -215,5 +223,22 @@ public class GameService implements InitializingBean {
     public void afterPropertiesSet() throws Exception {
         int sum=((GameService)applicationContext.getBean("gameService")).findGamesSum();
         redisService.set(GameKey.GAME_SUM,GameKey.GAME_SUM_KEY,sum);
+        for (int i=0;i<sum;i++){
+            GameDetail gameDetail=((GameService)applicationContext.getBean("gameService")).findGameById(i+1);
+            RankScoreValue rankTime=new RankScoreValue();
+            RankScoreValue rankSellNum=new RankScoreValue();
+            rankSellNum.setScore(gameDetail.getSellNum());
+            rankSellNum.setId(gameDetail.getId());
+            rankTime.setId(gameDetail.getId());
+            rankTime.setScore(gameDetail.getIssuedDate().getTime());
+            redisService.set(GameKey.GAME_ID,gameDetail.getId()+"",gameDetail);
+            if (gameDetail.getIssuedStatu()!=0){
+                redisService.zadd(GameKey.RANK_TIME,GameKey.GAME_RANK_TIME,rankTime);
+                redisService.zadd(GameKey.RANK_SELLNUM,GameKey.GAME_RANK_SELLNUM,rankSellNum);
+            }
+            if (gameDetail.getIssuedStatu()==1){
+                redisService.zadd(GameKey.RANK_UPCOMING,GameKey.GAME_RANK_UPCOMING,rankTime);
+            }
+        }
     }
 }

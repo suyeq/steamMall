@@ -3,6 +3,7 @@ package com.example.steam.controller;
 import com.alibaba.fastjson.JSON;
 import com.example.steam.service.GameService;
 import com.example.steam.utils.ResultMsg;
+import com.example.steam.vo.GameDetail;
 import com.example.steam.vo.SpecialGame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created with IntelliJ IDEA.
@@ -24,6 +27,8 @@ import java.util.List;
  */
 @Controller
 public class GameController {
+
+    private Map<String,String> map=new ConcurrentHashMap<>();
 
     Logger log= LoggerFactory.getLogger(GameController.class);
 
@@ -39,18 +44,19 @@ public class GameController {
     @ResponseBody
     @RequestMapping("/specialCarousel")
     public String specialCarousel(){
-        long start=System.currentTimeMillis();
         List<SpecialGame> list=gameService.findSpecialGames();
-        long end=System.currentTimeMillis();
-        long result=end-start;
-        log.error(result+"");
         return JSON.toJSONString(ResultMsg.SUCCESS(list));
     }
 
     @ResponseBody
     @RequestMapping("/newRelease_index")
     public String newRelease(){
-        return JSON.toJSONString(ResultMsg.SUCCESS(gameService.findNewRelease()));
+        long start=System.currentTimeMillis();
+        List<GameDetail> list=gameService.findNewRelease();
+        long end=System.currentTimeMillis();
+        long result=end-start;
+        log.error(result+"");
+        return JSON.toJSONString(ResultMsg.SUCCESS(list));
     }
 
     @ResponseBody
@@ -75,6 +81,14 @@ public class GameController {
     @RequestMapping("/classGame/{typeName}")
     public String findGamesToClassCarouselBy(@PathVariable("typeName")String typeName){
         return JSON.toJSONString(ResultMsg.SUCCESS(gameService.findGamesToClassCarousel(typeName)));
+    }
+
+    @ResponseBody
+    @RequestMapping("/kkk")
+    public String hhh(){
+        map.put("1","2");
+        map.get("1");
+        return "ok";
     }
 
 

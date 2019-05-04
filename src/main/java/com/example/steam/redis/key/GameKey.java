@@ -33,6 +33,12 @@ public class GameKey extends BaseKey {
 
     public final static String GAME_SUM_KEY="gameSum";
 
+    public final static String GAME_RANK_TIME="gameRankTime";
+
+    public final static String GAME_RANK_SELLNUM="gameRankSellNum";
+
+    public final static String GAME_RANK_UPCOMING="gameUpComing";
+
     private GameKey(int expiredTime){
         super(expiredTime);
     }
@@ -50,4 +56,10 @@ public class GameKey extends BaseKey {
     public static GameKey UP_COMING_INDEX_GAME=new GameKey(UP_COMING_INDEX_KEY_TIME);
 
     public static GameKey GAME_SUM=new GameKey(0);
+
+    public static GameKey RANK_TIME=new GameKey(0);
+
+    public static GameKey RANK_SELLNUM=new GameKey(0);
+
+    public static GameKey RANK_UPCOMING=new GameKey(0);
 }

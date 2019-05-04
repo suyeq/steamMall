@@ -1,6 +1,8 @@
 package com.example.steam.redis;
 
 import com.alibaba.fastjson.JSON;
+import com.example.steam.utils.RankScoreValue;
+import com.example.steam.vo.SpecialGame;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
@@ -9,6 +11,7 @@ import redis.clients.jedis.JedisPool;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -64,18 +67,41 @@ public class RedisService {
         }
     }
 
+    /**
+     * zset增加
+     * @param keyPrefix
+     * @param key
+     * @param rank
+     */
+    public void zadd(RedisPrefixKey keyPrefix, String key, RankScoreValue rank){
+        Jedis jedis=null;
+        try {
+            jedis=pool.getResource();
+            String realKey=keyPrefix.getThisPrefix()+key;
+            jedis.zadd(realKey,-Double.parseDouble(rank.getScore()+""),rank.getId()+"");
+        }finally {
+            jedis.close();
+        }
+    }
 
-//    public <T> void zadd(RedisPrefixKey keyPrefix, String key, List<T> list){
-//        Jedis jedis=null;
-//        try {
-//            jedis=pool.getResource();
-//            String realKey=keyPrefix.getThisPrefix()+key;
-//            for (int i=0;i<)
-//
-//        }finally {
-//            jedis.close();
-//        }
-//    }
+    /**
+     * 根据起始位置与终点位置返回排名的值
+     * @param keyPrefix
+     * @param key
+     * @param start
+     * @param end
+     * @return
+     */
+    public Set<String> zrange(RedisPrefixKey keyPrefix,String key,long start,long end){
+        Jedis jedis=null;
+        try {
+            jedis=pool.getResource();
+            String realKey=keyPrefix.getThisPrefix()+key;
+            return jedis.zrange(realKey,start,end);
+        }finally {
+            jedis.close();;
+        }
+    }
 
 
     /**

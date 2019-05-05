@@ -31,11 +31,69 @@ public class LocalStoreKey {
 
     private static volatile LocalStoreKey HOT_SELL_INDEX_KEY;
 
+    private static volatile LocalStoreKey UP_COMING_INDEX_KEY;
+
+    private static volatile LocalStoreKey CLASS_CAROUSEL_KEY;
+
+    private static volatile LocalStoreKey NEW_RELEASE_CLASS_KEY;
+
+    private static volatile LocalStoreKey HOT_SELL_CLASS_KEY;
+
+    private static volatile LocalStoreKey UP_COMING_CLASS_KEY;
+
 
     private LocalStoreKey(String keyName,long startTime,long expiredTime){
         this.keyName=keyName;
         this.startTime=startTime;
         this.expiredTime=expiredTime;
+    }
+
+    public static LocalStoreKey UP_COMING_CLASS_KEY(){
+        if (UP_COMING_CLASS_KEY==null){
+            synchronized (LocalStoreKey.class){
+                if (UP_COMING_CLASS_KEY==null){
+                    UP_COMING_CLASS_KEY=new LocalStoreKey("classUpComing",System.currentTimeMillis(),1000*50);
+                }
+                return UP_COMING_CLASS_KEY;
+            }
+        }
+        return UP_COMING_CLASS_KEY;
+    }
+
+    public static LocalStoreKey HOT_SELL_CLASS_KEY(){
+        if (HOT_SELL_CLASS_KEY==null){
+            synchronized (LocalStoreKey.class){
+                if (HOT_SELL_CLASS_KEY==null){
+                    HOT_SELL_CLASS_KEY=new LocalStoreKey("classHotSell",System.currentTimeMillis(),1000*50);
+                }
+                return HOT_SELL_CLASS_KEY;
+            }
+        }
+        return HOT_SELL_CLASS_KEY;
+    }
+
+    public static LocalStoreKey NEW_RELEASE_CLASS_KEY(){
+        if (NEW_RELEASE_CLASS_KEY==null){
+            synchronized (LocalStoreKey.class){
+                if (NEW_RELEASE_CLASS_KEY==null){
+                    NEW_RELEASE_CLASS_KEY=new LocalStoreKey("classNewRelease",System.currentTimeMillis(),1000*50);
+                }
+                return NEW_RELEASE_CLASS_KEY;
+            }
+        }
+        return NEW_RELEASE_CLASS_KEY;
+    }
+
+    public static LocalStoreKey CLASS_CAROUSEL_KEY(){
+        if (CLASS_CAROUSEL_KEY==null){
+            synchronized (LocalStoreKey.class){
+                if (CLASS_CAROUSEL_KEY==null){
+                    CLASS_CAROUSEL_KEY=new LocalStoreKey("classCarousel",System.currentTimeMillis(),1000*30);
+                }
+                return CLASS_CAROUSEL_KEY;
+            }
+        }
+        return CLASS_CAROUSEL_KEY;
     }
 
     public static LocalStoreKey FETURED_CAROUSEL_KEY(){
@@ -54,7 +112,7 @@ public class LocalStoreKey {
         if (SPECIAL_CAROUSEL_KEY==null){
             synchronized (LocalStoreKey.class){
                 if (SPECIAL_CAROUSEL_KEY==null){
-                    SPECIAL_CAROUSEL_KEY=new LocalStoreKey("specialCarousel",System.currentTimeMillis(),1000*400);
+                    SPECIAL_CAROUSEL_KEY=new LocalStoreKey("specialCarousel",System.currentTimeMillis(),1000*40);
                 }
                 return SPECIAL_CAROUSEL_KEY;
             }
@@ -66,7 +124,7 @@ public class LocalStoreKey {
         if (HOT_SELL_INDEX_KEY==null){
             synchronized (LocalStoreKey.class){
                 if (HOT_SELL_INDEX_KEY==null){
-                    HOT_SELL_INDEX_KEY=new LocalStoreKey("specialCarousel",System.currentTimeMillis(),1000*500);
+                    HOT_SELL_INDEX_KEY=new LocalStoreKey("hotSell",System.currentTimeMillis(),1000*50);
                 }
                 return HOT_SELL_INDEX_KEY;
             }
@@ -74,11 +132,23 @@ public class LocalStoreKey {
         return HOT_SELL_INDEX_KEY;
     }
 
+    public static LocalStoreKey UP_COMING_INDEX_KEY(){
+        if (UP_COMING_INDEX_KEY==null){
+            synchronized (LocalStoreKey.class){
+                if (UP_COMING_INDEX_KEY==null){
+                    UP_COMING_INDEX_KEY=new LocalStoreKey("upComing",System.currentTimeMillis(),1000*50);
+                }
+                return UP_COMING_INDEX_KEY;
+            }
+        }
+        return UP_COMING_INDEX_KEY;
+    }
+
     public static LocalStoreKey NEW_RELEASE_INDEX_KEY(){
         if (NEW_RELEASE_INDEX_KEY==null){
             synchronized (LocalStoreKey.class){
                 if (NEW_RELEASE_INDEX_KEY==null){
-                    NEW_RELEASE_INDEX_KEY=new LocalStoreKey("specialCarousel",System.currentTimeMillis(),1000*50);
+                    NEW_RELEASE_INDEX_KEY=new LocalStoreKey("newRelease",System.currentTimeMillis(),1000*50);
                 }
                 return NEW_RELEASE_INDEX_KEY;
             }

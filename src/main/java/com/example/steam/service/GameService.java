@@ -37,6 +37,12 @@ public class GameService implements InitializingBean {
 
     Logger log= LoggerFactory.getLogger(GameService.class);
 
+    private final static int INDEX_CAROUSEL_SIZE=12;
+
+    private final static int CLASS_CAROUSEL_SIZE=10;
+
+    private final static int RANK_SIZE=10;
+
     @Autowired
     GameDao gameDao;
     @Autowired
@@ -52,28 +58,124 @@ public class GameService implements InitializingBean {
     @Autowired
     ApplicationContext applicationContext;
 
-
+    /**
+     * 随机10个游戏置于分类推荐
+     * @param typeName
+     * @return
+     */
     public List<SpecialGame> findGamesToClassCarousel(String typeName){
+        Set<GameDetail> gameDetailSet=localStoreService.get(LocalStoreKey.CLASS_CAROUSEL_KEY(),Set.class);
+        if (gameDetailSet!=null){
+            return new LinkedList<>(gameDetailSet);
+        }
         int sum=redisService.get(GameKey.GAME_SUM,GameKey.GAME_SUM_KEY,int.class);
         Random random=new Random();
-        Set<GameDetail> gameDetailSet=new HashSet<>();
-        while (gameDetailSet.size()<10){
+        gameDetailSet=new HashSet<>();
+        while (gameDetailSet.size()<CLASS_CAROUSEL_SIZE){
             int seed=random.nextInt(sum)+1;
             GameDetail gameDetail=redisService.get(GameKey.GAME_ID,seed+"",GameDetail.class);
             if (gameDetail!=null && typeService.isExists(gameDetail.getType(),typeName)){
                 gameDetailSet.add(gameDetail);
             }
         }
+        localStoreService.set(LocalStoreKey.CLASS_CAROUSEL_KEY(),gameDetailSet);
         return new LinkedList<>(gameDetailSet);
     }
 
-    public List<SpecialGame> findGamesNewReleaseByType(long typeId){
+    /**
+     * 找到对应类型的游戏，并按照时间降序
+     * @param typeName
+     * @return
+     */
+    public List<GameDetail> findGamesNewReleaseByType(String typeName){
         //GamePriorityQueue<GameDetail> priorityQueue=new GamePriorityQueue<>(new TimeComparator());
-
-        return null;
+        List<GameDetail> gameDetailList=localStoreService.get(LocalStoreKey.NEW_RELEASE_CLASS_KEY(),List.class);
+        if (gameDetailList!=null){
+            return gameDetailList;
+        }
+        int sum=redisService.get(GameKey.GAME_SUM,GameKey.GAME_SUM_KEY,int.class);
+        gameDetailList=new LinkedList<>();
+        int i=0;
+        while (i<sum && gameDetailList.size()<RANK_SIZE){
+            Set<String> rankTimeGame=redisService.zrange(GameKey.RANK_TIME,GameKey.GAME_RANK_TIME,i,i+RANK_SIZE-1);
+            Iterator<String> iterator=rankTimeGame.iterator();
+            while (iterator.hasNext()){
+                String id=iterator.next();
+                GameDetail gameDetail=((GameService)applicationContext.getBean("gameService")).findGameById(Long.parseLong(id));
+                if (typeService.isExists(gameDetail.getType(),typeName) && gameDetailList.size()<RANK_SIZE){
+                    gameDetailList.add(gameDetail);
+                }
+            }
+            i+=RANK_SIZE;
+        }
+        localStoreService.set(LocalStoreKey.NEW_RELEASE_CLASS_KEY(),gameDetailList);
+        return gameDetailList;
     }
 
+    /**
+     * 找到对应类型的游戏，并按照热卖度降序
+     * @param typeName
+     * @return
+     */
+    public List<GameDetail> findGamesHotSellByType(String typeName){
+        List<GameDetail> gameDetailList=localStoreService.get(LocalStoreKey.HOT_SELL_CLASS_KEY(),List.class);
+        if (gameDetailList!=null){
+            return gameDetailList;
+        }
+        int sum=redisService.get(GameKey.GAME_SUM,GameKey.GAME_SUM_KEY,int.class);
+        gameDetailList=new LinkedList<>();
+        int i=0;
+        while (i<sum && gameDetailList.size()<RANK_SIZE){
+            Set<String> rankTimeGame=redisService.zrange(GameKey.RANK_SELLNUM,GameKey.GAME_RANK_SELLNUM,i,i+RANK_SIZE-1);
+            Iterator<String> iterator=rankTimeGame.iterator();
+            while (iterator.hasNext()){
+                String id=iterator.next();
+                GameDetail gameDetail=((GameService)applicationContext.getBean("gameService")).findGameById(Long.parseLong(id));
+                if (typeService.isExists(gameDetail.getType(),typeName) && gameDetailList.size()<RANK_SIZE){
+                    gameDetailList.add(gameDetail);
+                }
+            }
+            i+=RANK_SIZE;
+        }
+        localStoreService.set(LocalStoreKey.HOT_SELL_CLASS_KEY(),gameDetailList);
+        return gameDetailList;
+    }
 
+    /**
+     * 找到对应类型的预售游戏
+     * @param typeName
+     * @return
+     */
+    public List<GameDetail> findGamesUpComingByType(String typeName){
+        List<GameDetail> gameDetailList=localStoreService.get(LocalStoreKey.UP_COMING_CLASS_KEY(),List.class);
+        if (gameDetailList!=null){
+            return gameDetailList;
+        }
+        int sum=redisService.get(GameKey.GAME_SUM,GameKey.GAME_SUM_KEY,int.class);
+        gameDetailList=new LinkedList<>();
+        int i=0;
+        while (i<sum && gameDetailList.size()<RANK_SIZE){
+            Set<String> rankTimeGame=redisService.zrange(GameKey.RANK_UPCOMING,GameKey.GAME_RANK_UPCOMING,i,i+RANK_SIZE-1);
+            Iterator<String> iterator=rankTimeGame.iterator();
+            while (iterator.hasNext()){
+                String id=iterator.next();
+                GameDetail gameDetail=((GameService)applicationContext.getBean("gameService")).findGameById(Long.parseLong(id));
+                if (typeService.isExists(gameDetail.getType(),typeName) && gameDetailList.size()<RANK_SIZE){
+                    gameDetailList.add(gameDetail);
+                }
+            }
+            i+=RANK_SIZE;
+        }
+        localStoreService.set(LocalStoreKey.UP_COMING_CLASS_KEY(),gameDetailList);
+        return gameDetailList;
+    }
+
+    /**
+     *
+     * 通过id查找一个游戏
+     * @param id
+     * @return
+     */
     public GameDetail findGameById(long id){
         GameDetail gameDetail=redisService.get(GameKey.GAME_ID,id+"",GameDetail.class);
         if (gameDetail!=null){
@@ -105,7 +207,10 @@ public class GameService implements InitializingBean {
         return gameDetail;
     }
 
-
+    /**
+     * 随机12个游戏置于首页推荐
+     * @return
+     */
     public List<SpecialGame> findGamesFetured(){
         Set<GameDetail> gameDetailSet=localStoreService.get(LocalStoreKey.FETURED_CAROUSEL_KEY(),Set.class);
         if (gameDetailSet != null) {
@@ -114,7 +219,7 @@ public class GameService implements InitializingBean {
         int sum=redisService.get(GameKey.GAME_SUM,GameKey.GAME_SUM_KEY,int.class);
         Random random=new Random();
         gameDetailSet=new HashSet<>();
-        while (gameDetailSet.size()<12){
+        while (gameDetailSet.size()<INDEX_CAROUSEL_SIZE){
             int seed=random.nextInt(sum)+1;
             GameDetail gameDetail=redisService.get(GameKey.GAME_ID,seed+"",GameDetail.class);
             if (gameDetail!=null){
@@ -125,7 +230,10 @@ public class GameService implements InitializingBean {
         return new LinkedList<>(gameDetailSet);
     }
 
-
+    /**
+     * 随机12个打折游戏置于首页推荐
+     * @return
+     */
     public List<SpecialGame> findSpecialGames(){
         Set<GameDetail> gameDetailSet=localStoreService.get(LocalStoreKey.SPECIAL_CAROUSEL_KEY(),Set.class);
         if (gameDetailSet!=null){
@@ -134,7 +242,7 @@ public class GameService implements InitializingBean {
         int sum=redisService.get(GameKey.GAME_SUM,GameKey.GAME_SUM_KEY,int.class);
         Random random=new Random();
         gameDetailSet=new HashSet<>();
-        while (gameDetailSet.size()<12){
+        while (gameDetailSet.size()<INDEX_CAROUSEL_SIZE){
             int seed=random.nextInt(sum)+1;
             GameDetail gameDetail=redisService.get(GameKey.GAME_ID,seed+"",GameDetail.class);
             if (gameDetail!=null && gameDetail.getDiscount()>0){
@@ -145,7 +253,10 @@ public class GameService implements InitializingBean {
         return new LinkedList<>(gameDetailSet);
     }
 
-
+    /**
+     * 找出最新发布的10个游戏
+     * @return
+     */
     public List<GameDetail> findNewRelease(){
         List<GameDetail> gameDetailList=localStoreService.get(LocalStoreKey.NEW_RELEASE_INDEX_KEY(),List.class);
         if (gameDetailList!=null){
@@ -163,7 +274,10 @@ public class GameService implements InitializingBean {
         return gameDetailList;
     }
 
-
+    /**
+     * 找出最热卖的10个游戏
+     * @return
+     */
     public List<GameDetail> findHotSell() {
         List<GameDetail> gameDetailList=localStoreService.get(LocalStoreKey.HOT_SELL_INDEX_KEY(),List.class);
         if (gameDetailList!=null){
@@ -181,15 +295,24 @@ public class GameService implements InitializingBean {
         return gameDetailList;
     }
 
-
+    /**
+     * 找出最近将要推出的游戏
+     * @return
+     */
     public List<GameDetail> findUpComing() {
-        List<GameDetail> gameDetailList=redisService.get(GameKey.UP_COMING_INDEX_GAME,GameKey.UP_COMING_INDEX_KEY,List.class);
+        List<GameDetail> gameDetailList=localStoreService.get(LocalStoreKey.UP_COMING_INDEX_KEY(),List.class);
         if (gameDetailList!=null){
             return gameDetailList;
         }
-        List<Game> gameList=gameDao.findUpComingGameToIndex();
-        gameDetailList=indexGameToGameDetail(gameList);
-        redisService.set(GameKey.UP_COMING_INDEX_GAME,GameKey.UP_COMING_INDEX_KEY,gameDetailList);
+        gameDetailList=new LinkedList<>();
+        Set<String> rankUpComingGame=redisService.zrange(GameKey.RANK_UPCOMING,GameKey.GAME_RANK_UPCOMING,0,9);
+        Iterator<String> iterator=rankUpComingGame.iterator();
+        while (iterator.hasNext()){
+            String id=iterator.next();
+            GameDetail gameDetail=((GameService)applicationContext.getBean("gameService")).findGameById(Long.parseLong(id));
+            gameDetailList.add(gameDetail);
+        }
+        localStoreService.set(LocalStoreKey.UP_COMING_INDEX_KEY(),gameDetailList);
         return gameDetailList;
     }
 
@@ -197,48 +320,48 @@ public class GameService implements InitializingBean {
         return gameDao.gamesSum();
     }
 
-    private List<GameDetail> indexGameToGameDetail(List<Game> gameList){
-        List<GameDetail> gameDetailList=new LinkedList<>();
-        for (int i=0;i<gameList.size();i++){
-            Game game=gameList.get(i);
-            GameDetail gameDetail=new GameDetail();
-            gameDetail.setId(game.getId());
-            gameDetail.setDiscount(game.getDiscount());
-            gameDetail.setGameName(game.getGameName());
-            gameDetail.setGamePrice(game.getGamePrice());
-            gameDetail.setIssuedStatu(game.getIssuedStatu());
-            gameDetail.setPosterImage(imageService.findImageById(game.getPosterImage()).getUrl());
-            List<Label> labelList=labelService.findLabelsByGameId(game.getId());
-            List<String> labels=new LinkedList<>();
-            for (int j=0;j<labelList.size();j++){
-                labels.add(labelList.get(j).getName());
-            }
-            gameDetail.setLabel(labels);
-            gameDetailList.add(gameDetail);
-        }
-        return gameDetailList;
-    }
+//    private List<GameDetail> indexGameToGameDetail(List<Game> gameList){
+//        List<GameDetail> gameDetailList=new LinkedList<>();
+//        for (int i=0;i<gameList.size();i++){
+//            Game game=gameList.get(i);
+//            GameDetail gameDetail=new GameDetail();
+//            gameDetail.setId(game.getId());
+//            gameDetail.setDiscount(game.getDiscount());
+//            gameDetail.setGameName(game.getGameName());
+//            gameDetail.setGamePrice(game.getGamePrice());
+//            gameDetail.setIssuedStatu(game.getIssuedStatu());
+//            gameDetail.setPosterImage(imageService.findImageById(game.getPosterImage()).getUrl());
+//            List<Label> labelList=labelService.findLabelsByGameId(game.getId());
+//            List<String> labels=new LinkedList<>();
+//            for (int j=0;j<labelList.size();j++){
+//                labels.add(labelList.get(j).getName());
+//            }
+//            gameDetail.setLabel(labels);
+//            gameDetailList.add(gameDetail);
+//        }
+//        return gameDetailList;
+//    }
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        int sum=((GameService)applicationContext.getBean("gameService")).findGamesSum();
-        redisService.set(GameKey.GAME_SUM,GameKey.GAME_SUM_KEY,sum);
-        for (int i=0;i<sum;i++){
-            GameDetail gameDetail=((GameService)applicationContext.getBean("gameService")).findGameById(i+1);
-            RankScoreValue rankTime=new RankScoreValue();
-            RankScoreValue rankSellNum=new RankScoreValue();
-            rankSellNum.setScore(gameDetail.getSellNum());
-            rankSellNum.setId(gameDetail.getId());
-            rankTime.setId(gameDetail.getId());
-            rankTime.setScore(gameDetail.getIssuedDate().getTime());
-            redisService.set(GameKey.GAME_ID,gameDetail.getId()+"",gameDetail);
-            if (gameDetail.getIssuedStatu()!=0){
-                redisService.zadd(GameKey.RANK_TIME,GameKey.GAME_RANK_TIME,rankTime);
-                redisService.zadd(GameKey.RANK_SELLNUM,GameKey.GAME_RANK_SELLNUM,rankSellNum);
-            }
-            if (gameDetail.getIssuedStatu()==1){
-                redisService.zadd(GameKey.RANK_UPCOMING,GameKey.GAME_RANK_UPCOMING,rankTime);
-            }
-        }
+//        int sum=((GameService)applicationContext.getBean("gameService")).findGamesSum();
+//        redisService.set(GameKey.GAME_SUM,GameKey.GAME_SUM_KEY,sum);
+//        for (int i=0;i<sum;i++){
+//            GameDetail gameDetail=((GameService)applicationContext.getBean("gameService")).findGameById(i+1);
+//            RankScoreValue rankTime=new RankScoreValue();
+//            RankScoreValue rankSellNum=new RankScoreValue();
+//            rankSellNum.setScore(gameDetail.getSellNum());
+//            rankSellNum.setId(gameDetail.getId());
+//            rankTime.setId(gameDetail.getId());
+//            rankTime.setScore(gameDetail.getIssuedDate().getTime());
+//            redisService.set(GameKey.GAME_ID,gameDetail.getId()+"",gameDetail);
+//            if (gameDetail.getIssuedStatu()!=0){
+//                redisService.zadd(GameKey.RANK_TIME,GameKey.GAME_RANK_TIME,rankTime);
+//                redisService.zadd(GameKey.RANK_SELLNUM,GameKey.GAME_RANK_SELLNUM,rankSellNum);
+//            }
+//            if (gameDetail.getIssuedStatu()!=1){
+//                redisService.zadd(GameKey.RANK_UPCOMING,GameKey.GAME_RANK_UPCOMING,rankTime);
+//            }
+//        }
     }
 }

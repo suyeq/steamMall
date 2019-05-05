@@ -29,6 +29,9 @@ var steam=
             this.showTopSellerData(that);
             this.showUpComingData(that);
             this.showClassCarouselData('动作');
+            this.showClassNewRelease('动作');
+            this.showClassHotSell('动作',that);
+            this.showClassupComing('动作',that);
             this.featuredLeft.click(function () {
                 that.featuredLeftCarouselLeft();
             });
@@ -60,9 +63,204 @@ var steam=
             this.mouseTabPause(that);
             this.classCarouselStart(that);
             this.mouseClassCarouselPause(that);
-            this.mouseClassListPause();
+            this.mouseClassListPause(that);
             this.detailCarouselStart(that);
             this.mouseDetailPause(that);
+        },
+
+        showClassLayerData:function(id){
+            $.ajax({
+                url:"/gameDetail/"+id,
+                type:"POST",
+                async:false,
+                success:function (data) {
+                    data=eval("("+data+")");
+                    var item1=$('<div class="hover_top_area" style="display: none;"></div>');
+                    var item2='<h4>'+data.msg.gameName+'</h4>';
+                    item2=$(item2);
+                    var item3='<div class="hover_screenshots">';
+                    item3+='<div class="screenshot" style="background-image: url('+data.msg.imageIntro1+')"></div>';
+                    item3+='<div class="screenshot" style="background-image: url('+data.msg.imageIntro2+')"></div>';
+                    item3+='<div class="screenshot" style="background-image: url('+data.msg.imageIntro3+')"></div>';
+                    item3+='<div class="screenshot" style="background-image: url('+data.msg.imageIntro4+')"></div>';
+                    item3+='</div>';
+                    item3=$(item3);
+                    var item4='<div class="hover_body">\n' +
+                        '                            <div class="hover_review_summary">\n' +
+                        '                                <div class="title">总体用户评测：</div>\n' +
+                        '                                <span class="game_review_summary mixed">褒贬不一</span>\n' +
+                        '                                (41 篇评测)\n' +
+                        '                            </div>\n' +
+                        '                            <div style="clear: left;"></div>\n' +
+                        '                        </div>';
+                    item4=$(item4);
+                    var item5='<div class="hover_body">用户标签：<div class="hover_tag_row">';
+                    for (var i=0;i<data.msg.label.length;i++){
+                        item5+='<div class="app_tag">'+data.msg.label[i]+'</div>';
+                    }
+                    item5+='</div></div>';
+                    item5=$(item5);
+                    $('#hover_app').empty();
+                    $('#hover_app').append(item1,item2,item3,item4,item5);
+                },
+                error:function () {
+                    layer.msg("网络错误");
+                }
+            })
+        },
+
+        showClassupComing:function(typeName,that){
+            $.ajax({
+                url:"/classGame/upComing/"+typeName,
+                type:"POST",
+                async:true,
+                success:function (data) {
+                    data=eval("("+data+")");
+                    $('#ComingSoonRows').empty();
+                    for (var i=0;i<data.msg.length;i++){
+                        var parent='<a href="/app/'+data.msg[i].id+'" class="tab_item  " appId="'+data.msg[i].id+'"></a>';
+                        parent=$(parent);
+                        var tab_item_cap='<div class="tab_item_cap"><img class="tab_item_cap_img" style="width: 184px;height: 69px;" src="'+data.msg[i].posterImage+'"></div>';
+                        tab_item_cap=$(tab_item_cap);
+                        var discount='<div class="discount_block tab_item_discount">';
+                        if (data.msg[i].discount>0){
+                            discount+='<div class="discount_pct">-'+data.msg[i].discount+'%</div>';
+                        }
+                        discount+='<div class="discount_prices">';
+                        if (data.msg[i].discount>0){
+                            discount+='<div class="discount_original_price">¥ '+data.msg[i].gamePrice+'</div>'
+                            discount+='<div class="discount_final_price">¥ '+Math.ceil(data.msg[i].gamePrice*(data.msg[i].discount/100))+'</div>';
+                        }else {
+                            discount+='<div class="discount_final_price">¥ '+data.msg[i].gamePrice+'</div>';
+                        }
+                        discount+='</div></div>';
+                        discount=$(discount);
+                        var tab_item_content='<div class="tab_item_content">';
+                        tab_item_content+='<div class="tab_item_name">'+data.msg[i].gameName+'</div>';
+                        tab_item_content+='<div class="tab_item_details"><span class="platform_img win"></span>';
+                        tab_item_content+='<div class="tab_item_top_tags">';
+                        for (var j=0;j<data.msg[i].label.length;j++){
+                            if (j==0){
+                                tab_item_content+='<span class="top_tag">'+data.msg[i].label[j]+'</span>';
+                            } else {
+                                tab_item_content+='<span class="top_tag">, '+data.msg[i].label[j]+'</span>';
+                            }
+                        }
+                        tab_item_content+='</div></div></div>';
+                        tab_item_content=$(tab_item_content);
+                        var lastItem=$('<div style="clear: both;"></div>');
+                        parent.append(tab_item_cap,discount,tab_item_content,lastItem);
+                        $('#ComingSoonRows').append(parent);
+                    }
+                    that.mouseClassListPause(that);
+                },
+                error:function () {
+                    layer.msg("网络错误");
+                }
+            })
+        },
+
+        showClassHotSell:function(typeName,that){
+            $.ajax({
+                url:"/classGame/hotSell/"+typeName,
+                type:"POST",
+                async:true,
+                success:function (data) {
+                    data=eval("("+data+")");
+                    $('#TopSellersRows').empty();
+                    for (var i=0;i<data.msg.length;i++){
+                        var parent='<a href="/app/'+data.msg[i].id+'" class="tab_item  " appId="'+data.msg[i].id+'"></a>';
+                        parent=$(parent);
+                        var tab_item_cap='<div class="tab_item_cap"><img class="tab_item_cap_img" style="width: 184px;height: 69px;" src="'+data.msg[i].posterImage+'"></div>';
+                        tab_item_cap=$(tab_item_cap);
+                        var discount='<div class="discount_block tab_item_discount">';
+                        if (data.msg[i].discount>0){
+                            discount+='<div class="discount_pct">-'+data.msg[i].discount+'%</div>';
+                        }
+                        discount+='<div class="discount_prices">';
+                        if (data.msg[i].discount>0){
+                            discount+='<div class="discount_original_price">¥ '+data.msg[i].gamePrice+'</div>'
+                            discount+='<div class="discount_final_price">¥ '+Math.ceil(data.msg[i].gamePrice*(data.msg[i].discount/100))+'</div>';
+                        }else {
+                            discount+='<div class="discount_final_price">¥ '+data.msg[i].gamePrice+'</div>';
+                        }
+                        discount+='</div></div>';
+                        discount=$(discount);
+                        var tab_item_content='<div class="tab_item_content">';
+                        tab_item_content+='<div class="tab_item_name">'+data.msg[i].gameName+'</div>';
+                        tab_item_content+='<div class="tab_item_details"><span class="platform_img win"></span>';
+                        tab_item_content+='<div class="tab_item_top_tags">';
+                        for (var j=0;j<data.msg[i].label.length;j++){
+                            if (j==0){
+                                tab_item_content+='<span class="top_tag">'+data.msg[i].label[j]+'</span>';
+                            } else {
+                                tab_item_content+='<span class="top_tag">, '+data.msg[i].label[j]+'</span>';
+                            }
+                        }
+                        tab_item_content+='</div></div></div>';
+                        tab_item_content=$(tab_item_content);
+                        var lastItem=$('<div style="clear: both;"></div>');
+                        parent.append(tab_item_cap,discount,tab_item_content,lastItem);
+                        $('#TopSellersRows').append(parent);
+                    }
+                    that.mouseClassListPause(that);
+
+                },
+                error:function () {
+                    layer.msg("网络错误");
+                }
+            })
+        },
+
+        showClassNewRelease:function(typeName){
+            $.ajax({
+                url:"/classGame/newRelease/"+typeName,
+                type:"POST",
+                async:false,
+                success:function (data) {
+                    data=eval("("+data+")");
+                    $('#NewReleasesRows').empty();
+                    for (var i=0;i<data.msg.length;i++){
+                        var parent='<a href="/app/'+data.msg[i].id+'" class="tab_item  " appId="'+data.msg[i].id+'"></a>';
+                        parent=$(parent);
+                        var tab_item_cap='<div class="tab_item_cap"><img class="tab_item_cap_img" style="width: 184px;height: 69px;" src="'+data.msg[i].posterImage+'"></div>';
+                        tab_item_cap=$(tab_item_cap);
+                        var discount='<div class="discount_block tab_item_discount">';
+                        if (data.msg[i].discount>0){
+                            discount+='<div class="discount_pct">-'+data.msg[i].discount+'%</div>';
+                        }
+                        discount+='<div class="discount_prices">';
+                        if (data.msg[i].discount>0){
+                            discount+='<div class="discount_original_price">¥ '+data.msg[i].gamePrice+'</div>'
+                            discount+='<div class="discount_final_price">¥ '+Math.ceil(data.msg[i].gamePrice*(data.msg[i].discount/100))+'</div>';
+                        }else {
+                            discount+='<div class="discount_final_price">¥ '+data.msg[i].gamePrice+'</div>';
+                        }
+                        discount+='</div></div>';
+                        discount=$(discount);
+                        var tab_item_content='<div class="tab_item_content">';
+                        tab_item_content+='<div class="tab_item_name">'+data.msg[i].gameName+'</div>';
+                        tab_item_content+='<div class="tab_item_details"><span class="platform_img win"></span>';
+                        tab_item_content+='<div class="tab_item_top_tags">';
+                        for (var j=0;j<data.msg[i].label.length;j++){
+                            if (j==0){
+                                tab_item_content+='<span class="top_tag">'+data.msg[i].label[j]+'</span>';
+                            } else {
+                                tab_item_content+='<span class="top_tag">, '+data.msg[i].label[j]+'</span>';
+                            }
+                        }
+                        tab_item_content+='</div></div></div>';
+                        tab_item_content=$(tab_item_content);
+                        var lastItem=$('<div style="clear: both;"></div>');
+                        parent.append(tab_item_cap,discount,tab_item_content,lastItem);
+                        $('#NewReleasesRows').append(parent);
+                    }
+
+                },
+                error:function () {
+                    layer.msg("网络错误");
+                }
+            })
         },
 
         showClassCarouselData:function(typeName){
@@ -643,17 +841,20 @@ var steam=
             detailValue--;
         },
 
-        mouseClassListPause:function(){
+        mouseClassListPause:function(that){
             var height=null;
             $('#mouseClassListPause div div div>a[class *="tab_item"]').hover(function () {
+                var appId=$(this)[0].getAttribute('appId');
+                that.showClassLayerData(appId);
                 var newStyle=$('#global_hover')[0].getAttribute('style').replace('display: none;','display: block;');
                 $('#global_hover')[0].setAttribute('style',newStyle);
                 var index=$('#mouseClassListPause div div div>a[class *="tab_item"]').index(this);
-                height=(index%15)*74+664;
+                height=(index%10)*74+664;
                 //top: 664px;
                 height='top: '+height+'px;';
                 newStyle=$('#global_hover')[0].getAttribute('style').replace('top: 664px;',height);
                 $('#global_hover')[0].setAttribute('style',newStyle);
+
             },function () {
                 var newStyle=$('#global_hover')[0].getAttribute('style').replace('display: block;','display: none;');
                 newStyle=newStyle.replace(height,'top: 664px;');

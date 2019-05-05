@@ -84,6 +84,25 @@ public class GameController {
     }
 
     @ResponseBody
+    @RequestMapping("/classGame/newRelease/{typeName}")
+    public String findGamesNewReleaseByType(@PathVariable("typeName")String typeName){
+        return JSON.toJSONString(ResultMsg.SUCCESS(gameService.findGamesNewReleaseByType(typeName)));
+    }
+
+    @ResponseBody
+    @RequestMapping("/classGame/hotSell/{typeName}")
+    public String findGamesHotSellByType(@PathVariable("typeName")String typeName){
+        return JSON.toJSONString(ResultMsg.SUCCESS(gameService.findGamesHotSellByType(typeName)));
+    }
+
+    @ResponseBody
+    @RequestMapping("/classGame/upComing/{typeName}")
+    public String findGamesUpComingByType(@PathVariable("typeName")String typeName){
+        return JSON.toJSONString(ResultMsg.SUCCESS(gameService.findGamesUpComingByType(typeName)));
+    }
+
+
+    @ResponseBody
     @RequestMapping("/kkk")
     public String hhh(){
         map.put("1","2");

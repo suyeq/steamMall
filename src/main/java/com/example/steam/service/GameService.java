@@ -344,24 +344,24 @@ public class GameService implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-//        int sum=((GameService)applicationContext.getBean("gameService")).findGamesSum();
-//        redisService.set(GameKey.GAME_SUM,GameKey.GAME_SUM_KEY,sum);
-//        for (int i=0;i<sum;i++){
-//            GameDetail gameDetail=((GameService)applicationContext.getBean("gameService")).findGameById(i+1);
-//            RankScoreValue rankTime=new RankScoreValue();
-//            RankScoreValue rankSellNum=new RankScoreValue();
-//            rankSellNum.setScore(gameDetail.getSellNum());
-//            rankSellNum.setId(gameDetail.getId());
-//            rankTime.setId(gameDetail.getId());
-//            rankTime.setScore(gameDetail.getIssuedDate().getTime());
-//            redisService.set(GameKey.GAME_ID,gameDetail.getId()+"",gameDetail);
-//            if (gameDetail.getIssuedStatu()!=0){
-//                redisService.zadd(GameKey.RANK_TIME,GameKey.GAME_RANK_TIME,rankTime);
-//                redisService.zadd(GameKey.RANK_SELLNUM,GameKey.GAME_RANK_SELLNUM,rankSellNum);
-//            }
-//            if (gameDetail.getIssuedStatu()!=1){
-//                redisService.zadd(GameKey.RANK_UPCOMING,GameKey.GAME_RANK_UPCOMING,rankTime);
-//            }
-//        }
+        int sum=((GameService)applicationContext.getBean("gameService")).findGamesSum();
+        redisService.set(GameKey.GAME_SUM,GameKey.GAME_SUM_KEY,sum);
+        for (int i=0;i<sum;i++){
+            GameDetail gameDetail=((GameService)applicationContext.getBean("gameService")).findGameById(i+1);
+            RankScoreValue rankTime=new RankScoreValue();
+            RankScoreValue rankSellNum=new RankScoreValue();
+            rankSellNum.setScore(gameDetail.getSellNum());
+            rankSellNum.setId(gameDetail.getId());
+            rankTime.setId(gameDetail.getId());
+            rankTime.setScore(gameDetail.getIssuedDate().getTime());
+            redisService.set(GameKey.GAME_ID,gameDetail.getId()+"",gameDetail);
+            if (gameDetail.getIssuedStatu()!=0){
+                redisService.zadd(GameKey.RANK_TIME,GameKey.GAME_RANK_TIME,rankTime);
+                redisService.zadd(GameKey.RANK_SELLNUM,GameKey.GAME_RANK_SELLNUM,rankSellNum);
+            }
+            if (gameDetail.getIssuedStatu()!=1){
+                redisService.zadd(GameKey.RANK_UPCOMING,GameKey.GAME_RANK_UPCOMING,rankTime);
+            }
+        }
     }
 }

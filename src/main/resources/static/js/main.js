@@ -131,7 +131,47 @@ var steam=
                         thumbnail+=data.msg.imageIntro5+'"></div>';
                         $('#highlight_strip_scroll').empty();
                         $('#highlight_strip_scroll').append(thumbnail);
-
+                        var gameDeveloper='<b>名称:</b> '+data.msg.gameName.substring(0,30)+'...'+'<br>';
+                        gameDeveloper+='<b>类型: </b>';
+                        for (var i=0;i<data.msg.type.length;i++){
+                            if (i==0){
+                                gameDeveloper+='<a href="javascript:volid(0);">'+data.msg.type[i]+'</a>';
+                            } else {
+                                gameDeveloper+='<a href="javascript:volid(0);">, '+data.msg.type[i]+'</a>';
+                            }
+                        }
+                        gameDeveloper+='<br>';
+                        gameDeveloper+='<div class="dev_row">\n' +
+                            '                                            <b>开发商:</b>\n' +
+                            '                                            <a href="javascript:volid(0);">FromSoftware</a>\n' +
+                            '                                        </div>\n' +
+                            '                                        <div class="dev_row">\n' +
+                            '                                            <b>发行商:</b>\n' +
+                            '                                            <a href="javascript:volid(0);">Activision (Excluding Japan and Asia)</a>\n' +
+                            '                                            , <a href="javascript:volid(0);">FromSoftware (Japan)</a>\n' +
+                            '                                            , <a href="javascript:volid(0);">方块游戏 (Asia)</a>\n' +
+                            '                                        </div>';
+                        gameDeveloper+='<b>发行日期:</b> '+(Y+M+D)+'<br>';
+                        $('#gameDeveloper').empty();
+                        $('#gameDeveloper').append(gameDeveloper);
+                        $('#gameBuyName')[0].innerHTML='购买 '+data.msg.gameName;
+                        var price='';
+                        if (data.msg.discount>0){
+                            price+='<div class="discount_pct">-'+(100-data.msg.discount)+'%</div>';
+                            price+='<div class="discount_prices"><div class="discount_original_price">¥ '+data.msg.gamePrice+'</div>';
+                            price+='<div class="discount_final_price">¥ '+Math.ceil(data.msg.gamePrice*(data.msg.discount/100))+'</div></div>';
+                        }else {
+                            price+='<div class="discount_final_price">¥ '+data.msg.gamePrice+'</div>';
+                        }
+                        $('#gamePrice').empty();
+                        $('#gamePrice').append(price);
+                        var gameAbout='';
+                        gameAbout+='<h2>关于这款游戏</h2>';
+                        var finalGameAbout=data.msg.gameAbout.replace('/n/r','<br>');
+                        finalGameAbout=finalGameAbout.replace('     ','<br>');
+                        gameAbout+=data.msg.gameAbout.replace('/n/r','<br>');
+                        $('#game_area_description').empty();
+                        $('#game_area_description').append(gameAbout);
                     }
                 },
                 error:function () {

@@ -26,8 +26,9 @@
     <div class="responsive_page_template_content">
 
 
-        <div class="game_page_background game"
-             style="background-image: url('https://media.st.dl.bscstorage.net/steam/apps/814380/page_bg_generated_v6b.jpg?t=1554918884');">
+        <div class="game_page_background game" id="appBg">
+            <!--<div class="game_page_background game" id="appBg"-->
+                 <!--style="background-image: url('https://media.st.dl.bscstorage.net/steam/apps/814380/page_bg_generated_v6b.jpg?t=1554918884');">-->
 
 
             <div th:replace="fragment_menu::#menu"></div>
@@ -36,17 +37,16 @@
 
                 <meta itemprop="image"
                       content="https://media.st.dl.bscstorage.net/steam/apps/814380/capsule_231x87.jpg?t=1554918884">
-                <div itemprop="offers" itemscope itemtype="http://schema.org/Offer" style="display: none;">
-                    <meta itemprop="priceCurrency" content="CNY">
-                    <meta itemprop="price" content="268">
-                </div>
+                <!--<div itemprop="offers" itemscope itemtype="http://schema.org/Offer" style="display: none;">-->
+                    <!--<meta itemprop="priceCurrency" content="CNY">-->
+                    <!--<meta itemprop="price" content="268">-->
+                <!--</div>-->
 
                 <!--导航条-->
                 <div class="page_title_area game_title_area page_content">
                     <div class="breadcrumbs">
                         <div class="blockbg">
-                            <a href="https://store.steampowered.com/search/?term=&snr=1_5_9__205">所有游戏</a>
-                            &gt; <a href="https://store.steampowered.com/genre/Action/?snr=1_5_9__205">动作‎游戏</a>
+                            <a href="https://store.steampowered.com/genre/Action/?snr=1_5_9__205">动作‎游戏</a>
                             &gt; <a href="https://store.steampowered.com/app/814380/?snr=1_5_9__205"><span
                                 itemprop="name">Sekiro™: Shadows Die Twice</span></a>
 
@@ -58,41 +58,34 @@
                         <div class="apphub_HeaderStandardTop">
                             <div class="apphub_OtherSiteInfo">
                                 <a class="btnv6_blue_hoverfade btn_medium"
-                                   href="https://steamcommunity.com/app/814380">
+                                   href="#">
                                     <span>社区中心</span>
                                 </a>
                             </div>
-                            <div class="apphub_AppIcon"><img
-                                    src="https://media.st.dl.bscstorage.net/steamcommunity/public/images/apps/814380/2704fb9c5465045d00a5b19a0cb1e9bdabbd15cc.jpg">
-                                <div class="overlay"></div>
-                            </div>
-                            <div class="apphub_AppName">Sekiro™: Shadows Die Twice</div>
+                            <!--<div class="apphub_AppIcon" id="appIcon">-->
+                                <!--<img src="https://media.st.dl.bscstorage.net/steamcommunity/public/images/apps/814380/2704fb9c5465045d00a5b19a0cb1e9bdabbd15cc.jpg">-->
+                                <!--<div class="overlay"></div>-->
+                            <!--</div>-->
+                            <div class="apphub_AppName" id="appName">Sekiro™: Shadows Die Twice</div>
                             <div style="clear: both"></div>
                         </div>
 
                     </div>
-
                 </div>
                 <div style="clear: left;"></div>
 
                 <div class="block">
-                    <script type="text/javascript">
-                        var strRequiredVersion = "9";
-                        if (typeof(g_bIsOnMac) != 'undefined' && g_bIsOnMac)
-                            strRequiredVersion = "10.1.0";
-
-                    </script>
                     <!--上部描述-->
                     <div class="game_background_glow">
                         <div class="block_content page_content" id="game_highlights">
                             <!--右侧描述-->
                             <div class="rightcol">
                                 <div class="glance_ctn">
-                                    <div class="game_header_image_ctn">
+                                    <div class="game_header_image_ctn" id="appPosterImage">
                                         <img class="game_header_image_full"
                                              src="https://media.st.dl.bscstorage.net/steam/apps/814380/header.jpg?t=1554918884">
                                     </div>
-                                    <div class="game_description_snippet">
+                                    <div class="game_description_snippet" id="appDescription">
                                         进入由打造了《黑暗之魂》系列的知名开发商FromSoftware倾力制作的全新冒险，用智慧和力量斩开复仇之路。 决死复仇，夺回荣誉，智杀强敌。
                                     </div>
 
@@ -123,7 +116,7 @@
                                             </div>
 
 
-                                            <div class="release_date">
+                                            <div class="release_date" id="appReleaseDate">
                                                 <div class="subtitle column">发行日期:</div>
                                                 <div class="date">2019年3月22日</div>
                                             </div>
@@ -155,7 +148,7 @@
                                         <!-- when the javascript runs, it will set these visible or not depending on what fits in the area -->
                                         <div class="glance_tags_ctn popular_tags_ctn">
                                             <div class="glance_tags_label">该产品的热门用户自定义标签：</div>
-                                            <div class="glance_tags popular_tags" data-appid="814380">
+                                            <div class="glance_tags popular_tags" id="appTags">
                                                 <a href="https://store.steampowered.com/tags/zh-cn/%E5%8A%A8%E4%BD%9C/?snr=1_5_9__409"
                                                    class="app_tag" >
                                                     动作 </a>
@@ -217,7 +210,7 @@
                                                     class="app_tag" style="display: none;">
                                                 角色扮演
                                                 </a>
-                                                <div class="app_tag add_button" onclick="ShowAppTagModal( 814380 )">
+                                                <div class="app_tag add_button" onclick="ShowAppTagModal()">
                                                     +
                                                 </div>
                                             </div>
@@ -302,7 +295,7 @@
                                                      id="thumb_screenshot_ss_53d73aff4d439cbd9b9b69430f9b3b6db8d0ecd7.jpg">
                                                     <img src="https://media.st.dl.bscstorage.net/steam/apps/814380/ss_53d73aff4d439cbd9b9b69430f9b3b6db8d0ecd7.116x65.jpg?t=1554918884">
                                                 </div>
-                                                <div class="highlight_strip_item highlight_strip_screenshot focus"
+                                                <div class="highlight_strip_item highlight_strip_screenshot"
                                                      id="thumb_screenshot_ss_285c1a69bda8182e5c52598d59259f1681b42e5c.jpg">
                                                     <img src="https://media.st.dl.bscstorage.net/steam/apps/814380/ss_285c1a69bda8182e5c52598d59259f1681b42e5c.116x65.jpg?t=1554918884">
                                                 </div>
@@ -382,73 +375,6 @@
                         </div>
 
                         <div style="clear:left;"></div>
-                        <script type="text/javascript">
-                            function OnReviewDselectChange( elem, name )
-                            {
-
-                            }
-
-                        </script>
-                        <script type="text/javascript">
-
-                            function SetOwnerRatingPositive()
-                            {
-                                $J( "#VoteUpBtn" ).addClass( "btn_active" );
-                                $J( "#VoteDownBtn" ).removeClass( "btn_active" );
-                                return false;
-                            }
-
-                            function SetOwnerRatingNegative()
-                            {
-                                $J( "#VoteUpBtn" ).removeClass( "btn_active" );
-                                $J( "#VoteDownBtn" ).addClass( "btn_active" );
-                                return false;
-                            }
-
-                            function SubmitRecommendation( elem )
-                            {
-                                var $Elem = $JFromIDOrElement(elem);
-                                var $VoteUp = $J('#VoteUpBtn');
-                                var $VoteDown = $J( '#VoteDownBtn' );
-
-                                var reviewText = $Elem.val().trim();
-                                if ( reviewText != '' && reviewText != '点击这里写评测' )
-                                {
-                                    if ( !$VoteUp.hasClass('btn_active') && !$VoteDown.hasClass( 'btn_active' ) )
-                                    {
-                                        // haven't voted yet
-                                        var $VoteButtons = $J().add($VoteUp).add($VoteDown);
-                                        var $Dialog = $J('<div/>');
-                                        $Dialog.append( $J('<p/>').text( "\u60a8\u60f3\u63a8\u8350 PLAYERUNKNOWN'S BATTLEGROUNDS \u7ed9\u5176\u4ed6\u4eba\u5417\uff1f" ), '<br>' );
-                                        $Dialog.append( $J('<div/>', {'class': 'review_create_vote_controls' }).append( $VoteUp, ' ', $VoteDown ) );
-                                        var Modal = ShowAlertDialog( "\u4e3a PLAYERUNKNOWN'S BATTLEGROUNDS \u64b0\u5199\u4e00\u7bc7\u8bc4\u6d4b", $Dialog, '取消' );
-                                        Modal.always( function() {
-                                            $J('#VoteUpDownBtnCtn').append( $VoteUp, ' ', $VoteDown );
-                                            $VoteButtons.off( 'click.submitrec' );
-                                        } );
-
-                                        $VoteButtons.on( 'click.submitrec', function() {
-                                            DoRecommend( $Elem.val() );
-                                            Modal.Dismiss();
-                                        });
-                                    }
-                                    else
-                                    {
-                                        DoRecommend( $Elem.val() );
-                                    }
-                                }
-                                else
-                                {
-                                    ShowAlertDialog( "\u4e3a PLAYERUNKNOWN'S BATTLEGROUNDS \u64b0\u5199\u4e00\u7bc7\u8bc4\u6d4b", $J( "#review_describe" ).clone() );
-                                }
-                                return false;
-                            }
-
-                            function DoRecommend( strText )
-                            {
-                                RecommendGame( 578080, 578080, strText, $J( "#VoteUpBtn" ).hasClass( "btn_active" ), $J( "#ReviewVisibility" ).val() == 0, $J( "#ReviewLanguage" ).val(), $J( "#ReviewReceivedCompensation" ).is(":checked") ? 1 : 0, 'recommendation_submit', function() { $J('#review_create').hide(); $J('#recommendation_success').show(); }, 'recommendation_error', '1_5_9__401', $J( "#EnableReviewComments" ).is(":checked") ? 0 : 1 );
-                            }
-                        </script>
 
                         <div id="review_container">
                             <div id="review_create">
@@ -775,8 +701,8 @@
                                     <div class="details_block">
                                         <b>名称:</b> Sekiro™: Shadows Die Twice<br>
 
-                                        <b>类型:</b> <a
-                                            href="https://store.steampowered.com/genre/Action/?snr=1_5_9__408">动作</a>,
+                                        <b>类型:</b>
+                                        <a href="https://store.steampowered.com/genre/Action/?snr=1_5_9__408">动作</a>,
                                         <a href="https://store.steampowered.com/genre/Adventure/?snr=1_5_9__408">冒险</a><br>
 
                                         <div class="dev_row">
@@ -869,13 +795,14 @@
                                         <input type="hidden" name="sessionid" value="2fdef98103a95f6e3fb64702">
                                         <input type="hidden" name="subid" value="350085">
                                     </form>
-                                    <div class="game_area_purchase_platform"><span class="platform_img win"></span>
+                                    <div class="game_area_purchase_platform">
+                                        <span class="platform_img win"></span>
                                     </div>
                                     <h1>购买 Sekiro: Shadows Die Twice</h1>
 
                                     <div class="game_purchase_action">
                                         <div class="game_purchase_action_bg">
-                                            <div class="game_purchase_price price" data-price-final="26800">
+                                            <div class="game_purchase_price price" >
                                                 ¥ 268
                                             </div>
                                             <div class="btn_addtocart">

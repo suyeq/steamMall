@@ -72,7 +72,7 @@ public class GameController {
     }
 
     @ResponseBody
-    @RequestMapping("/gameDetail/{id}")
+    @RequestMapping("/app/{id}")
     public String OnegameDetail(@PathVariable("id")long id){
         return JSON.toJSONString(ResultMsg.SUCCESS(gameService.findGameById(id)));
     }
@@ -102,13 +102,7 @@ public class GameController {
     }
 
 
-    @ResponseBody
-    @RequestMapping("/kkk")
-    public String hhh(){
-        map.put("1","2");
-        map.get("1");
-        return "ok";
-    }
+
 
 
 }

@@ -32,6 +32,7 @@ var steam=
             this.showClassNewRelease('动作');
             this.showClassHotSell('动作',that);
             this.showClassupComing('动作',that);
+            this.showGameDetail();
             this.featuredLeft.click(function () {
                 that.featuredLeftCarouselLeft();
             });
@@ -68,9 +69,80 @@ var steam=
             this.mouseDetailPause(that);
         },
 
+        showGameDetail:function(){
+            $.ajax({
+                url:"/app/"+1,
+                type:"POST",
+                async:false,
+                success:function (data) {
+                    data=eval("("+data+")");
+                    if (data.code==200){
+                        $('#appName')[0].innerHTML=data.msg.gameName;
+                        //$('#appBg')[0].setAttribute('style','background-image: url("'+data.msg.imageIntro2+'");');
+                        $('#appPosterImage >img')[0].setAttribute('src',data.msg.posterImage);
+                        $('#appDescription')[0].innerHTML=data.msg.gameIntroduction;
+                        var date = new Date(data.msg.issuedDate);
+                        Y = date.getFullYear() + '年';
+                        M = date.getMonth()+1 + '月';
+                        D = date.getDate() + '日';
+                        $('#appReleaseDate>div.date')[0].innerHTML=Y+M+D;
+                        $('#appTags').empty();
+                        var tags='';
+                        var length=data.msg.label.length>6?6:data.msg.label.length;
+                        for (var i=0;i<length;i++){
+                            tags+='<a href="#" class="app_tag" > '+data.msg.label[i]+' </a>&nbsp;';
+                        }
+                        tags+='<div class="app_tag add_button" onclick="ShowAppTagModal()">+</div>';
+                        tags=$(tags);
+                        $('#appTags').append(tags);
+                        var imageIntro='<div class="highlight_player_area_spacer"><img src="https://store.st.dl.bscstorage.net/public/images/game/game_highlight_image_spacer.gif"></div>';
+                        imageIntro+='<div class="highlight_player_item highlight_screenshot" style="display: block;">\n' +
+                            '                                                <div class="screenshot_holder">\n' +
+                            '                                                    <a class="highlight_screenshot_link"><img src="';
+                        imageIntro+=data.msg.imageIntro1+'"></a></div></div>';
+                        imageIntro+='<div class="highlight_player_item highlight_screenshot" style="display: none;">\n' +
+                            '                                                <div class="screenshot_holder">\n' +
+                            '                                                    <a class="highlight_screenshot_link"><img src="';
+                        imageIntro+=data.msg.imageIntro2+'"></a></div></div>';
+                        imageIntro+='<div class="highlight_player_item highlight_screenshot" style="display: none;">\n' +
+                            '                                                <div class="screenshot_holder">\n' +
+                            '                                                    <a class="highlight_screenshot_link"><img src="';
+                        imageIntro+=data.msg.imageIntro3+'"></a></div></div>';
+                        imageIntro+='<div class="highlight_player_item highlight_screenshot" style="display: none;">\n' +
+                            '                                                <div class="screenshot_holder">\n' +
+                            '                                                    <a class="highlight_screenshot_link"><img src="';
+                        imageIntro+=data.msg.imageIntro4+'"></a></div></div>';
+                        imageIntro+='<div class="highlight_player_item highlight_screenshot" style="display: none;">\n' +
+                            '                                                <div class="screenshot_holder">\n' +
+                            '                                                    <a class="highlight_screenshot_link"><img src="';
+                        imageIntro+=data.msg.imageIntro5+'"></a></div></div>';
+                        $('#highlight_player_area').empty();
+                        $('#highlight_player_area').append(imageIntro);
+                        var thumbnail='<div class="highlight_selector"></div>';
+                        thumbnail+='<div class="highlight_strip_item highlight_strip_screenshot"><img style="width: 115px;height: 65px;" src="';
+                        thumbnail+=data.msg.imageIntro1+'"></div>';
+                        thumbnail+='<div class="highlight_strip_item highlight_strip_screenshot"><img style="width: 115px;height: 65px;" src="';
+                        thumbnail+=data.msg.imageIntro2+'"></div>';
+                        thumbnail+='<div class="highlight_strip_item highlight_strip_screenshot"><img style="width: 115px;height: 65px;" src="';
+                        thumbnail+=data.msg.imageIntro3+'"></div>';
+                        thumbnail+='<div class="highlight_strip_item highlight_strip_screenshot"><img style="width: 115px;height: 65px;" src="';
+                        thumbnail+=data.msg.imageIntro4+'"></div>';
+                        thumbnail+='<div class="highlight_strip_item highlight_strip_screenshot"><img style="width: 115px;height: 65px;" src="';
+                        thumbnail+=data.msg.imageIntro5+'"></div>';
+                        $('#highlight_strip_scroll').empty();
+                        $('#highlight_strip_scroll').append(thumbnail);
+
+                    }
+                },
+                error:function () {
+
+                }
+            })
+        },
+
         showClassLayerData:function(id){
             $.ajax({
-                url:"/gameDetail/"+id,
+                url:"/app/"+id,
                 type:"POST",
                 async:false,
                 success:function (data) {
@@ -328,7 +400,7 @@ var steam=
 
         showGameDetailLayer:function(id){
             $.ajax({
-                url:"/gameDetail/"+id,
+                url:"/app/"+id,
                 type:"POST",
                 async:false,
                 success:function (data) {

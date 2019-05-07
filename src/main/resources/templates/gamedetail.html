@@ -753,8 +753,8 @@
                         </div>
                         <!--分享举报-->
                         <div class="block responsive_apppage_details_left">
-                            <a class="btnv6_blue_hoverfade btn_medium" href="#"
-                               onclick="ShowShareDialog(); return false;"><span>分享</span></a>
+                            <a class="btnv6_blue_hoverfade btn_medium" href="javascript:void(0);"
+                               onclick="showShareModel();"><span>分享</span></a>
                             <a class="btnv6_blue_hoverfade btn_medium" href="#"
                                onclick="ShowEmbedWidget(814380); return false;"><span>嵌入</span></a>
                             <a id="ReportAppBtn" class="btnv6_blue_hoverfade btn_medium" href="javascript:void(0)"
@@ -836,10 +836,10 @@
                             <h2>系统需求</h2>
                             <div class="sysreq_contents">
                                 <div class="game_area_sys_req sysreq_content active" data-os="win">
-                                    <div class="game_area_sys_req_leftCol">
+                                    <div class="game_area_sys_req_leftCol" >
                                         <ul>
                                             <strong>最低配置:</strong><br>
-                                            <ul class="bb_ul">
+                                            <ul class="bb_ul" id="systemNeedLeft">
                                                 <li><strong>操作系统:</strong> Windows 7 64-bit | Windows 8 64-bit |
                                                     Windows 10 64-bit<br></li>
                                                 <li><strong>处理器:</strong> Intel Core i3-2100 | AMD FX-6300<br></li>
@@ -853,10 +853,10 @@
                                             </ul>
                                         </ul>
                                     </div>
-                                    <div class="game_area_sys_req_rightCol">
+                                    <div class="game_area_sys_req_rightCol" >
                                         <ul>
                                             <strong>推荐配置:</strong><br>
-                                            <ul class="bb_ul">
+                                            <ul class="bb_ul" id="systemNeedRight">
                                                 <li><strong>操作系统:</strong> Windows 7 64-bit | Windows 8 64-bit |
                                                     Windows 10 64-bit<br></li>
                                                 <li><strong>处理器:</strong> Intel Core i5-2500K | AMD Ryzen 5 1400<br>
@@ -964,14 +964,14 @@
 
 </div>
 
-<div class="newmodal_background" style="opacity: 0.8; display: none;"></div>
-<div class="newmodal" style="position: fixed; z-index: 1000; max-width: 1269px; left: 424px; top: 67px;display: none;">
+<div class="newmodal_background" style="opacity: 0.8; display: none;" id="model_bg"></div>
+<div class="newmodal" style="position: fixed; z-index: 1000; max-width: 1269px; left: 424px; top: 67px;display: none;" id="model">
     <div class="modal_top_bar"></div>
     <div class="newmodal_header_border">
         <div class="newmodal_header">
             <!--关闭图标-->
-            <div class="newmodal_close"></div>
-            <div class="title_text">分享</div>
+            <div class="newmodal_close" onclick="closeModel()"></div>
+            <div class="title_text" id="model_name">分享</div>
         </div>
     </div>
     <div class="newmodal_content_border">
@@ -1019,12 +1019,22 @@
                         <div style="clear: both;"></div>
                     </div>
                 </div>
-                <div id="app_tagging_modal" class="app_tag_modal " style="display:block;">
+                <div id="app_tagging_modal" class="app_tag_modal " style="display:none;">
                     <div class="app_tag_modal_content">
                         <div class="app_tag_modal_seperator"></div>
                         <div class="app_tag_modal_left">
                             <h2>该产品的热门用户自定义标签：<span class="app_tag_modal_tooltip" data-tooltip-text="这些是由大多数用户应用在产品上的标签。点击一个标签，您可以查找到应用该标签的其他产品。您也可以在任意已经存在的标签上点击加号，以此来提升该标签在这项产品上的热门度。">(?)</span></h2>
-                            <div class="app_tags popular_tags"><div class="app_tag_control popular" data-tagid="19"><div data-tooltip-text="" class="app_tag_checkbox"></div><div class="app_tag_report"></div><a class="app_tag" href="https://store.steampowered.com/tag/zh-cn/%E5%8A%A8%E4%BD%9C/?snr=1_5_9__410">动作</a></div><div class="app_tag_control popular" data-tagid="29482"><div data-tooltip-text="" class="app_tag_checkbox"></div><div class="app_tag_report"></div><a class="app_tag" href="https://store.steampowered.com/tag/zh-cn/%E7%B1%BB%E9%AD%82%E7%B3%BB%E5%88%97/?snr=1_5_9__410">类魂系列</a></div><div class="app_tag_control popular" data-tagid="4026"><div data-tooltip-text="" class="app_tag_checkbox"></div><div class="app_tag_report"></div><a class="app_tag" href="https://store.steampowered.com/tag/zh-cn/%E5%9B%B0%E9%9A%BE/?snr=1_5_9__410">困难</a></div><div class="app_tag_control popular" data-tagid="4182"><div data-tooltip-text="" class="app_tag_checkbox"></div><div class="app_tag_report"></div><a class="app_tag" href="https://store.steampowered.com/tag/zh-cn/%E5%8D%95%E4%BA%BA/?snr=1_5_9__410">单人</a></div><div class="app_tag_control popular" data-tagid="1688"><div data-tooltip-text="" class="app_tag_checkbox"></div><div class="app_tag_report"></div><a class="app_tag" href="https://store.steampowered.com/tag/zh-cn/%E5%BF%8D%E8%80%85/?snr=1_5_9__410">忍者</a></div><div class="app_tag_control popular" data-tagid="1687"><div data-tooltip-text="" class="app_tag_checkbox"></div><div class="app_tag_report"></div><a class="app_tag" href="https://store.steampowered.com/tag/zh-cn/%E6%BD%9C%E8%A1%8C/?snr=1_5_9__410">潜行</a></div><div class="app_tag_control popular" data-tagid="21"><div data-tooltip-text="" class="app_tag_checkbox"></div><div class="app_tag_report"></div><a class="app_tag" href="https://store.steampowered.com/tag/zh-cn/%E5%86%92%E9%99%A9/?snr=1_5_9__410">冒险</a></div><div class="app_tag_control popular" data-tagid="4667"><div data-tooltip-text="" class="app_tag_checkbox"></div><div class="app_tag_report"></div><a class="app_tag" href="https://store.steampowered.com/tag/zh-cn/%E6%9A%B4%E5%8A%9B/?snr=1_5_9__410">暴力</a></div><div class="app_tag_control popular" data-tagid="1697"><div data-tooltip-text="" class="app_tag_checkbox"></div><div class="app_tag_report"></div><a class="app_tag" href="https://store.steampowered.com/tag/zh-cn/%E7%AC%AC%E4%B8%89%E4%BA%BA%E7%A7%B0%E8%A7%86%E8%A7%92/?snr=1_5_9__410">第三人称视角</a></div><div class="app_tag_control popular" data-tagid="4166"><div data-tooltip-text="" class="app_tag_checkbox"></div><div class="app_tag_report"></div><a class="app_tag" href="https://store.steampowered.com/tag/zh-cn/%E6%B0%9B%E5%9B%B4/?snr=1_5_9__410">氛围</a></div><div class="app_tag_control popular" data-tagid="4604"><div data-tooltip-text="" class="app_tag_checkbox"></div><div class="app_tag_report"></div><a class="app_tag" href="https://store.steampowered.com/tag/zh-cn/%E9%BB%91%E6%9A%97%E5%A5%87%E5%B9%BB/?snr=1_5_9__410">黑暗奇幻</a></div><div class="app_tag_control popular" data-tagid="4136"><div data-tooltip-text="" class="app_tag_checkbox"></div><div class="app_tag_report"></div><a class="app_tag" href="https://store.steampowered.com/tag/zh-cn/%E6%AC%A2%E4%B9%90/?snr=1_5_9__410">欢乐</a></div><div class="app_tag_control popular" data-tagid="4376"><div data-tooltip-text="" class="app_tag_checkbox"></div><div class="app_tag_report"></div><a class="app_tag" href="https://store.steampowered.com/tag/zh-cn/%E6%9A%97%E6%9D%80/?snr=1_5_9__410">暗杀</a></div><div class="app_tag_control popular" data-tagid="1695"><div data-tooltip-text="" class="app_tag_checkbox"></div><div class="app_tag_report"></div><a class="app_tag" href="https://store.steampowered.com/tag/zh-cn/%E5%BC%80%E6%94%BE%E4%B8%96%E7%95%8C/?snr=1_5_9__410">开放世界</a></div><div class="app_tag_control popular" data-tagid="1742"><div data-tooltip-text="" class="app_tag_checkbox"></div><div class="app_tag_report"></div><a class="app_tag" href="https://store.steampowered.com/tag/zh-cn/%E5%89%A7%E6%83%85%E4%B8%B0%E5%AF%8C/?snr=1_5_9__410">剧情丰富</a></div><div class="app_tag_control popular" data-tagid="1756"><div data-tooltip-text="" class="app_tag_checkbox"></div><div class="app_tag_report"></div><a class="app_tag" href="https://store.steampowered.com/tag/zh-cn/%E5%A5%BD%E8%AF%84%E5%8E%9F%E5%A3%B0%E9%9F%B3%E8%BD%A8/?snr=1_5_9__410">好评原声音轨</a></div><div class="app_tag_control popular" data-tagid="4345"><div data-tooltip-text="" class="app_tag_checkbox"></div><div class="app_tag_report"></div><a class="app_tag" href="https://store.steampowered.com/tag/zh-cn/%E8%A1%80%E8%85%A5/?snr=1_5_9__410">血腥</a></div><div class="app_tag_control popular" data-tagid="4342"><div data-tooltip-text="" class="app_tag_checkbox"></div><div class="app_tag_report"></div><a class="app_tag" href="https://store.steampowered.com/tag/zh-cn/%E9%BB%91%E6%9A%97/?snr=1_5_9__410">黑暗</a></div><div class="app_tag_control popular" data-tagid="1646"><div data-tooltip-text="" class="app_tag_checkbox"></div><div class="app_tag_report"></div><a class="app_tag" href="https://store.steampowered.com/tag/zh-cn/%E7%A0%8D%E6%9D%80/?snr=1_5_9__410">砍杀</a></div><div class="app_tag_control popular" data-tagid="122"><div data-tooltip-text="" class="app_tag_checkbox"></div><div class="app_tag_report"></div><a class="app_tag" href="https://store.steampowered.com/tag/zh-cn/%E8%A7%92%E8%89%B2%E6%89%AE%E6%BC%94/?snr=1_5_9__410">角色扮演</a></div></div>
+                            <div class="app_tags popular_tags">
+                                <div class="app_tag_control popular" data-tagid="19">
+                                    <div data-tooltip-text="" class="app_tag_checkbox"></div>
+                                    <div class="app_tag_report"></div>
+                                    <a class="app_tag" href="https://store.steampowered.com/tag/zh-cn/%E5%8A%A8%E4%BD%9C/?snr=1_5_9__410">动作</a>
+                                </div>
+                                <div class="app_tag_control popular" data-tagid="29482">
+                                    <div data-tooltip-text="" class="app_tag_checkbox"></div>
+                                    <div class="app_tag_report"></div>
+                                    <a class="app_tag" href="https://store.steampowered.com/tag/zh-cn/%E7%B1%BB%E9%AD%82%E7%B3%BB%E5%88%97/?snr=1_5_9__410">类魂系列</a>
+                                </div>
                         </div>
                         <div class="app_tag_modal_right">
                             <h2>您应用于该产品上的标签：<span class="app_tag_modal_tooltip" data-tooltip-text="这些是您应用于该产品上的标签。">(?)</span></h2>
@@ -1048,7 +1058,7 @@
                     </div>
                 </div>
             </div>
-            <div class="newmodal_buttons">
+            <div class="newmodal_buttons" onclick="closeModel()">
                 <div class="btn_grey_white_innerfade btn_medium">
                     <span>确定</span>
                 </div>
@@ -1056,7 +1066,11 @@
         </div>
     </div>
 </div>
+</div>
 <!--脚部-->
 <div th:replace="fragment_foot::#foot"></div>
+<script type="text/javascript">
+    steam.initDetail();
+</script>
 </body>
 </html>

@@ -106,9 +106,11 @@ public class UserService {
 
     private void cookieIsNullAndCreate(HttpServletRequest request, HttpServletResponse response, User user){
         Cookie cookie=findCookie(request);
-        String cookieId=cookie.getValue();
-        if (cookie == null || StringUtils.isEmpty(cookieId)){
+        String cookieId;
+        if (cookie == null || StringUtils.isEmpty(cookie.getValue())){
             cookieId=UUIDUntil.randomUUID();
+        }else {
+            cookieId=cookie.getValue();
         }
         addCookie(response,cookieId,user);
     }

@@ -32,7 +32,7 @@ var steam=
             this.showClassNewRelease('动作');
             this.showClassHotSell('动作',that);
             this.showClassupComing('动作',that);
-            this.showGameDetail();
+
             this.featuredLeft.click(function () {
                 that.featuredLeftCarouselLeft();
             });
@@ -51,12 +51,6 @@ var steam=
             this.classRight.click(function () {
                 that.classRightCarousel();
             });
-            this.detailLeft.click(function () {
-                that.detailCarouselLeft();
-            });
-            this.detailRight.click(function () {
-                that.detailCarouselRight();
-            });
             this.featuredLeftCarouselStart(that);
             //console.log(this.timer);
             this.mouseFeturedCarouselPause(that);
@@ -65,11 +59,49 @@ var steam=
             this.classCarouselStart(that);
             this.mouseClassCarouselPause(that);
             this.mouseClassListPause(that);
+        },
+
+        initDetail:function(){
+            var that=this;
+            this.showGameDetail(that);
+            this.detailLeft.click(function () {
+                that.detailCarouselLeft();
+            });
+            this.detailRight.click(function () {
+                that.detailCarouselRight();
+            });
             this.detailCarouselStart(that);
             this.mouseDetailPause(that);
         },
 
-        showGameDetail:function(){
+        showGameSystemNeed:function(id,type){
+            $.ajax({
+                url:"/systemneed/"+id,
+                type:"POST",
+                async:false,
+                success:function (data) {
+                    data=eval("("+data+")");
+                    console.log(data)
+                    var systemId='#systemNeed'+type;
+                    $(systemId).empty();
+                    var systemNeed='';
+                    systemNeed+='<li><strong>操作系统:</strong> '+data.msg.operatingSystem+'<br></li>';
+                    systemNeed+='<li><strong>处理器:</strong> '+data.msg.cpu+'<br></li>';
+                    systemNeed+='<li><strong>内存:</strong> '+data.msg.ram+'<br></li>';
+                    systemNeed+='<li><strong>图形:</strong> '+data.msg.graphicsCard+'<br></li>';
+                    systemNeed+='<li><strong>DirectX 版本:</strong> '+data.msg.directx+'<br></li>';
+                    systemNeed+='<li><strong>网络:</strong> '+data.msg.network+'<br></li>';
+                    systemNeed+='<li><strong>存储空间:</strong> '+data.msg.rom+'<br></li>';
+                    systemNeed+='<li><strong>声卡:</strong> '+data.msg.soundCard+'<br></li>';
+                    $(systemId).append(systemNeed);
+                },
+                error:function () {
+
+                }
+            })
+        },
+
+        showGameDetail:function(that){
             $.ajax({
                 url:"/app/"+1,
                 type:"POST",
@@ -92,7 +124,7 @@ var steam=
                         for (var i=0;i<length;i++){
                             tags+='<a href="#" class="app_tag" > '+data.msg.label[i]+' </a>&nbsp;';
                         }
-                        tags+='<div class="app_tag add_button" onclick="ShowAppTagModal()">+</div>';
+                        tags+='<div class="app_tag add_button" onclick="showTagModel()">+</div>';
                         tags=$(tags);
                         $('#appTags').append(tags);
                         var imageIntro='<div class="highlight_player_area_spacer"><img src="https://store.st.dl.bscstorage.net/public/images/game/game_highlight_image_spacer.gif"></div>';
@@ -169,13 +201,15 @@ var steam=
                         gameAbout+='<h2>关于这款游戏</h2>';
                         var finalGameAbout=data.msg.gameAbout.replace('/n/r','<br>');
                         finalGameAbout=finalGameAbout.replace('     ','<br>');
-                        gameAbout+=data.msg.gameAbout.replace('/n/r','<br>');
+                        gameAbout+=finalGameAbout;
                         $('#game_area_description').empty();
                         $('#game_area_description').append(gameAbout);
+                        that.showGameSystemNeed(data.msg.lowestSystem,'Left');
+                        that.showGameSystemNeed(data.msg.recommendSystem,'Right');
                     }
                 },
                 error:function () {
-
+                    layer.msg("获取游戏详情失败，请检查网络连接")
                 }
             })
         },
@@ -1203,7 +1237,7 @@ var steam=
 
     }
 
-    steam.init();
+    //steam.init();
     //steam.featuredLeftCarouselStart();
 
     //主页切换选项
@@ -1275,6 +1309,27 @@ var steam=
     function showMorePublisher() {
         $('#publisherValue .summary.column')[0].setAttribute('style','overflow: visible; white-space: normal;');
         $('#publisherValue .more_btn')[0].setAttribute('style','display:none;');
+    }
+
+    function showTagModel() {
+        //app_tagging_modal
+        $('#model_bg')[0].setAttribute('style','opacity: 0.8; display: block;');
+        $('#model')[0].setAttribute('style','position: fixed; z-index: 1000; max-width: 1269px; left: 424px; top: 67px;display: block;');
+        $('#app_tagging_modal')[0].setAttribute('style','display: block;');
+    }
+
+    function showShareModel() {
+        $('#model_bg')[0].setAttribute('style','opacity: 0.8; display: block;');
+        $('#model')[0].setAttribute('style','position: fixed; z-index: 1000; max-width: 1269px; left: 424px; top: 67px;display: block;');
+        $('#ShareModal')[0].setAttribute('style','display: block;');
+    }
+
+    function closeModel() {
+        $('#model_bg')[0].setAttribute('style','opacity: 0.8; display: none;');
+        $('#model')[0].setAttribute('style','position: fixed; z-index: 1000; max-width: 1269px; left: 424px; top: 67px;display: none;');
+        $('#ShareModal')[0].setAttribute('style','display: none;');
+        $('#app_tagging_modal')[0].setAttribute('style','display: none;');
+        $('#app_tagging_modal')[0].setAttribute('style','display: none;');
     }
 
     //登录操作

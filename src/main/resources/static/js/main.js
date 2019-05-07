@@ -72,6 +72,18 @@ var steam=
             });
             this.detailCarouselStart(that);
             this.mouseDetailPause(that);
+            this.scrollLoadComment();
+        },
+
+        scrollLoadComment:function(){
+            $(window).scroll(function (){
+                if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+                    $('#Reviews_loading')[0].setAttribute('style','display: block');
+                    $.ajax({
+                        url:"/",
+                    })
+                }
+            });
         },
 
         showGameSystemNeed:function(id,type){

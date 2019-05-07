@@ -52,8 +52,13 @@ public class UserService {
     ApplicationContext applicationContext;
 
     public User findByEmail(String email){
-        //User user=redisService.get(UserKey.USER_OBJECT,)
-        return userDao.findByEmail(email);
+        User user=redisService.get(UserKey.USER_ID,email,User.class);
+        if (user!=null){
+            return user;
+        }
+        user=userDao.findUserByEmail(email);
+        redisService.set(UserKey.USER_ID,email,user);
+        return user;
     }
 
     /**

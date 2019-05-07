@@ -1,14 +1,12 @@
 package com.example.steam.service;
 
 import com.example.steam.dao.GameDao;
-import com.example.steam.entity.Game;
-import com.example.steam.entity.GameImage;
-import com.example.steam.entity.Image;
-import com.example.steam.entity.Label;
+import com.example.steam.entity.*;
 import com.example.steam.localstore.LocalStoreKey;
 import com.example.steam.localstore.LocalStoreService;
 import com.example.steam.redis.RedisPrefixKey;
 import com.example.steam.redis.RedisService;
+import com.example.steam.redis.key.CommentKey;
 import com.example.steam.redis.key.GameKey;
 import com.example.steam.utils.GamePriorityQueue;
 import com.example.steam.utils.RankScoreValue;
@@ -57,6 +55,9 @@ public class GameService implements InitializingBean {
     LocalStoreService localStoreService;
     @Autowired
     ApplicationContext applicationContext;
+
+    @Autowired
+    CommentService commentService;
 
     /**
      * 随机10个游戏置于分类推荐

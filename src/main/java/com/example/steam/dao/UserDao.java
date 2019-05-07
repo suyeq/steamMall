@@ -16,6 +16,9 @@ import org.springframework.stereotype.Repository;
 public interface UserDao {
 
     @Select("select * from user where email=#{email}")
-    User findByEmail(@Param("email") String email);
+    User findUserByEmail(@Param("email") String email);
+
+//    @Select("select * from user where id=#{id}")
+//    User findUserById();
 
 }

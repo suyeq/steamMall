@@ -41,7 +41,6 @@ public class LocalStoreKey {
 
     private static volatile LocalStoreKey UP_COMING_CLASS_KEY;
 
-
     private LocalStoreKey(String keyName,long startTime,long expiredTime){
         this.keyName=keyName;
         this.startTime=startTime;

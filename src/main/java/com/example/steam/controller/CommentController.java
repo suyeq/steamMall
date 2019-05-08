@@ -2,7 +2,11 @@ package com.example.steam.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.example.steam.service.CommentService;
+import com.example.steam.utils.ResultMsg;
 import org.apache.ibatis.annotations.Param;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,13 +23,29 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class CommentController{
 
+    Logger log=LoggerFactory.getLogger(CommentController.class);
+
     @Autowired
     CommentService commentService;
 
     @ResponseBody
     @RequestMapping("/comment/{id}")
     public String findOneCommentById(@PathVariable("id")long id){
-        return JSON.toJSONString(commentService.findOneCommentById(id));
+        return JSON.toJSONString(ResultMsg.SUCCESS(commentService.findOneCommentById(id)));
+    }
+
+    @ResponseBody
+    @RequestMapping("/commentDetail/{gameId}/time/{index}")
+    public String findComentDetailByIndexTime(@PathVariable("gameId")long gameId,
+                                          @PathVariable("index")long index){
+        return JSON.toJSONString(ResultMsg.SUCCESS(commentService.findRangeCommentDetailByTime(index,gameId)));
+    }
+
+    @ResponseBody
+    @RequestMapping("/commentDetail/{gameId}/zan/{index}")
+    public String findComentDetailByIndexZan(@PathVariable("gameId")long gameId,
+                                          @PathVariable("index")long index){
+        return JSON.toJSONString(ResultMsg.SUCCESS(commentService.findRangeCommentDetailByZanNum(index,gameId)));
     }
 
 

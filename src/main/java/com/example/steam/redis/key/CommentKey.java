@@ -15,6 +15,8 @@ public class CommentKey extends BaseKey {
 
     public final static String COMMENT_RANK_TIME_KEY="rankTime";
 
+    public final static String COMMENT_SUM_KEY="commentSum";
+
     public CommentKey(int expiredTime) {
         super(expiredTime);
     }
@@ -29,4 +31,6 @@ public class CommentKey extends BaseKey {
     public static CommentKey COMMENT_RANK_ZANNUM=new CommentKey(0);
 
     public static CommentKey COMMENT_RANK_TIME=new CommentKey(0);
+
+    public static CommentKey COMMENT_SUM=new CommentKey(0);
 }

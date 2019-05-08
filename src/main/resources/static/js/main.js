@@ -79,8 +79,23 @@ var steam=
             $(window).scroll(function (){
                 if ($(window).scrollTop() == $(document).height() - $(window).height()) {
                     $('#Reviews_loading')[0].setAttribute('style','display: block');
+                    var page=$('#ViewAllReviewssummary')[0].getAttribute('page');
+                    var gameId=$('#ViewAllReviewssummary')[0].getAttribute('gameId');
+                    console.log(page+" "+gameId)
                     $.ajax({
-                        url:"/",
+                        url:"/commentDetail/"+gameId+"/time/"+page,
+                        type:"POST",
+                        async:false,
+                        success:function (data) {
+                            data=eval("("+data+")")
+                            console.log(data)
+                            $('#Reviews_loading')[0].setAttribute('style','display: none');
+                            page=parseInt(page)+1;
+                            $('#ViewAllReviewssummary')[0].setAttribute('page',page);
+                        },
+                        error:function () {
+
+                        }
                     })
                 }
             });

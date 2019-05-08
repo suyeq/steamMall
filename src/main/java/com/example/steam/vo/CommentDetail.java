@@ -13,7 +13,9 @@ public class CommentDetail {
 
     private String nickName;
 
-    private Long avatar;
+    private String avatar;
+
+    private String email;
 
     private double playTime;
 
@@ -39,14 +41,6 @@ public class CommentDetail {
 
     public void setNickName(String nickName) {
         this.nickName = nickName;
-    }
-
-    public Long getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(Long avatar) {
-        this.avatar = avatar;
     }
 
     public double getPlayTime() {
@@ -111,5 +105,21 @@ public class CommentDetail {
 
     public void setRecommendStatu(Integer recommendStatu) {
         this.recommendStatu = recommendStatu;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }

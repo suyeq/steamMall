@@ -8,10 +8,7 @@ import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -73,12 +70,12 @@ public class RedisService {
      * @param key
      * @param rank
      */
-    public void zadd(RedisPrefixKey keyPrefix, String key, RankScoreValue rank){
+    public <T> void zadd(RedisPrefixKey keyPrefix, String key, RankScoreValue<T> rank){
         Jedis jedis=null;
         try {
             jedis=pool.getResource();
             String realKey=keyPrefix.getThisPrefix()+key;
-            jedis.zadd(realKey,-Double.parseDouble(rank.getScore()+""),rank.getId()+"");
+            jedis.zadd(realKey,-Double.parseDouble(rank.getScore()+""),beanToString(rank.getValue()));
         }finally {
             jedis.close();
         }
@@ -92,14 +89,20 @@ public class RedisService {
      * @param end
      * @return
      */
-    public Set<String> zrange(RedisPrefixKey keyPrefix,String key,long start,long end){
+    public <T> Set<T> zrange(RedisPrefixKey keyPrefix,String key,long start,long end,Class<T> tClass){
         Jedis jedis=null;
         try {
             jedis=pool.getResource();
             String realKey=keyPrefix.getThisPrefix()+key;
-            return jedis.zrange(realKey,start,end);
+            Set<String> set= jedis.zrange(realKey,start,end);
+            Iterator iterator=set.iterator();
+            Set<T> resultSet=new LinkedHashSet<>();
+            while (iterator.hasNext()){
+                resultSet.add(stringToBean((String) iterator.next(),tClass));
+            }
+            return resultSet;
         }finally {
-            jedis.close();;
+            jedis.close();
         }
     }
 

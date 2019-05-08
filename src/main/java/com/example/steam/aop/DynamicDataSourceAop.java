@@ -25,19 +25,19 @@ public class DynamicDataSourceAop {
      */
     @Before("execution(* com.example.steam.service.*.add*(..))")
     public void dynamicDataSourceAddMethod(){
-        log.error("设置为主节点");
+        log.info("设置为主节点");
         DynamicDataSourceHolder.putDataSource(DynamicDataSourceHolder.MASTER);
     }
 
     @Before("execution(* com.example.steam.service.*.update*(..))")
     public void dynamicDataSourceUpdateMethod(){
-        log.error("设置为主节点");
+        log.info("设置为主节点");
         DynamicDataSourceHolder.putDataSource(DynamicDataSourceHolder.MASTER);
     }
 
     @Before("execution(* com.example.steam.service.*.delete*(..))")
     public void dynamicDataSourceDeleteMethod(){
-        log.error("设置为主节点");
+        log.info("设置为主节点");
         DynamicDataSourceHolder.putDataSource(DynamicDataSourceHolder.MASTER);
     }
 

@@ -19,6 +19,11 @@ public class CommentKey extends BaseKey {
         super(expiredTime);
     }
 
+//    public CommentKey(String gameName){
+//        super(0);
+//        this.prefixKey=getClass().getSimpleName()+":"+
+//    }
+
     public static CommentKey COMMENT_ID=new CommentKey(0);
 
     public static CommentKey COMMENT_RANK_ZANNUM=new CommentKey(0);

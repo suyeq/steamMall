@@ -7,21 +7,13 @@ package com.example.steam.utils;
  * @date: 2019-05-04
  * @time: 15:25
  */
-public class RankScoreValue {
+public class  RankScoreValue<T> {
 
-    private Long id;
+    private T value;
 
     private long score;
 
     public RankScoreValue(){}
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public long getScore() {
         return score;
@@ -29,5 +21,13 @@ public class RankScoreValue {
 
     public void setScore(long score) {
         this.score = score;
+    }
+
+    public T getValue() {
+        return value;
+    }
+
+    public void setValue(T value) {
+        this.value = value;
     }
 }

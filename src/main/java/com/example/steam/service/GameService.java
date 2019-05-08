@@ -9,6 +9,7 @@ import com.example.steam.redis.RedisService;
 import com.example.steam.redis.key.CommentKey;
 import com.example.steam.redis.key.GameKey;
 import com.example.steam.utils.GamePriorityQueue;
+import com.example.steam.utils.GameRank;
 import com.example.steam.utils.RankScoreValue;
 import com.example.steam.utils.TimeComparator;
 import com.example.steam.vo.GameDetail;
@@ -98,12 +99,12 @@ public class GameService implements InitializingBean {
         gameDetailList=new LinkedList<>();
         int i=0;
         while (i<sum && gameDetailList.size()<RANK_SIZE){
-            Set<String> rankTimeGame=redisService.zrange(GameKey.RANK_TIME,GameKey.GAME_RANK_TIME,i,i+RANK_SIZE-1);
-            Iterator<String> iterator=rankTimeGame.iterator();
+            Set<GameRank> rankTimeGame=redisService.zrange(GameKey.RANK_TIME,GameKey.GAME_RANK_TIME,i,i+RANK_SIZE-1,GameRank.class);
+            Iterator<GameRank> iterator=rankTimeGame.iterator();
             while (iterator.hasNext()){
-                String id=iterator.next();
-                GameDetail gameDetail=((GameService)applicationContext.getBean("gameService")).findGameById(Long.parseLong(id));
-                if (typeService.isExists(gameDetail.getType(),typeName) && gameDetailList.size()<RANK_SIZE){
+                GameRank gameRank=iterator.next();
+                if (typeService.isExists(gameRank.getType(),typeName)&&gameDetailList.size()<RANK_SIZE){
+                    GameDetail gameDetail=((GameService)applicationContext.getBean("gameService")).findGameById(gameRank.getId());
                     gameDetailList.add(gameDetail);
                 }
             }
@@ -127,12 +128,12 @@ public class GameService implements InitializingBean {
         gameDetailList=new LinkedList<>();
         int i=0;
         while (i<sum && gameDetailList.size()<RANK_SIZE){
-            Set<String> rankTimeGame=redisService.zrange(GameKey.RANK_SELLNUM,GameKey.GAME_RANK_SELLNUM,i,i+RANK_SIZE-1);
-            Iterator<String> iterator=rankTimeGame.iterator();
+            Set<GameRank> rankTimeGame=redisService.zrange(GameKey.RANK_SELLNUM,GameKey.GAME_RANK_SELLNUM,i,i+RANK_SIZE-1,GameRank.class);
+            Iterator<GameRank> iterator=rankTimeGame.iterator();
             while (iterator.hasNext()){
-                String id=iterator.next();
-                GameDetail gameDetail=((GameService)applicationContext.getBean("gameService")).findGameById(Long.parseLong(id));
-                if (typeService.isExists(gameDetail.getType(),typeName) && gameDetailList.size()<RANK_SIZE){
+                GameRank gameRank=iterator.next();
+                if (typeService.isExists(gameRank.getType(),typeName) && gameDetailList.size()<RANK_SIZE){
+                    GameDetail gameDetail=((GameService)applicationContext.getBean("gameService")).findGameById(gameRank.getId());
                     gameDetailList.add(gameDetail);
                 }
             }
@@ -156,12 +157,12 @@ public class GameService implements InitializingBean {
         gameDetailList=new LinkedList<>();
         int i=0;
         while (i<sum && gameDetailList.size()<RANK_SIZE){
-            Set<String> rankTimeGame=redisService.zrange(GameKey.RANK_UPCOMING,GameKey.GAME_RANK_UPCOMING,i,i+RANK_SIZE-1);
-            Iterator<String> iterator=rankTimeGame.iterator();
+            Set<GameRank> rankTimeGame=redisService.zrange(GameKey.RANK_UPCOMING,GameKey.GAME_RANK_UPCOMING,i,i+RANK_SIZE-1,GameRank.class);
+            Iterator<GameRank> iterator=rankTimeGame.iterator();
             while (iterator.hasNext()){
-                String id=iterator.next();
-                GameDetail gameDetail=((GameService)applicationContext.getBean("gameService")).findGameById(Long.parseLong(id));
-                if (typeService.isExists(gameDetail.getType(),typeName) && gameDetailList.size()<RANK_SIZE){
+                GameRank gameRank=iterator.next();
+                if (typeService.isExists(gameRank.getType(),typeName) && gameDetailList.size()<RANK_SIZE){
+                    GameDetail gameDetail=((GameService)applicationContext.getBean("gameService")).findGameById(gameRank.getId());
                     gameDetailList.add(gameDetail);
                 }
             }
@@ -264,11 +265,11 @@ public class GameService implements InitializingBean {
             return gameDetailList;
         }
         gameDetailList=new LinkedList<>();
-        Set<String> rankTimeGame=redisService.zrange(GameKey.RANK_TIME,GameKey.GAME_RANK_TIME,0,9);
-        Iterator<String> iterator=rankTimeGame.iterator();
+        Set<GameRank> rankTimeGame=redisService.zrange(GameKey.RANK_TIME,GameKey.GAME_RANK_TIME,0,9, GameRank.class);
+        Iterator<GameRank> iterator=rankTimeGame.iterator();
         while (iterator.hasNext()){
-            String id=iterator.next();
-            GameDetail gameDetail=((GameService)applicationContext.getBean("gameService")).findGameById(Long.parseLong(id));
+            GameRank gameRank=iterator.next();
+            GameDetail gameDetail=((GameService)applicationContext.getBean("gameService")).findGameById(gameRank.getId());
             gameDetailList.add(gameDetail);
         }
         localStoreService.set(LocalStoreKey.NEW_RELEASE_INDEX_KEY(),gameDetailList);
@@ -285,11 +286,11 @@ public class GameService implements InitializingBean {
             return gameDetailList;
         }
         gameDetailList=new LinkedList<>();
-        Set<String> rankTimeGame=redisService.zrange(GameKey.RANK_SELLNUM,GameKey.GAME_RANK_SELLNUM,0,9);
-        Iterator<String> iterator=rankTimeGame.iterator();
+        Set<GameRank> rankTimeGame=redisService.zrange(GameKey.RANK_SELLNUM,GameKey.GAME_RANK_SELLNUM,0,9,GameRank.class);
+        Iterator<GameRank> iterator=rankTimeGame.iterator();
         while (iterator.hasNext()){
-            String id=iterator.next();
-            GameDetail gameDetail=((GameService)applicationContext.getBean("gameService")).findGameById(Long.parseLong(id));
+            GameRank gameRank=iterator.next();
+            GameDetail gameDetail=((GameService)applicationContext.getBean("gameService")).findGameById(gameRank.getId());
             gameDetailList.add(gameDetail);
         }
         localStoreService.set(LocalStoreKey.HOT_SELL_INDEX_KEY(),gameDetailList);
@@ -306,11 +307,11 @@ public class GameService implements InitializingBean {
             return gameDetailList;
         }
         gameDetailList=new LinkedList<>();
-        Set<String> rankUpComingGame=redisService.zrange(GameKey.RANK_UPCOMING,GameKey.GAME_RANK_UPCOMING,0,9);
-        Iterator<String> iterator=rankUpComingGame.iterator();
+        Set<GameRank> rankUpComingGame=redisService.zrange(GameKey.RANK_UPCOMING,GameKey.GAME_RANK_UPCOMING,0,9,GameRank.class);
+        Iterator<GameRank> iterator=rankUpComingGame.iterator();
         while (iterator.hasNext()){
-            String id=iterator.next();
-            GameDetail gameDetail=((GameService)applicationContext.getBean("gameService")).findGameById(Long.parseLong(id));
+            GameRank gameRank=iterator.next();
+            GameDetail gameDetail=((GameService)applicationContext.getBean("gameService")).findGameById(gameRank.getId());
             gameDetailList.add(gameDetail);
         }
         localStoreService.set(LocalStoreKey.UP_COMING_INDEX_KEY(),gameDetailList);
@@ -348,13 +349,22 @@ public class GameService implements InitializingBean {
 //        int sum=((GameService)applicationContext.getBean("gameService")).findGamesSum();
 //        redisService.set(GameKey.GAME_SUM,GameKey.GAME_SUM_KEY,sum);
 //        for (int i=0;i<sum;i++){
+//
 //            GameDetail gameDetail=((GameService)applicationContext.getBean("gameService")).findGameById(i+1);
-//            RankScoreValue rankTime=new RankScoreValue();
-//            RankScoreValue rankSellNum=new RankScoreValue();
+//
+//            RankScoreValue<GameRank> rankTime=new RankScoreValue<>();
+//            RankScoreValue<GameRank> rankSellNum=new RankScoreValue<>();
+//
+//            GameRank gameRank=new GameRank();
+//            gameRank.setId(gameDetail.getId());
+//            gameRank.setType(gameDetail.getType());
+//
 //            rankSellNum.setScore(gameDetail.getSellNum());
-//            rankSellNum.setId(gameDetail.getId());
-//            rankTime.setId(gameDetail.getId());
+//            rankSellNum.setValue(gameRank);
+//
+//            rankTime.setValue(gameRank);
 //            rankTime.setScore(gameDetail.getIssuedDate().getTime());
+//
 //            redisService.set(GameKey.GAME_ID,gameDetail.getId()+"",gameDetail);
 //            if (gameDetail.getIssuedStatu()!=0){
 //                redisService.zadd(GameKey.RANK_TIME,GameKey.GAME_RANK_TIME,rankTime);

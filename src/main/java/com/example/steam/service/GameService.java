@@ -256,21 +256,29 @@ public class GameService implements InitializingBean {
     }
 
     /**
-     * 找出最新发布的10个游戏
+     * 根据页号找出最新发布的10个游戏
+     * @param page
      * @return
      */
-    public List<GameDetail> findNewRelease(){
+    public List<GameDetail> findNewRelease(long page){
+        long cursor=0;
         List<GameDetail> gameDetailList=localStoreService.get(LocalStoreKey.NEW_RELEASE_INDEX_KEY(),List.class);
         if (gameDetailList!=null){
             return gameDetailList;
         }
         gameDetailList=new LinkedList<>();
-        Set<GameRank> rankTimeGame=redisService.zrange(GameKey.RANK_TIME,GameKey.GAME_RANK_TIME,0,9, GameRank.class);
-        Iterator<GameRank> iterator=rankTimeGame.iterator();
-        while (iterator.hasNext()){
-            GameRank gameRank=iterator.next();
-            GameDetail gameDetail=((GameService)applicationContext.getBean("gameService")).findGameById(gameRank.getId());
-            gameDetailList.add(gameDetail);
+        long sum=redisService.zcount(GameKey.RANK_TIME,GameKey.GAME_RANK_TIME);
+        while (cursor<sum && gameDetailList.size()<RANK_SIZE){
+            Set<GameRank> rankTimeGame=redisService.zrange(GameKey.RANK_TIME,GameKey.GAME_RANK_TIME,cursor,cursor+100, GameRank.class);
+            Iterator<GameRank> iterator=rankTimeGame.iterator();
+            while (iterator.hasNext()){
+                GameRank gameRank=iterator.next();
+                if (cursor>= page*RANK_SIZE && cursor<page*RANK_SIZE+RANK_SIZE){
+                    GameDetail gameDetail=((GameService)applicationContext.getBean("gameService")).findGameById(gameRank.getId());
+                    gameDetailList.add(gameDetail);
+                }
+                cursor++;
+            }
         }
         localStoreService.set(LocalStoreKey.NEW_RELEASE_INDEX_KEY(),gameDetailList);
         return gameDetailList;

@@ -49,10 +49,10 @@ public class GameController {
     }
 
     @ResponseBody
-    @RequestMapping("/newRelease_index")
-    public String newRelease(){
+    @RequestMapping("/newRelease_index/{page}")
+    public String newRelease(@PathVariable("page")long page){
         long start=System.currentTimeMillis();
-        List<GameDetail> list=gameService.findNewRelease();
+        List<GameDetail> list=gameService.findNewRelease(page);
         long end=System.currentTimeMillis();
         long result=end-start;
         log.error(result+"");

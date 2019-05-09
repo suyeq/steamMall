@@ -20,6 +20,8 @@ import java.util.*;
 @Service
 public class RedisService {
 
+    private final static double MIN_SEED=-9999999999999d;
+
     @Autowired
     JedisPool pool;
 
@@ -106,6 +108,23 @@ public class RedisService {
         }
     }
 
+    /**
+     * 返回该键有序集合的总元素个数
+     * @param keyPrefix
+     * @param key
+     * @return
+     */
+    public long zcount(RedisPrefixKey keyPrefix,String key){
+        Jedis jedis=null;
+        try{
+            jedis=pool.getResource();
+            String realKey=keyPrefix.getThisPrefix()+key;
+            return jedis.zcount(realKey,MIN_SEED,0);
+        }finally {
+            jedis.close();
+        }
+    }
+
 
     /**
      * 判断键是否存在
@@ -165,12 +184,7 @@ public class RedisService {
 
 
 //    public static void main(String args[]){
-//        List<String> list=new LinkedList<>();
-//        list.add("1");
-//        list.add("2");
-//        list.add("3");
-//        String test=beanToString(list);
-//        List<String> lll=stringToBean(test,List.class);
-//        System.out.println(lll.toString());
+//
+//        System.out.println(System.currentTimeMillis());
 //    }
 }

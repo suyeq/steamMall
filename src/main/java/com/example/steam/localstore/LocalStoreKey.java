@@ -1,5 +1,8 @@
 package com.example.steam.localstore;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created with IntelliJ IDEA.
  *
@@ -14,6 +17,8 @@ public class LocalStoreKey {
     private long startTime;
 
     private long expiredTime;
+
+    private Map<String,ExpiredTime> expiredTimeHashMap=new HashMap<>();
 
 //    private static volatile LocalStoreKey FETURED_CAROUSEL_KEY=new LocalStoreKey("feturedCarousel",System.currentTimeMillis(),1000*30);
 //
@@ -179,5 +184,36 @@ public class LocalStoreKey {
 
     public void setStartTime(){
         this.startTime=System.currentTimeMillis();
+    }
+
+    public Map<String, ExpiredTime> getExpiredTimeHashMap() {
+        return expiredTimeHashMap;
+    }
+
+    public void setExpiredTime(String page){
+//        if (){
+//
+//        }
+//        long expiredTime=;
+        ExpiredTime expiredTime=new ExpiredTime(System.currentTimeMillis(),40*1000);
+        expiredTimeHashMap.put(page,expiredTime);
+    }
+
+    class ExpiredTime{
+        long startTime;
+        long expiredTime;
+
+        ExpiredTime(long startTime,long expiredTime){
+            this.startTime=startTime;
+            this.expiredTime=expiredTime;
+        }
+
+        public long getStartTime(){
+            return startTime;
+        }
+
+        public long getExpiredTime(){
+            return expiredTime;
+        }
     }
 }

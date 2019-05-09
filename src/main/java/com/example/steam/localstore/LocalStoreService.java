@@ -19,15 +19,19 @@ public class LocalStoreService {
 
     private final Map<LocalStoreKey,String> map=new ConcurrentHashMap<>();
 
-    public <T> void set(LocalStoreKey key,T value){
+    public <T> void set(LocalStoreKey key,T value,String page){
         String finalValue= RedisService.beanToString(value);
-        key.setStartTime();
+        key.setExpiredTime(page);
+        //key.setStartTime();
         map.put(key,finalValue);
     }
 
-    public <T> T get(LocalStoreKey key,Class<T> tClass){
+    public <T> T get(LocalStoreKey key,Class<T> tClass,String page){
         long now=System.currentTimeMillis();
-        if (now-key.getStartTime()>=key.getExpiredTime()){
+//        if (now-key.getStartTime()>=key.getExpiredTime()){
+//            return null;
+//        }
+        if (now-key.getExpiredTimeHashMap().get(page).startTime>=key.getExpiredTimeHashMap().get(page).expiredTime){
             return null;
         }
         String value=map.get(key);

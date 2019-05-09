@@ -72,26 +72,158 @@ var steam=
             });
             this.detailCarouselStart(that);
             this.mouseDetailPause(that);
-            this.scrollLoadComment();
+            this.scrollLoadComment(that);
         },
 
-        scrollLoadComment:function(){
+        recentCommentLoad:function(){
+            var page=$('#ViewAllReviewssummary')[0].getAttribute('page');
+            var gameId=$('#ViewAllReviewssummary')[0].getAttribute('gameId');
+            $.ajax({
+                url:"/commentDetail/"+gameId+"/time/"+page,
+                type:"POST",
+                async:false,
+                success:function (data) {
+                    data=eval("("+data+")");
+                    for (var i=0;i<data.msg.length;i++){
+                        var parent=$('<div class="review_box short"></div>');
+                        var element=$('<div></div>');
+                        var child1='<a href="" class="short_header tooltip"><img class="review_source tooltip" src="https://store.st.dl.bscstorage.net/public/shared/images/userreviews/icon_review_steam.png">';
+                        child1+='<div class="thumb"><img src="';
+                        if (data.msg[i].recommendStatu==1){
+                            child1+='https://store.st.dl.bscstorage.net/public/shared/images/userreviews/icon_thumbsUp_v6.png';
+                        }else {
+                            child1+='https://store.st.dl.bscstorage.net/public/shared/images/userreviews/icon_thumbsDown_v6.png';
+                        }
+                        child1+='" width="40" height="40"></div>';
+                        child1+='<div class="persona_name"><span>'+data.msg[i].nickName+'</span></div>';
+                        child1+='<div class="hours ellipsis"> '+data.msg[i].playTime+' 小时</div></a>';
+                        child1=$(child1);
+                        var shortcol=$('<div class="shortcol"></div>');
+                        var commentDate='<div class="postedDate">发布于：'
+                        var date = new Date(data.msg[i].commentDate);
+                        Y = date.getFullYear() + '年';
+                        M = date.getMonth()+1 + '月';
+                        D = date.getDate() + '日';
+                        commentDate+=M+D;
+                        commentDate+='</div>';
+                        commentDate=$(commentDate);
+                        var content='<div class="content">'+data.msg[i].content+'</div>';
+                        content=$(content);
+                        var space=$('<div class="posted">\n' +
+                            '                                        <div class="view_more"><a href="#" onclick="UserReviewShowMore(\'50108315\', \'summary\' ); return false;">展开阅读</a></div>\n' +
+                            '                                        &nbsp;\n' +
+                            '                                    </div>');
+                        var hr=$('<div class="hr"></div>');
+                        var control_block='<div class="control_block"><span class="text">这篇评测是否有价值？</span>';
+                        control_block+='<a href="javascript:void(0)" onclick="commentZan( \''+data.msg[i].id+'\' )" class="btnv6_grey_black btn_small_thin ico_hover "><span><i class="ico16 thumb_upv6"></i> 是 </span></a>';
+                        control_block+='<a href="javascript:void(0)" onclick="commentCai( \''+data.msg[i].id+'\' )" class="btnv6_grey_black btn_small_thin ico_hover " style="margin-left: 5px"><span><i class="ico16 thumb_downv6"></i> 否 </span></a>';
+                        control_block+='<a href="javascript:void(0)" onclick="commentHappy( \''+data.msg[i].id+'\' )" class="btnv6_grey_black btn_small_thin ico_hover " style="margin-left: 5px"><span><i class="ico16 funny"></i> 欢乐 </span></a>';
+                        control_block+='</div>';
+                        control_block=$(control_block);
+                        shortcol.append(commentDate,content,space,hr,control_block);
+                        var last=$('<div style="clear: left;"></div>');
+                        element.append(child1,shortcol,last);
+                        parent.append(element);
+                        $('#comment_short').append(parent)
+                    }
+                },
+                error:function () {
+
+                }
+            })
+        },
+
+        scrollLoadComment:function(that){
             $(window).scroll(function (){
                 if ($(window).scrollTop() == $(document).height() - $(window).height()) {
                     $('#Reviews_loading')[0].setAttribute('style','display: block');
                     var page=$('#ViewAllReviewssummary')[0].getAttribute('page');
                     var gameId=$('#ViewAllReviewssummary')[0].getAttribute('gameId');
-                    console.log(page+" "+gameId)
                     $.ajax({
-                        url:"/commentDetail/"+gameId+"/time/"+page,
+                        url:"/commentDetail/"+gameId+"/zan/"+page,
                         type:"POST",
                         async:false,
                         success:function (data) {
                             data=eval("("+data+")")
-                            console.log(data)
-                            $('#Reviews_loading')[0].setAttribute('style','display: none');
-                            page=parseInt(page)+1;
-                            $('#ViewAllReviewssummary')[0].setAttribute('page',page);
+                            var parent=new Array(5);
+                            for (var i=0;i<data.msg.length;i++){
+                                parent[i]=$('<div class="review_box "></div>');
+                                var element=$('<div id="commentInfo" commentId="1"></div>');
+                                var left=$('<div class="leftcol"></div>');
+                                var avatar='<div class="avatar"><a href="';
+                                avatar+='/userDetails/'+data.msg[i].userId;
+                                avatar+='"><div class="playerAvatar online"><img src="';
+                                avatar+=data.msg[i].avatar;
+                                avatar+='"></div></a></div>';
+                                avatar=$(avatar);
+                                var name='<div class="persona_name"><a href="javascript:void(0);" >'+data.msg[i].nickName+'</a></div>';
+                                name=$(name);
+                                var owned_games='<div class="num_owned_games"><a href="javascript:void(0);" >帐户内拥有 '+data.msg[i].buyGames+' 项产品</a></div>';
+                                owned_games=$(owned_games);
+                                var num_reviews='<div class="num_reviews"><a href="javascript:void(0);" >'+data.msg[i].commmentNum+'篇评测</a></div>';
+                                num_reviews=$(num_reviews);
+                                left.append(avatar,name,owned_games,num_reviews);
+                                var right=$('<div class="rightcol"></div>');
+                                var recommendStatu='<a href="javascript:void(0);" class="vote_header tooltip">';
+                                recommendStatu+='<div class="thumb"><img src="';
+                                if (data.msg[i].recommendStatu==1){
+                                    recommendStatu+='https://store.st.dl.bscstorage.net/public/shared/images/userreviews/icon_thumbsUp_v6.png';
+                                }else {
+                                    recommendStatu+='https://store.st.dl.bscstorage.net/public/shared/images/userreviews/icon_thumbsDown_v6.png';
+                                }
+                                recommendStatu+='" width="40" height="40"></div><img class="review_source tooltip"  src="https://store.st.dl.bscstorage.net/public/shared/images/userreviews/icon_review_steam.png">';
+                                recommendStatu+='<div class="title ellipsis">';
+                                if (data.msg[i].recommendStatu==1){
+                                    recommendStatu+='推荐';
+                                } else {
+                                    recommendStatu+='不推荐';
+                                }
+                                recommendStatu+='</div><div class="hours ellipsis">总时数 '+data.msg[i].playTime+' 小时</div></a>';
+                                recommendStatu=$(recommendStatu);
+                                var commentDate='<div class="postedDate">发布于：'
+                                var date = new Date(data.msg[i].commentDate);
+                                Y = date.getFullYear() + '年';
+                                M = date.getMonth()+1 + '月';
+                                D = date.getDate() + '日';
+                                commentDate+=M+D;
+                                commentDate+='</div>';
+                                commentDate=$(commentDate);
+                                var content='<div class="content">'+data.msg[i].content+'</div>';
+                                content=$(content);
+                                var space=$('<div class="posted">\n' +
+                                    '                                        <div class="view_more"><a href="#" onclick="UserReviewShowMore(\'50108315\', \'summary\' ); return false;">展开阅读</a></div>\n' +
+                                    '                                        &nbsp;\n' +
+                                    '                                    </div>');
+                                var hr=$('<div class="hr"></div>');
+                                var control_block='<div class="control_block"><span class="text">这篇评测是否有价值？</span>';
+                                control_block+='<a href="javascript:void(0)" onclick="commentZan( \''+data.msg[i].id+'\' )" class="btnv6_grey_black btn_small_thin ico_hover "><span><i class="ico16 thumb_upv6"></i> 是 </span></a>';
+                                control_block+='<a href="javascript:void(0)" onclick="commentCai( \''+data.msg[i].id+'\' )" class="btnv6_grey_black btn_small_thin ico_hover " style="margin-left: 5px"><span><i class="ico16 thumb_downv6"></i> 否 </span></a>';
+                                control_block+='<a href="javascript:void(0)" onclick="commentHappy( \''+data.msg[i].id+'\' )" class="btnv6_grey_black btn_small_thin ico_hover " style="margin-left: 5px"><span><i class="ico16 funny"></i> 欢乐 </span></a>';
+                                control_block+='</div>';
+                                control_block=$(control_block);
+                                var vote_info='<div class="vote_info">有 ';
+                                vote_info+=data.msg[i].zanNum;
+                                vote_info+=' 人觉得这篇评测有价值<br>';
+                                vote_info+='有 '+data.msg[i].caiNum+' 人觉得这篇评测很欢乐</div>';
+                                vote_info=$(vote_info);
+                                var last=$('<div style="clear: left;"></div>');
+                                right.append(recommendStatu,commentDate,content,space,hr,control_block,vote_info);
+                                element.append(left,right,last);
+                                parent[i].append(element);
+                            }
+                            that.recentCommentLoad();
+                            if (data.msg.length>=1){
+                                setTimeout(function () {
+                                    $('#Reviews_loading')[0].setAttribute('style','display: none');
+                                    $('#Reviews_summary')[0].setAttribute('style','display: block;');
+                                    $('#comment_detail').append(parent[0],parent[1],parent[2],parent[3],parent[4]);
+                                },2000)
+                                page=parseInt(page)+1;
+                                $('#ViewAllReviewssummary')[0].setAttribute('page',page);
+                            }else {
+                                $('#Reviews_loading')[0].setAttribute('style','display: none');
+                                $('#ViewAllReviewssummary')[0].setAttribute('style','display: block');
+                            }
                         },
                         error:function () {
 
@@ -1358,6 +1490,17 @@ var steam=
         $('#app_tagging_modal')[0].setAttribute('style','display: none;');
         $('#app_tagging_modal')[0].setAttribute('style','display: none;');
     }
+
+    function sleep(numberMillis) {
+        var now = new Date();
+        var exitTime = now.getTime() + numberMillis;
+        while (true) {
+            now = new Date();
+            if (now.getTime() > exitTime)
+                return;
+        }
+    }
+
 
     //登录操作
     function login() {

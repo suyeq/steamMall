@@ -71,7 +71,7 @@ public class CommentService implements InitializingBean{
         commentDetail.setAvatar(imageService.findImageUrlById(user.getAvatar()));
         commentDetail.setBuyGames(user.getBuyGames());
         commentDetail.setCaiNum(comment.getCaiNum());
-        commentDetail.setCaiNum(comment.getZanNum());
+        commentDetail.setZanNum(comment.getZanNum());
         commentDetail.setCommentDate(comment.getCommentDate());
         commentDetail.setCommmentNum(user.getCommmentNum());
         commentDetail.setContent(comment.getContent());
@@ -79,6 +79,8 @@ public class CommentService implements InitializingBean{
         commentDetail.setEmail(user.getEmail());
         commentDetail.setPlayTime(user.getPlayTime());
         commentDetail.setRecommendStatu(comment.getRecommendStatu());
+        commentDetail.setId(comment.getId());
+        commentDetail.setUserId(user.getId());
         return commentDetail;
     }
 
@@ -90,8 +92,8 @@ public class CommentService implements InitializingBean{
      */
     public List<CommentDetail> findRangeCommentDetailByTime(long index,long gameId){
         List<CommentDetail> commentDetailList=new LinkedList<>();
-        long startIter=index*5;
-        long endIter=startIter+5;
+        long startIter=index*6;
+        long endIter=startIter+6;
         long count=0;
         int cursor=0;
         int sum=((CommentService)applicationContext.getBean("commentService")).findCommentSum();
@@ -100,7 +102,7 @@ public class CommentService implements InitializingBean{
             Iterator<CommentRank> iterator=commentRankSet.iterator();
             while (iterator.hasNext()){
                 CommentRank commentRank=iterator.next();
-                if ( commentRank.getGameId()==gameId && commentDetailList.size()<5 ){
+                if ( commentRank.getGameId()==gameId && commentDetailList.size()<6 ){
                     if (count>=startIter && count<endIter){
                         CommentDetail commentDetail=((CommentService)applicationContext.getBean("commentService")).findCommentDetailById(commentRank.getId());
                         commentDetailList.add(commentDetail);

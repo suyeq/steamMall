@@ -11,6 +11,10 @@ import java.util.Date;
  */
 public class CommentDetail {
 
+    private Long id;
+
+    private Long userId;
+
     private String nickName;
 
     private String avatar;
@@ -121,5 +125,21 @@ public class CommentDetail {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

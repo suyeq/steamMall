@@ -186,16 +186,23 @@ public class LocalStoreKey {
         this.startTime=System.currentTimeMillis();
     }
 
+    public String getKeyName(){
+        return keyName;
+    }
+
     public Map<String, ExpiredTime> getExpiredTimeHashMap() {
         return expiredTimeHashMap;
     }
 
     public void setExpiredTime(String page){
-//        if (){
-//
-//        }
-//        long expiredTime=;
-        ExpiredTime expiredTime=new ExpiredTime(System.currentTimeMillis(),40*1000);
+        ExpiredTime expiredTime=null;
+        if (keyName.equals("classUpComing") || keyName.equals("classHotSell") ||keyName.equals("classNewRelease") || keyName.equals("hotSell") || keyName.equals("upComing") || keyName.equals("newRelease")){
+            expiredTime=new ExpiredTime(System.currentTimeMillis(),50*1000);
+        }else if (keyName.equals("feturedCarousel") || keyName.equals("classCarousel")){
+            expiredTime=new ExpiredTime(System.currentTimeMillis(),40*1000);
+        }else if (keyName.equals("specialCarousel")){
+            expiredTime=new ExpiredTime(System.currentTimeMillis(),30*1000);
+        }
         expiredTimeHashMap.put(page,expiredTime);
     }
 

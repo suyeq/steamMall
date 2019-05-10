@@ -28,7 +28,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Controller
 public class GameController {
 
-    private Map<String,String> map=new ConcurrentHashMap<>();
+//    private Map<String,String> map=new ConcurrentHashMap<>();
 
     Logger log= LoggerFactory.getLogger(GameController.class);
 
@@ -60,15 +60,15 @@ public class GameController {
     }
 
     @ResponseBody
-    @RequestMapping("/hotSell_index")
-    public String hotSell(){
-        return JSON.toJSONString(ResultMsg.SUCCESS(gameService.findHotSell()));
+    @RequestMapping("/hotSell_index/{page}")
+    public String hotSell(@PathVariable("page")long page){
+        return JSON.toJSONString(ResultMsg.SUCCESS(gameService.findHotSell(page)));
     }
 
     @ResponseBody
-    @RequestMapping("/upComing_index")
-    public String upComing(){
-        return JSON.toJSONString(ResultMsg.SUCCESS(gameService.findUpComing()));
+    @RequestMapping("/upComing_index/{page}")
+    public String upComing(@PathVariable("page")long page){
+        return JSON.toJSONString(ResultMsg.SUCCESS(gameService.findUpComing(page)));
     }
 
     @ResponseBody
@@ -84,21 +84,24 @@ public class GameController {
     }
 
     @ResponseBody
-    @RequestMapping("/classGame/newRelease/{typeName}")
-    public String findGamesNewReleaseByType(@PathVariable("typeName")String typeName){
-        return JSON.toJSONString(ResultMsg.SUCCESS(gameService.findGamesNewReleaseByType(typeName)));
+    @RequestMapping("/classGame/newRelease/{typeName}/{page}")
+    public String findGamesNewReleaseByType(@PathVariable("typeName")String typeName,
+                                            @PathVariable("page")long page){
+        return JSON.toJSONString(ResultMsg.SUCCESS(gameService.findGamesNewReleaseByType(typeName,page)));
     }
 
     @ResponseBody
-    @RequestMapping("/classGame/hotSell/{typeName}")
-    public String findGamesHotSellByType(@PathVariable("typeName")String typeName){
-        return JSON.toJSONString(ResultMsg.SUCCESS(gameService.findGamesHotSellByType(typeName)));
+    @RequestMapping("/classGame/hotSell/{typeName}/{page}")
+    public String findGamesHotSellByType(@PathVariable("typeName")String typeName,
+                                         @PathVariable("page")long page){
+        return JSON.toJSONString(ResultMsg.SUCCESS(gameService.findGamesHotSellByType(typeName,page)));
     }
 
     @ResponseBody
-    @RequestMapping("/classGame/upComing/{typeName}")
-    public String findGamesUpComingByType(@PathVariable("typeName")String typeName){
-        return JSON.toJSONString(ResultMsg.SUCCESS(gameService.findGamesUpComingByType(typeName)));
+    @RequestMapping("/classGame/upComing/{typeName}/{page}")
+    public String findGamesUpComingByType(@PathVariable("typeName")String typeName,
+                                          @PathVariable("page")long page){
+        return JSON.toJSONString(ResultMsg.SUCCESS(gameService.findGamesUpComingByType(typeName,page)));
     }
 
 

@@ -66,7 +66,7 @@ public class GameService implements InitializingBean {
      * @return
      */
     public List<SpecialGame> findGamesToClassCarousel(String typeName){
-        Set<GameDetail> gameDetailSet=localStoreService.get(LocalStoreKey.CLASS_CAROUSEL_KEY(),Set.class);
+        Set<GameDetail> gameDetailSet=localStoreService.get(LocalStoreKey.CLASS_CAROUSEL_KEY(),Set.class,"0");
         if (gameDetailSet!=null){
             return new LinkedList<>(gameDetailSet);
         }
@@ -80,7 +80,7 @@ public class GameService implements InitializingBean {
                 gameDetailSet.add(gameDetail);
             }
         }
-        localStoreService.set(LocalStoreKey.CLASS_CAROUSEL_KEY(),gameDetailSet);
+        localStoreService.set(LocalStoreKey.CLASS_CAROUSEL_KEY(),gameDetailSet,"0");
         return new LinkedList<>(gameDetailSet);
     }
 
@@ -89,57 +89,49 @@ public class GameService implements InitializingBean {
      * @param typeName
      * @return
      */
-    public List<GameDetail> findGamesNewReleaseByType(String typeName){
+    public List<GameDetail> findGamesNewReleaseByType(String typeName,long page){
         //GamePriorityQueue<GameDetail> priorityQueue=new GamePriorityQueue<>(new TimeComparator());
-        List<GameDetail> gameDetailList=localStoreService.get(LocalStoreKey.NEW_RELEASE_CLASS_KEY(),List.class);
+        long count=0;
+        long cursor=0;
+        List<GameDetail> gameDetailList=localStoreService.get(LocalStoreKey.NEW_RELEASE_CLASS_KEY(),List.class,page+"");
         if (gameDetailList!=null){
             return gameDetailList;
         }
-        int sum=redisService.get(GameKey.GAME_SUM,GameKey.GAME_SUM_KEY,int.class);
         gameDetailList=new LinkedList<>();
-        int i=0;
-        while (i<sum && gameDetailList.size()<RANK_SIZE){
-            Set<GameRank> rankTimeGame=redisService.zrange(GameKey.RANK_TIME,GameKey.GAME_RANK_TIME,i,i+RANK_SIZE-1,GameRank.class);
+        long sum=redisService.zcount(GameKey.RANK_TIME,GameKey.GAME_RANK_TIME);
+        while (cursor<sum && gameDetailList.size()<RANK_SIZE){
+            Set<GameRank> rankTimeGame=redisService.zrange(GameKey.RANK_TIME,GameKey.GAME_RANK_TIME,cursor,cursor+100,GameRank.class);
             Iterator<GameRank> iterator=rankTimeGame.iterator();
-            while (iterator.hasNext()){
-                GameRank gameRank=iterator.next();
-                if (typeService.isExists(gameRank.getType(),typeName)&&gameDetailList.size()<RANK_SIZE){
-                    GameDetail gameDetail=((GameService)applicationContext.getBean("gameService")).findGameById(gameRank.getId());
-                    gameDetailList.add(gameDetail);
-                }
-            }
-            i+=RANK_SIZE;
+            count=iteratorClass(page,count,iterator,typeName,gameDetailList);
+            cursor+=100;
         }
-        localStoreService.set(LocalStoreKey.NEW_RELEASE_CLASS_KEY(),gameDetailList);
+        localStoreService.set(LocalStoreKey.NEW_RELEASE_CLASS_KEY(),gameDetailList,page+"");
         return gameDetailList;
     }
+
+
 
     /**
      * 找到对应类型的游戏，并按照热卖度降序
      * @param typeName
      * @return
      */
-    public List<GameDetail> findGamesHotSellByType(String typeName){
-        List<GameDetail> gameDetailList=localStoreService.get(LocalStoreKey.HOT_SELL_CLASS_KEY(),List.class);
+    public List<GameDetail> findGamesHotSellByType(String typeName,long page){
+        long count=0;
+        long cursor=0;
+        List<GameDetail> gameDetailList=localStoreService.get(LocalStoreKey.HOT_SELL_CLASS_KEY(),List.class,page+"");
         if (gameDetailList!=null){
             return gameDetailList;
         }
-        int sum=redisService.get(GameKey.GAME_SUM,GameKey.GAME_SUM_KEY,int.class);
         gameDetailList=new LinkedList<>();
-        int i=0;
-        while (i<sum && gameDetailList.size()<RANK_SIZE){
-            Set<GameRank> rankTimeGame=redisService.zrange(GameKey.RANK_SELLNUM,GameKey.GAME_RANK_SELLNUM,i,i+RANK_SIZE-1,GameRank.class);
+        long sum=redisService.zcount(GameKey.RANK_SELLNUM,GameKey.GAME_RANK_SELLNUM);
+        while (cursor<sum && gameDetailList.size()<RANK_SIZE){
+            Set<GameRank> rankTimeGame=redisService.zrange(GameKey.RANK_SELLNUM,GameKey.GAME_RANK_SELLNUM,cursor,cursor+100,GameRank.class);
             Iterator<GameRank> iterator=rankTimeGame.iterator();
-            while (iterator.hasNext()){
-                GameRank gameRank=iterator.next();
-                if (typeService.isExists(gameRank.getType(),typeName) && gameDetailList.size()<RANK_SIZE){
-                    GameDetail gameDetail=((GameService)applicationContext.getBean("gameService")).findGameById(gameRank.getId());
-                    gameDetailList.add(gameDetail);
-                }
-            }
-            i+=RANK_SIZE;
+            count=iteratorClass(page,count,iterator,typeName,gameDetailList);
+            cursor+=100;
         }
-        localStoreService.set(LocalStoreKey.HOT_SELL_CLASS_KEY(),gameDetailList);
+        localStoreService.set(LocalStoreKey.HOT_SELL_CLASS_KEY(),gameDetailList,page+"");
         return gameDetailList;
     }
 
@@ -148,27 +140,22 @@ public class GameService implements InitializingBean {
      * @param typeName
      * @return
      */
-    public List<GameDetail> findGamesUpComingByType(String typeName){
-        List<GameDetail> gameDetailList=localStoreService.get(LocalStoreKey.UP_COMING_CLASS_KEY(),List.class);
+    public List<GameDetail> findGamesUpComingByType(String typeName,long page){
+        long count=0;
+        long cursor=0;
+        List<GameDetail> gameDetailList=localStoreService.get(LocalStoreKey.UP_COMING_CLASS_KEY(),List.class,page+"");
         if (gameDetailList!=null){
             return gameDetailList;
         }
-        int sum=redisService.get(GameKey.GAME_SUM,GameKey.GAME_SUM_KEY,int.class);
         gameDetailList=new LinkedList<>();
-        int i=0;
-        while (i<sum && gameDetailList.size()<RANK_SIZE){
-            Set<GameRank> rankTimeGame=redisService.zrange(GameKey.RANK_UPCOMING,GameKey.GAME_RANK_UPCOMING,i,i+RANK_SIZE-1,GameRank.class);
+        long sum=redisService.zcount(GameKey.RANK_UPCOMING,GameKey.GAME_RANK_UPCOMING);
+        while (cursor<sum && gameDetailList.size()<RANK_SIZE){
+            Set<GameRank> rankTimeGame=redisService.zrange(GameKey.RANK_UPCOMING,GameKey.GAME_RANK_UPCOMING,cursor,cursor+100,GameRank.class);
             Iterator<GameRank> iterator=rankTimeGame.iterator();
-            while (iterator.hasNext()){
-                GameRank gameRank=iterator.next();
-                if (typeService.isExists(gameRank.getType(),typeName) && gameDetailList.size()<RANK_SIZE){
-                    GameDetail gameDetail=((GameService)applicationContext.getBean("gameService")).findGameById(gameRank.getId());
-                    gameDetailList.add(gameDetail);
-                }
-            }
-            i+=RANK_SIZE;
+            count=iteratorClass(page,count,iterator,typeName,gameDetailList);
+            cursor+=100;
         }
-        localStoreService.set(LocalStoreKey.UP_COMING_CLASS_KEY(),gameDetailList);
+        localStoreService.set(LocalStoreKey.UP_COMING_CLASS_KEY(),gameDetailList,page+"");
         return gameDetailList;
     }
 
@@ -214,7 +201,7 @@ public class GameService implements InitializingBean {
      * @return
      */
     public List<SpecialGame> findGamesFetured(){
-        Set<GameDetail> gameDetailSet=localStoreService.get(LocalStoreKey.FETURED_CAROUSEL_KEY(),Set.class);
+        Set<GameDetail> gameDetailSet=localStoreService.get(LocalStoreKey.FETURED_CAROUSEL_KEY(),Set.class,"0");
         if (gameDetailSet != null) {
             return new LinkedList<>(gameDetailSet);
         }
@@ -228,7 +215,7 @@ public class GameService implements InitializingBean {
                 gameDetailSet.add(gameDetail);
             }
         }
-        localStoreService.set(LocalStoreKey.FETURED_CAROUSEL_KEY(),gameDetailSet);
+        localStoreService.set(LocalStoreKey.FETURED_CAROUSEL_KEY(),gameDetailSet,"0");
         return new LinkedList<>(gameDetailSet);
     }
 
@@ -237,7 +224,7 @@ public class GameService implements InitializingBean {
      * @return
      */
     public List<SpecialGame> findSpecialGames(){
-        Set<GameDetail> gameDetailSet=localStoreService.get(LocalStoreKey.SPECIAL_CAROUSEL_KEY(),Set.class);
+        Set<GameDetail> gameDetailSet=localStoreService.get(LocalStoreKey.SPECIAL_CAROUSEL_KEY(),Set.class,"0");
         if (gameDetailSet!=null){
             return new LinkedList<>(gameDetailSet);
         }
@@ -251,7 +238,7 @@ public class GameService implements InitializingBean {
                 gameDetailSet.add(gameDetail);
             }
         }
-        localStoreService.set(LocalStoreKey.SPECIAL_CAROUSEL_KEY(),gameDetailSet);
+        localStoreService.set(LocalStoreKey.SPECIAL_CAROUSEL_KEY(),gameDetailSet,"0");
         return new LinkedList<>(gameDetailSet);
     }
 
@@ -262,7 +249,7 @@ public class GameService implements InitializingBean {
      */
     public List<GameDetail> findNewRelease(long page){
         long cursor=0;
-        List<GameDetail> gameDetailList=localStoreService.get(LocalStoreKey.NEW_RELEASE_INDEX_KEY(),List.class);
+        List<GameDetail> gameDetailList=localStoreService.get(LocalStoreKey.NEW_RELEASE_INDEX_KEY(),List.class,page+"");
         if (gameDetailList!=null){
             return gameDetailList;
         }
@@ -271,37 +258,31 @@ public class GameService implements InitializingBean {
         while (cursor<sum && gameDetailList.size()<RANK_SIZE){
             Set<GameRank> rankTimeGame=redisService.zrange(GameKey.RANK_TIME,GameKey.GAME_RANK_TIME,cursor,cursor+100, GameRank.class);
             Iterator<GameRank> iterator=rankTimeGame.iterator();
-            while (iterator.hasNext()){
-                GameRank gameRank=iterator.next();
-                if (cursor>= page*RANK_SIZE && cursor<page*RANK_SIZE+RANK_SIZE){
-                    GameDetail gameDetail=((GameService)applicationContext.getBean("gameService")).findGameById(gameRank.getId());
-                    gameDetailList.add(gameDetail);
-                }
-                cursor++;
-            }
+            cursor=iteratorTraversing(cursor,iterator,page,gameDetailList);
         }
-        localStoreService.set(LocalStoreKey.NEW_RELEASE_INDEX_KEY(),gameDetailList);
+        localStoreService.set(LocalStoreKey.NEW_RELEASE_INDEX_KEY(),gameDetailList,page+"");
         return gameDetailList;
     }
+
 
     /**
      * 找出最热卖的10个游戏
      * @return
      */
-    public List<GameDetail> findHotSell() {
-        List<GameDetail> gameDetailList=localStoreService.get(LocalStoreKey.HOT_SELL_INDEX_KEY(),List.class);
+    public List<GameDetail> findHotSell(long page) {
+        long cursor=0;
+        List<GameDetail> gameDetailList=localStoreService.get(LocalStoreKey.HOT_SELL_INDEX_KEY(),List.class,page+"");
         if (gameDetailList!=null){
             return gameDetailList;
         }
         gameDetailList=new LinkedList<>();
-        Set<GameRank> rankTimeGame=redisService.zrange(GameKey.RANK_SELLNUM,GameKey.GAME_RANK_SELLNUM,0,9,GameRank.class);
-        Iterator<GameRank> iterator=rankTimeGame.iterator();
-        while (iterator.hasNext()){
-            GameRank gameRank=iterator.next();
-            GameDetail gameDetail=((GameService)applicationContext.getBean("gameService")).findGameById(gameRank.getId());
-            gameDetailList.add(gameDetail);
+        long sum=redisService.zcount(GameKey.RANK_SELLNUM,GameKey.GAME_RANK_SELLNUM);
+        while (cursor<sum && gameDetailList.size()<RANK_SIZE){
+            Set<GameRank> rankSellGame=redisService.zrange(GameKey.RANK_SELLNUM,GameKey.GAME_RANK_SELLNUM,cursor,cursor+100, GameRank.class);
+            Iterator<GameRank> iterator=rankSellGame.iterator();
+            cursor=iteratorTraversing(cursor,iterator,page,gameDetailList);
         }
-        localStoreService.set(LocalStoreKey.HOT_SELL_INDEX_KEY(),gameDetailList);
+        localStoreService.set(LocalStoreKey.HOT_SELL_INDEX_KEY(),gameDetailList,page+"");
         return gameDetailList;
     }
 
@@ -309,25 +290,51 @@ public class GameService implements InitializingBean {
      * 找出最近将要推出的游戏
      * @return
      */
-    public List<GameDetail> findUpComing() {
-        List<GameDetail> gameDetailList=localStoreService.get(LocalStoreKey.UP_COMING_INDEX_KEY(),List.class);
+    public List<GameDetail> findUpComing(long page) {
+        long cursor=0;
+        List<GameDetail> gameDetailList=localStoreService.get(LocalStoreKey.UP_COMING_INDEX_KEY(),List.class,page+"");
         if (gameDetailList!=null){
             return gameDetailList;
         }
         gameDetailList=new LinkedList<>();
-        Set<GameRank> rankUpComingGame=redisService.zrange(GameKey.RANK_UPCOMING,GameKey.GAME_RANK_UPCOMING,0,9,GameRank.class);
-        Iterator<GameRank> iterator=rankUpComingGame.iterator();
-        while (iterator.hasNext()){
-            GameRank gameRank=iterator.next();
-            GameDetail gameDetail=((GameService)applicationContext.getBean("gameService")).findGameById(gameRank.getId());
-            gameDetailList.add(gameDetail);
+        long sum=redisService.zcount(GameKey.RANK_UPCOMING,GameKey.GAME_RANK_UPCOMING);
+        while (cursor<sum && gameDetailList.size()<RANK_SIZE){
+            Set<GameRank> rankUpGame=redisService.zrange(GameKey.RANK_UPCOMING,GameKey.GAME_RANK_UPCOMING,cursor,cursor+100, GameRank.class);
+            Iterator<GameRank> iterator=rankUpGame.iterator();
+            cursor=iteratorTraversing(cursor,iterator,page,gameDetailList);
         }
-        localStoreService.set(LocalStoreKey.UP_COMING_INDEX_KEY(),gameDetailList);
+        localStoreService.set(LocalStoreKey.UP_COMING_INDEX_KEY(),gameDetailList,page+"");
         return gameDetailList;
     }
 
     public int findGamesSum(){
         return gameDao.gamesSum();
+    }
+
+    private long iteratorTraversing(long cursor,Iterator<GameRank> iterator,long page,List<GameDetail> list){
+        while (iterator.hasNext()){
+            GameRank gameRank=iterator.next();
+            if (cursor>= page*RANK_SIZE && cursor<page*RANK_SIZE+RANK_SIZE){
+                GameDetail gameDetail=((GameService)applicationContext.getBean("gameService")).findGameById(gameRank.getId());
+                list.add(gameDetail);
+            }
+            cursor++;
+        }
+        return cursor;
+    }
+
+    private long iteratorClass(long page,long count,Iterator<GameRank> iterator,String typeName,List<GameDetail> list){
+        while (iterator.hasNext()){
+            GameRank gameRank=iterator.next();
+            if (typeService.isExists(gameRank.getType(),typeName) && list.size()<RANK_SIZE){
+                if (count>=page*RANK_SIZE && count<page*RANK_SIZE+RANK_SIZE){
+                    GameDetail gameDetail=((GameService)applicationContext.getBean("gameService")).findGameById(gameRank.getId());
+                    list.add(gameDetail);
+                }
+                count++;
+            }
+        }
+        return count;
     }
 
 //    private List<GameDetail> indexGameToGameDetail(List<Game> gameList){

@@ -104,6 +104,18 @@ public class GameController {
         return JSON.toJSONString(ResultMsg.SUCCESS(gameService.findGamesUpComingByType(typeName,page)));
     }
 
+    @ResponseBody
+    @RequestMapping("issued/classGame/{typeName}")
+    public String findGamesIssuedSumByType(@PathVariable("typeName")String typeName){
+        return JSON.toJSONString(ResultMsg.SUCCESS(gameService.findGamesSumByType(typeName)));
+    }
+
+    @ResponseBody
+    @RequestMapping("upComing/classGame/{typeName}")
+    public String findGamesUpComingSumByType(@PathVariable("typeName")String typeName){
+        return JSON.toJSONString(ResultMsg.SUCCESS(gameService.findGamesUpComingSumByType(typeName)));
+    }
+
 
 
 

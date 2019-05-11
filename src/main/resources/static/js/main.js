@@ -21,6 +21,15 @@ var steam=
         detailRight:$('#highlight_slider_right'),
         detailTimer:null,
 
+        classNewReleasePrev:$('#NewReleases_btn_prev'),
+        classNewReleaseNext:$('#NewReleases_btn_next'),
+
+        classHotSellPre:$('#TopSellers_btn_prev'),
+        classHotSellNext:$('#TopSellers_btn_next'),
+        //ComingSoon_ctn
+        classUpComingPre:$('#ComingSoon_btn_prev'),
+        classUpComingNext:$('#ComingSoon_btn_next'),
+
         init:function() {
             var that = this;
             this.showFeturedData();
@@ -29,9 +38,9 @@ var steam=
             this.showTopSellerData(that);
             this.showUpComingData(that);
             this.showClassCarouselData('动作');
-            this.showClassNewRelease('动作');
-            this.showClassHotSell('动作',that);
-            this.showClassupComing('动作',that);
+            this.ClassNewReleaseGameLoadMore('动作',that);
+            this.classHotSellGameLoadMore('动作',that);
+            this.classUpComingGameLoadMore('动作',that);
 
             this.featuredLeft.click(function () {
                 that.featuredLeftCarouselLeft();
@@ -51,6 +60,63 @@ var steam=
             this.classRight.click(function () {
                 that.classRightCarousel();
             });
+            this.classNewReleasePrev.click(function () {
+                var page=$('#NewReleases_ctn')[0].getAttribute('page-id');
+                page=parseInt(page);
+                if (page-1<0){
+                    layer.msg('不能再向前了')
+                }else {
+                    page--;
+                    $('#NewReleases_ctn')[0].setAttribute('page-id',page);
+                    that.ClassNewReleaseGameLoadMore('动作',that);
+                }
+            });
+            this.classNewReleaseNext.click(function () {
+                var page=$('#NewReleases_ctn')[0].getAttribute('page-id');
+                page=parseInt(page);
+                page++;
+                $('#NewReleases_ctn')[0].setAttribute('page-id',page);
+                that.ClassNewReleaseGameLoadMore('动作',that);
+            });
+
+            this.classHotSellPre.click(function () {
+                var page=$('#TopSellers_ctn')[0].getAttribute('page-id');
+                page=parseInt(page);
+                if (page-1<0){
+                    layer.msg('不能再向前了')
+                }else {
+                    page--;
+                    $('#TopSellers_ctn')[0].setAttribute('page-id',page);
+                    that.classHotSellGameLoadMore('动作',that);
+                }
+            });
+            this.classHotSellNext.click(function () {
+                var page=$('#TopSellers_ctn')[0].getAttribute('page-id');
+                page=parseInt(page);
+                page++;
+                $('#TopSellers_ctn')[0].setAttribute('page-id',page);
+                that.classHotSellGameLoadMore('动作',that);
+            });
+
+            this.classUpComingPre.click(function () {
+                var page=$('#ComingSoon_ctn')[0].getAttribute('page-id');
+                page=parseInt(page);
+                if (page-1<0){
+                    layer.msg('不能再向前了')
+                }else {
+                    page--;
+                    $('#ComingSoon_ctn')[0].setAttribute('page-id',page);
+                    that.classUpComingGameLoadMore('动作',that);
+                }
+            });
+
+            this.classUpComingNext.click(function () {
+                var page=$('#ComingSoon_ctn')[0].getAttribute('page-id');
+                page=parseInt(page);
+                page++;
+                $('#ComingSoon_ctn')[0].setAttribute('page-id',page);
+                that.classUpComingGameLoadMore('动作',that);
+            });
             this.featuredLeftCarouselStart(that);
             //console.log(this.timer);
             this.mouseFeturedCarouselPause(that);
@@ -58,7 +124,6 @@ var steam=
             this.mouseTabPause(that);
             this.classCarouselStart(that);
             this.mouseClassCarouselPause(that);
-            this.mouseClassListPause(that);
         },
 
         initDetail:function(){
@@ -73,6 +138,96 @@ var steam=
             this.detailCarouselStart(that);
             this.mouseDetailPause(that);
             this.scrollLoadComment(that);
+        },
+
+        classUpComingGameLoadMore:function(type,that){
+            var page=$('#ComingSoon_ctn')[0].getAttribute('page-id');
+            page=parseInt(page);
+            var sum=null;
+            $.ajax({
+                url:"upComing/classGame/"+type,
+                type:"POST",
+                async:false,
+                success:function (data) {
+                    data=eval("("+data+")");
+                    if (data.code==200){
+                        sum=data.msg;
+                    }
+                }
+            });
+            var start=page*10+1;
+            var end=page*10+10>sum?sum:page*10+10;
+            var pageSum=Math.ceil(sum/10)-1;
+            if (page>pageSum){
+                layer.msg('不能再往后了')
+                var temp=page-1;
+                $('#ComingSoon_ctn')[0].setAttribute('page-id',temp);
+            }else {
+                $('#ComingSoon_start')[0].innerHTML=start;
+                $('#ComingSoon_end')[0].innerHTML=end;
+                $('#ComingSoon_total')[0].innerHTML=sum;
+                that.showClassupComing(type,page,that);
+            }
+        },
+
+        classHotSellGameLoadMore:function(type,that){
+            var page=$('#TopSellers_ctn')[0].getAttribute('page-id');
+            page=parseInt(page);
+            var sum=null;
+            $.ajax({
+                url:"issued/classGame/"+type,
+                type:"POST",
+                async:false,
+                success:function (data) {
+                    data=eval("("+data+")");
+                    if (data.code==200){
+                        sum=data.msg;
+                    }
+                }
+            });
+            var start=page*10+1;
+            var end=page*10+10>sum?sum:page*10+10;
+            var pageSum=Math.ceil(sum/10)-1;
+            if (page>pageSum){
+                layer.msg('不能再往后了')
+                var temp=page-1;
+                $('#TopSellers_ctn')[0].setAttribute('page-id',temp);
+            }else {
+                $('#TopSellers_start')[0].innerHTML=start;
+                $('#TopSellers_end')[0].innerHTML=end;
+                $('#TopSellers_total')[0].innerHTML=sum;
+                that.showClassHotSell(type,page,that);
+            }
+        },
+
+         ClassNewReleaseGameLoadMore:function(type,that){
+            var page=$('#NewReleases_ctn')[0].getAttribute('page-id');
+            page=parseInt(page);
+            var sum=null;
+            $.ajax({
+                url:"issued/classGame/"+type,
+                type:"POST",
+                async:false,
+                success:function (data) {
+                    data=eval("("+data+")");
+                    if (data.code==200){
+                        sum=data.msg;
+                    }
+                }
+            });
+            var start=page*10+1;
+            var end=page*10+10>sum?sum:page*10+10;
+            var pageSum=Math.ceil(sum/10)-1;
+            if (page>pageSum){
+                layer.msg('不能再往后了')
+                var temp=page-1;
+                $('#NewReleases_ctn')[0].setAttribute('page-id',temp);
+            }else {
+                $('#NewReleases_start')[0].innerHTML=start;
+                $('#NewReleases_end')[0].innerHTML=end;
+                $('#NewReleases_total')[0].innerHTML=sum;
+                that.showClassNewRelease(type,page,that);
+            }
         },
 
         recentCommentLoad:function(){
@@ -414,9 +569,9 @@ var steam=
             })
         },
 
-        showClassupComing:function(typeName,that){
+        showClassupComing:function(typeName,page,that){
             $.ajax({
-                url:"/classGame/upComing/"+typeName,
+                url:"/classGame/upComing/"+typeName+"/"+page,
                 type:"POST",
                 async:true,
                 success:function (data) {
@@ -457,7 +612,7 @@ var steam=
                         parent.append(tab_item_cap,discount,tab_item_content,lastItem);
                         $('#ComingSoonRows').append(parent);
                     }
-                    that.mouseClassListPause(that);
+                    that.mouseClassUpComingListPause(that);
                 },
                 error:function () {
                     layer.msg("网络错误");
@@ -465,9 +620,9 @@ var steam=
             })
         },
 
-        showClassHotSell:function(typeName,that){
+        showClassHotSell:function(typeName,page,that){
             $.ajax({
-                url:"/classGame/hotSell/"+typeName,
+                url:"/classGame/hotSell/"+typeName+"/"+page,
                 type:"POST",
                 async:true,
                 success:function (data) {
@@ -508,7 +663,7 @@ var steam=
                         parent.append(tab_item_cap,discount,tab_item_content,lastItem);
                         $('#TopSellersRows').append(parent);
                     }
-                    that.mouseClassListPause(that);
+                    that.mouseClassHotSellListPause(that);
 
                 },
                 error:function () {
@@ -517,9 +672,9 @@ var steam=
             })
         },
 
-        showClassNewRelease:function(typeName){
+        showClassNewRelease:function(typeName,page,that){
             $.ajax({
-                url:"/classGame/newRelease/"+typeName,
+                url:"/classGame/newRelease/"+typeName+"/"+page,
                 type:"POST",
                 async:false,
                 success:function (data) {
@@ -560,6 +715,7 @@ var steam=
                         parent.append(tab_item_cap,discount,tab_item_content,lastItem);
                         $('#NewReleasesRows').append(parent);
                     }
+                    that.mouseClassNewReleaseListPause(that);
 
                 },
                 error:function () {
@@ -678,7 +834,7 @@ var steam=
 
         showNewReleaseData:function(that){
             $.ajax({
-                url:"/newRelease_index",
+                url:"/newRelease_index/0",
                 type:"POST",
                 async:false,
                 success:function (data) {
@@ -752,7 +908,7 @@ var steam=
 
         showTopSellerData:function(th){
             $.ajax({
-                url:"/hotSell_index",
+                url:"/hotSell_index/0",
                 type:"POST",
                 success:function (data) {
                     data=eval("("+data+")");
@@ -821,7 +977,7 @@ var steam=
 
         showUpComingData:function(th){
             $.ajax({
-                url:"/upComing_index",
+                url:"/upComing_index/0",
                 type:"POST",
                 success:function (data) {
                     data=eval("("+data+")");
@@ -1146,20 +1302,62 @@ var steam=
             detailValue--;
         },
 
-        mouseClassListPause:function(that){
+        mouseClassHotSellListPause:function(that){
             var height=null;
-            $('#mouseClassListPause div div div>a[class *="tab_item"]').hover(function () {
+            $('#TopSellersRows a').hover(function () {
                 var appId=$(this)[0].getAttribute('appId');
                 that.showClassLayerData(appId);
                 var newStyle=$('#global_hover')[0].getAttribute('style').replace('display: none;','display: block;');
                 $('#global_hover')[0].setAttribute('style',newStyle);
-                var index=$('#mouseClassListPause div div div>a[class *="tab_item"]').index(this);
+                var index=$('#TopSellersRows a').index(this);
+                console.log(index)
                 height=(index%10)*74+664;
                 //top: 664px;
                 height='top: '+height+'px;';
                 newStyle=$('#global_hover')[0].getAttribute('style').replace('top: 664px;',height);
                 $('#global_hover')[0].setAttribute('style',newStyle);
+            },function () {
+                var newStyle=$('#global_hover')[0].getAttribute('style').replace('display: block;','display: none;');
+                newStyle=newStyle.replace(height,'top: 664px;');
+                $('#global_hover')[0].setAttribute('style',newStyle);
+            });
+        },
 
+        mouseClassNewReleaseListPause:function(that){
+            var height=null;
+            $('#NewReleasesRows a').hover(function () {
+                var appId=$(this)[0].getAttribute('appId');
+                that.showClassLayerData(appId);
+                var newStyle=$('#global_hover')[0].getAttribute('style').replace('display: none;','display: block;');
+                $('#global_hover')[0].setAttribute('style',newStyle);
+                var index=$('#NewReleasesRows a').index(this);
+                console.log(index)
+                height=(index%10)*74+664;
+                //top: 664px;
+                height='top: '+height+'px;';
+                newStyle=$('#global_hover')[0].getAttribute('style').replace('top: 664px;',height);
+                $('#global_hover')[0].setAttribute('style',newStyle);
+            },function () {
+                var newStyle=$('#global_hover')[0].getAttribute('style').replace('display: block;','display: none;');
+                newStyle=newStyle.replace(height,'top: 664px;');
+                $('#global_hover')[0].setAttribute('style',newStyle);
+            });
+        },
+
+        mouseClassUpComingListPause:function(that){
+            var height=null;
+            $('#ComingSoonRows a').hover(function () {
+                var appId=$(this)[0].getAttribute('appId');
+                that.showClassLayerData(appId);
+                var newStyle=$('#global_hover')[0].getAttribute('style').replace('display: none;','display: block;');
+                $('#global_hover')[0].setAttribute('style',newStyle);
+                var index=$('#ComingSoonRows a').index(this);
+                console.log(index)
+                height=(index%10)*74+664;
+                //top: 664px;
+                height='top: '+height+'px;';
+                newStyle=$('#global_hover')[0].getAttribute('style').replace('top: 664px;',height);
+                $('#global_hover')[0].setAttribute('style',newStyle);
             },function () {
                 var newStyle=$('#global_hover')[0].getAttribute('style').replace('display: block;','display: none;');
                 newStyle=newStyle.replace(height,'top: 664px;');

@@ -31,6 +31,10 @@ import java.util.Set;
 @Service
 public class CommentService implements InitializingBean{
 
+    private final static long RECENT_CONMENT_SIZE=6;
+
+    private final static long POPULAR_COMMENT_SIZE=5;
+
     Logger log= LoggerFactory.getLogger(CommentService.class);
 
     @Autowired
@@ -85,25 +89,23 @@ public class CommentService implements InitializingBean{
     }
 
     /**
-     * 根据页号查询该游戏下最近的评论（每页5条评论）
-     * @param index
+     * 根据页号查询该游戏下最近的评论（每页6条评论）
+     * @param page
      * @param gameId
      * @return
      */
-    public List<CommentDetail> findRangeCommentDetailByTime(long index,long gameId){
-        List<CommentDetail> commentDetailList=new LinkedList<>();
-        long startIter=index*6;
-        long endIter=startIter+6;
+    public List<CommentDetail> findRangeCommentDetailByTime(long page,long gameId){
         long count=0;
-        int cursor=0;
+        long cursor=0;
+        List<CommentDetail> commentDetailList=new LinkedList<>();
         int sum=((CommentService)applicationContext.getBean("commentService")).findCommentSum();
         while (cursor<sum){
             Set<CommentRank> commentRankSet=redisService.zrange(CommentKey.COMMENT_RANK_TIME,CommentKey.COMMENT_RANK_TIME_KEY,cursor,cursor+100,CommentRank.class);
             Iterator<CommentRank> iterator=commentRankSet.iterator();
             while (iterator.hasNext()){
                 CommentRank commentRank=iterator.next();
-                if ( commentRank.getGameId()==gameId && commentDetailList.size()<6 ){
-                    if (count>=startIter && count<endIter){
+                if ( commentRank.getGameId()==gameId && commentDetailList.size()<RECENT_CONMENT_SIZE ){
+                    if (count>=page*RECENT_CONMENT_SIZE && count<page*RECENT_CONMENT_SIZE+RECENT_CONMENT_SIZE){
                         CommentDetail commentDetail=((CommentService)applicationContext.getBean("commentService")).findCommentDetailById(commentRank.getId());
                         commentDetailList.add(commentDetail);
                     }
@@ -117,24 +119,22 @@ public class CommentService implements InitializingBean{
 
     /**
      * 根据页号查询该游戏下点赞最多的评论（每页5条评论）
-     * @param index
+     * @param page
      * @param gameId
      * @return
      */
-    public List<CommentDetail> findRangeCommentDetailByZanNum(long index,long gameId){
-        List<CommentDetail> commentDetailList=new LinkedList<>();
-        long startIter=index*5;
-        long endIter=startIter+5;
+    public List<CommentDetail> findRangeCommentDetailByZanNum(long page,long gameId){
         long count=0;
-        int cursor=0;
+        long cursor=0;
+        List<CommentDetail> commentDetailList=new LinkedList<>();
         int sum=((CommentService)applicationContext.getBean("commentService")).findCommentSum();
         while (cursor<sum){
             Set<CommentRank> commentRankSet=redisService.zrange(CommentKey.COMMENT_RANK_ZANNUM,CommentKey.COMMENT_RANK_ZANNUM_KEY,cursor,cursor+100,CommentRank.class);
             Iterator<CommentRank> iterator=commentRankSet.iterator();
             while (iterator.hasNext()){
                 CommentRank commentRank=iterator.next();
-                if ( commentRank.getGameId()==gameId && commentDetailList.size()<5 ){
-                    if (count>=startIter && count<endIter){
+                if ( commentRank.getGameId()==gameId && commentDetailList.size()<POPULAR_COMMENT_SIZE){
+                    if (count>=page*POPULAR_COMMENT_SIZE && count<page*POPULAR_COMMENT_SIZE+POPULAR_COMMENT_SIZE){
                         CommentDetail commentDetail=((CommentService)applicationContext.getBean("commentService")).findCommentDetailById(commentRank.getId());
                         commentDetailList.add(commentDetail);
                     }

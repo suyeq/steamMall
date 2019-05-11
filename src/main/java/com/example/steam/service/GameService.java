@@ -61,6 +61,52 @@ public class GameService implements InitializingBean {
     CommentService commentService;
 
     /**
+     * 该类型的游戏总数
+     * @param typeName
+     * @return
+     */
+    public long findGamesSumByType(String typeName){
+        long cursor=0;
+        long count=0;
+        long sum=redisService.zcount(GameKey.RANK_TIME,GameKey.GAME_RANK_TIME);
+        while (cursor<sum){
+            Set<GameRank> gameRanks=redisService.zrange(GameKey.RANK_TIME,GameKey.GAME_RANK_TIME,cursor,cursor+100,GameRank.class);
+            Iterator<GameRank> iterator=gameRanks.iterator();
+            while (iterator.hasNext()){
+                GameRank gameRank=iterator.next();
+                if (typeService.isExists(gameRank.getType(),typeName)){
+                    count++;
+                }
+            }
+            cursor+=100;
+        }
+        return count;
+    }
+
+    /**
+     * 该类型的未发售的游戏总数
+     * @param typeName
+     * @return
+     */
+    public long findGamesUpComingSumByType(String typeName){
+        long cursor=0;
+        long count=0;
+        long sum=redisService.zcount(GameKey.RANK_UPCOMING,GameKey.GAME_RANK_UPCOMING);
+        while (cursor<sum){
+            Set<GameRank> gameRanks=redisService.zrange(GameKey.RANK_UPCOMING,GameKey.GAME_RANK_UPCOMING,cursor,cursor+100,GameRank.class);
+            Iterator<GameRank> iterator=gameRanks.iterator();
+            while (iterator.hasNext()){
+                GameRank gameRank=iterator.next();
+                if (typeService.isExists(gameRank.getType(),typeName)){
+                    count++;
+                }
+            }
+            cursor+=100;
+        }
+        return count;
+    }
+
+    /**
      * 随机10个游戏置于分类推荐
      * @param typeName
      * @return

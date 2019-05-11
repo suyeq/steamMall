@@ -37,11 +37,6 @@ var steam=
             this.showNewReleaseData(that);
             this.showTopSellerData(that);
             this.showUpComingData(that);
-            this.showClassCarouselData('动作');
-            this.ClassNewReleaseGameLoadMore('动作',that);
-            this.classHotSellGameLoadMore('动作',that);
-            this.classUpComingGameLoadMore('动作',that);
-
             this.featuredLeft.click(function () {
                 that.featuredLeftCarouselLeft();
             });
@@ -54,6 +49,34 @@ var steam=
             this.specialRight.click(function () {
                 that.specialRightCarousel();
             });
+
+            this.featuredLeftCarouselStart(that);
+            //console.log(this.timer);
+            this.mouseFeturedCarouselPause(that);
+            this.mouseChangeImage();
+            this.mouseTabPause(that);
+        },
+
+        initDetail:function(){
+            var that=this;
+            this.showGameDetail(that);
+            this.detailLeft.click(function () {
+                that.detailCarouselLeft();
+            });
+            this.detailRight.click(function () {
+                that.detailCarouselRight();
+            });
+            this.detailCarouselStart(that);
+            this.mouseDetailPause(that);
+            this.scrollLoadComment(that);
+        },
+
+        initClass:function(){
+            var that=this;
+            this.showClassCarouselData('动作');
+            this.classNewReleaseGameLoadMore('动作',that);
+            this.classHotSellGameLoadMore('动作',that);
+            this.classUpComingGameLoadMore('动作',that);
             this.classLeft.click(function () {
                 that.classLeftCarousel();
             });
@@ -68,7 +91,7 @@ var steam=
                 }else {
                     page--;
                     $('#NewReleases_ctn')[0].setAttribute('page-id',page);
-                    that.ClassNewReleaseGameLoadMore('动作',that);
+                    that.classNewReleaseGameLoadMore('动作',that);
                 }
             });
             this.classNewReleaseNext.click(function () {
@@ -76,7 +99,7 @@ var steam=
                 page=parseInt(page);
                 page++;
                 $('#NewReleases_ctn')[0].setAttribute('page-id',page);
-                that.ClassNewReleaseGameLoadMore('动作',that);
+                that.classNewReleaseGameLoadMore('动作',that);
             });
 
             this.classHotSellPre.click(function () {
@@ -117,27 +140,8 @@ var steam=
                 $('#ComingSoon_ctn')[0].setAttribute('page-id',page);
                 that.classUpComingGameLoadMore('动作',that);
             });
-            this.featuredLeftCarouselStart(that);
-            //console.log(this.timer);
-            this.mouseFeturedCarouselPause(that);
-            this.mouseChangeImage();
-            this.mouseTabPause(that);
             this.classCarouselStart(that);
             this.mouseClassCarouselPause(that);
-        },
-
-        initDetail:function(){
-            var that=this;
-            this.showGameDetail(that);
-            this.detailLeft.click(function () {
-                that.detailCarouselLeft();
-            });
-            this.detailRight.click(function () {
-                that.detailCarouselRight();
-            });
-            this.detailCarouselStart(that);
-            this.mouseDetailPause(that);
-            this.scrollLoadComment(that);
         },
 
         classUpComingGameLoadMore:function(type,that){
@@ -200,7 +204,8 @@ var steam=
             }
         },
 
-         ClassNewReleaseGameLoadMore:function(type,that){
+         classNewReleaseGameLoadMore:function(type,that){
+            console.log(1)
             var page=$('#NewReleases_ctn')[0].getAttribute('page-id');
             page=parseInt(page);
             var sum=null;
@@ -215,6 +220,7 @@ var steam=
                     }
                 }
             });
+             console.log(2)
             var start=page*10+1;
             var end=page*10+10>sum?sum:page*10+10;
             var pageSum=Math.ceil(sum/10)-1;
@@ -673,6 +679,7 @@ var steam=
         },
 
         showClassNewRelease:function(typeName,page,that){
+            console.log(3)
             $.ajax({
                 url:"/classGame/newRelease/"+typeName+"/"+page,
                 type:"POST",
@@ -722,6 +729,7 @@ var steam=
                     layer.msg("网络错误");
                 }
             })
+            console.log(4)
         },
 
         showClassCarouselData:function(typeName){
@@ -893,7 +901,24 @@ var steam=
                         parent.append(child1,child2,child3,child4);
                         $('#tab_newreleases_content').append(parent);
                     }
-                    var seeMore='<div class="tab_see_more">查看更多： <a href="#" class="btnv6_white_transparent btn_small_tall"><span>新品</span></a></div>'
+                    var seeMore='<div class="tab_see_more">\n' +
+                        '                                <div id="NewReleases_no_results" class="paged_items_no_results"\n' +
+                        '                                     style="display: none">\n' +
+                        '                                    未找到结果\n' +
+                        '                                </div>\n' +
+                        '                                <div id="NewReleases_ctn" class="paged_items_paging" style="" page-id="0">\n' +
+                        '                                    <div class="paged_items_paging_summary ellipsis">\n' +
+                        '                                        正在显示第 <span id="NewReleases_start">1</span> - <span\n' +
+                        '                                            id="NewReleases_end">15</span> 个，共 <span\n' +
+                        '                                            id="NewReleases_total">482</span> 个结果\n' +
+                        '                                    </div>\n' +
+                        '                                    <div class="paged_items_paging_controls" id="NewReleases_controls">\n' +
+                        '                                        <span id="NewReleases_btn_prev" class="pagebtn">&lt;</span>\n' +
+                        '                                        <span id="NewReleases_btn_next" class="pagebtn">&gt;</span>\n' +
+                        '                                    </div>\n' +
+                        '                                    <div style="clear: both;"></div>\n' +
+                        '                                </div>\n' +
+                        '                            </div>'
                     $('#tab_newreleases_content').append(seeMore);
                     var flag='#tab_app_'+data.msg[0].id;
                     if ($(flag).length==0){

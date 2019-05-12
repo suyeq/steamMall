@@ -61,6 +61,22 @@ public class GameService implements InitializingBean {
     CommentService commentService;
 
     /**
+     * 找出已发布的所有游戏总数
+     * @return
+     */
+    public long findIssuedGamesSum(){
+        return redisService.zcount(GameKey.RANK_TIME,GameKey.GAME_RANK_TIME);
+    }
+
+    /**
+     * 未发布的所有游戏总数
+     * @return
+     */
+    public long findUpComingGamesSum(){
+        return redisService.zcount(GameKey.RANK_UPCOMING,GameKey.GAME_RANK_UPCOMING);
+    }
+
+    /**
      * 该类型的游戏总数
      * @param typeName
      * @return

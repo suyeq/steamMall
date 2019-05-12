@@ -116,6 +116,18 @@ public class GameController {
         return JSON.toJSONString(ResultMsg.SUCCESS(gameService.findGamesUpComingSumByType(typeName)));
     }
 
+    @ResponseBody
+    @RequestMapping("/issued/sum")
+    public String findIssuedGameSum(){
+        return JSON.toJSONString(ResultMsg.SUCCESS(gameService.findIssuedGamesSum()));
+    }
+
+    @ResponseBody
+    @RequestMapping("/upcoming/sum")
+    public String findUpComingGameSum(){
+        return JSON.toJSONString(ResultMsg.SUCCESS(gameService.findUpComingGamesSum()));
+    }
+
 
 
 

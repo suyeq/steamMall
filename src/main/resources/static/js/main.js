@@ -30,13 +30,24 @@ var steam=
         classUpComingPre:$('#ComingSoon_btn_prev'),
         classUpComingNext:$('#ComingSoon_btn_next'),
 
+        newReleaseIndexPre:$('#NewReleases_index_btn_prev'),
+        newReleaseIndexNext:$('#NewReleases_index_btn_next'),
+
+        hotSellIndexPre:$('#HotSell_index_btn_prev'),
+        hotSellIndexNext:$('#HotSell_index_btn_next'),
+
+        upComingIndexPre:$('#UpComing_index_btn_prev'),
+        upComingIndexNext:$('#UpComing_index_btn_next'),
+
+
+
         init:function() {
             var that = this;
             this.showFeturedData();
             this.showSpecialData();
-            this.showNewReleaseData(that);
-            this.showTopSellerData(that);
-            this.showUpComingData(that);
+            this.newReleaseGameLoadMore(that);
+            this.hotSellGameLoadMore(that);
+            this.upComingGameLoadMore(that);
             this.featuredLeft.click(function () {
                 that.featuredLeftCarouselLeft();
             });
@@ -49,12 +60,67 @@ var steam=
             this.specialRight.click(function () {
                 that.specialRightCarousel();
             });
+            this.newReleaseIndexPre.click(function () {
+                var page=$('#NewReleases_index')[0].getAttribute('page-id');
+                page=parseInt(page);
+                if (page-1<0){
+                    layer.msg('不能再往前了');
+                }else{
+                    page--;
+                    $('#NewReleases_index')[0].setAttribute('page-id',page);
+                    that.newReleaseGameLoadMore(that);
+                }
+            });
+            this.newReleaseIndexNext.click(function () {
+                var page=$('#NewReleases_index')[0].getAttribute('page-id');
+                page=parseInt(page);
+                page++;
+                $('#NewReleases_index')[0].setAttribute('page-id',page);
+                that.newReleaseGameLoadMore(that);
+            });
+
+            this.hotSellIndexPre.click(function () {
+                var page=$('#HotSell_index')[0].getAttribute('page-id');
+                page=parseInt(page);
+                if (page-1<0){
+                    layer.msg('不能再往前了');
+                }else{
+                    page--;
+                    $('#HotSell_index')[0].setAttribute('page-id',page);
+                    that.hotSellGameLoadMore(that);
+                }
+            });
+            this.hotSellIndexNext.click(function () {
+                var page=$('#HotSell_index')[0].getAttribute('page-id');
+                page=parseInt(page);
+                page++;
+                $('#HotSell_index')[0].setAttribute('page-id',page);
+                that.hotSellGameLoadMore(that);
+            });
+
+            this.upComingIndexPre.click(function () {
+                var page=$('#UpComing_index')[0].getAttribute('page-id');
+                page=parseInt(page);
+                if (page-1<0){
+                    layer.msg('不能再往前了');
+                }else{
+                    page--;
+                    $('#UpComing_index')[0].setAttribute('page-id',page);
+                    that.upComingGameLoadMore(that);
+                }
+            });
+            this.upComingIndexNext.click(function () {
+                var page=$('#UpComing_index')[0].getAttribute('page-id');
+                page=parseInt(page);
+                page++;
+                $('#UpComing_index')[0].setAttribute('page-id',page);
+                that.upComingGameLoadMore(that);
+            });
 
             this.featuredLeftCarouselStart(that);
             //console.log(this.timer);
             this.mouseFeturedCarouselPause(that);
             this.mouseChangeImage();
-            this.mouseTabPause(that);
         },
 
         initDetail:function(){
@@ -132,7 +198,6 @@ var steam=
                     that.classUpComingGameLoadMore('动作',that);
                 }
             });
-
             this.classUpComingNext.click(function () {
                 var page=$('#ComingSoon_ctn')[0].getAttribute('page-id');
                 page=parseInt(page);
@@ -140,8 +205,90 @@ var steam=
                 $('#ComingSoon_ctn')[0].setAttribute('page-id',page);
                 that.classUpComingGameLoadMore('动作',that);
             });
+
             this.classCarouselStart(that);
             this.mouseClassCarouselPause(that);
+        },
+
+        upComingGameLoadMore:function(that){
+            var page=$('#UpComing_index')[0].getAttribute('page-id');
+            var sum=null;
+            $.ajax({
+                url:"/upcoming/sum",
+                type:"POST",
+                async:false,
+                success:function (data) {
+                    data=eval("("+data+")");
+                    sum=data.msg;
+                }
+            });
+            var start=page*10+1;
+            var end=page*10+10>sum?sum:page*10+10;
+            var pageSum=Math.ceil(sum/10)-1;
+            if (page>pageSum){
+                layer.msg('不能再往后了')
+                var temp=page-1;
+                $('#UpComing_index')[0].setAttribute('page-id',temp);
+            }else {
+                $('#UpComing_index_start')[0].innerHTML=start;
+                $('#UpComing_index_end')[0].innerHTML=end;
+                $('#UpComing_index_total')[0].innerHTML=sum;
+                that.showUpComingData(page,that);
+            }
+        },
+
+        hotSellGameLoadMore:function(that){
+            var page=$('#HotSell_index')[0].getAttribute('page-id');
+            var sum=null;
+            $.ajax({
+                url:"/issued/sum",
+                type:"POST",
+                async:false,
+                success:function (data) {
+                    data=eval("("+data+")");
+                    sum=data.msg;
+                }
+            });
+            var start=page*10+1;
+            var end=page*10+10>sum?sum:page*10+10;
+            var pageSum=Math.ceil(sum/10)-1;
+            if (page>pageSum){
+                layer.msg('不能再往后了')
+                var temp=page-1;
+                $('#HotSell_index')[0].setAttribute('page-id',temp);
+            }else {
+                $('#HotSell_index_start')[0].innerHTML=start;
+                $('#HotSell_index_end')[0].innerHTML=end;
+                $('#HotSell_index_total')[0].innerHTML=sum;
+                that.showTopSellerData(page,that);
+            }
+        },
+
+        newReleaseGameLoadMore:function(that){
+          var page=$('#NewReleases_index')[0].getAttribute('page-id');
+          var sum=null;
+          $.ajax({
+              url:"/issued/sum",
+              type:"POST",
+              async:false,
+              success:function (data) {
+                  data=eval("("+data+")");
+                  sum=data.msg;
+              }
+          });
+            var start=page*10+1;
+            var end=page*10+10>sum?sum:page*10+10;
+            var pageSum=Math.ceil(sum/10)-1;
+            if (page>pageSum){
+                layer.msg('不能再往后了')
+                var temp=page-1;
+                $('#NewReleases_index')[0].setAttribute('page-id',temp);
+            }else {
+                $('#NewReleases_index_start')[0].innerHTML=start;
+                $('#NewReleases_index_end')[0].innerHTML=end;
+                $('#NewReleases_index_total')[0].innerHTML=sum;
+                that.showNewReleaseData(page,that);
+            }
         },
 
         classUpComingGameLoadMore:function(type,that){
@@ -840,14 +987,14 @@ var steam=
             })
         },
 
-        showNewReleaseData:function(that){
+        showNewReleaseData:function(page,that){
             $.ajax({
-                url:"/newRelease_index/0",
+                url:"/newRelease_index/"+page,
                 type:"POST",
                 async:false,
                 success:function (data) {
                     data=eval("("+data+")");
-                    $('#tab_newreleases_content').empty();
+                    $('#newReleaseRow').empty();
                     for (var i=0;i<data.msg.length;i++){
                         var parent='<a href="'
                         parent+='/app/'+data.msg[i].id+'"';
@@ -899,31 +1046,13 @@ var steam=
                         child3=$(child3);
                         child4=$(child4);
                         parent.append(child1,child2,child3,child4);
-                        $('#tab_newreleases_content').append(parent);
+                        $('#newReleaseRow').append(parent);
                     }
-                    var seeMore='<div class="tab_see_more">\n' +
-                        '                                <div id="NewReleases_no_results" class="paged_items_no_results"\n' +
-                        '                                     style="display: none">\n' +
-                        '                                    未找到结果\n' +
-                        '                                </div>\n' +
-                        '                                <div id="NewReleases_ctn" class="paged_items_paging" style="" page-id="0">\n' +
-                        '                                    <div class="paged_items_paging_summary ellipsis">\n' +
-                        '                                        正在显示第 <span id="NewReleases_start">1</span> - <span\n' +
-                        '                                            id="NewReleases_end">15</span> 个，共 <span\n' +
-                        '                                            id="NewReleases_total">482</span> 个结果\n' +
-                        '                                    </div>\n' +
-                        '                                    <div class="paged_items_paging_controls" id="NewReleases_controls">\n' +
-                        '                                        <span id="NewReleases_btn_prev" class="pagebtn">&lt;</span>\n' +
-                        '                                        <span id="NewReleases_btn_next" class="pagebtn">&gt;</span>\n' +
-                        '                                    </div>\n' +
-                        '                                    <div style="clear: both;"></div>\n' +
-                        '                                </div>\n' +
-                        '                            </div>'
-                    $('#tab_newreleases_content').append(seeMore);
                     var flag='#tab_app_'+data.msg[0].id;
                     if ($(flag).length==0){
                         that.showGameDetailLayer(data.msg[0].id);
                     }
+                    that.mouseNewReleasePause(that);
                 },
                 error:function () {
                     layer.msg("网络错误");
@@ -931,13 +1060,13 @@ var steam=
             });
         },
 
-        showTopSellerData:function(th){
+        showTopSellerData:function(page,th){
             $.ajax({
-                url:"/hotSell_index/0",
+                url:"/hotSell_index/"+page,
                 type:"POST",
                 success:function (data) {
                     data=eval("("+data+")");
-                    $('#tab_topsellers_content').empty();
+                    $('#hotSellRow').empty();
                     for (var i=0;i<data.msg.length;i++){
                         var parent='<a href="'
                         parent+='/app/'+data.msg[i].id+'"';
@@ -988,11 +1117,11 @@ var steam=
                         child3=$(child3);
                         child4=$(child4);
                         parent.append(child1,child2,child3,child4);
-                        $('#tab_topsellers_content').append(parent);
+                        $('#hotSellRow').append(parent);
                     }
-                    var seeMore='<div class="tab_see_more">查看更多： <a href="#" class="btnv6_white_transparent btn_small_tall"><span>热销商品</span></a></div>'
-                    $('#tab_topsellers_content').append(seeMore);
-                    th.mouseTabPause(th);
+                    // var seeMore='<div class="tab_see_more">查看更多： <a href="#" class="btnv6_white_transparent btn_small_tall"><span>热销商品</span></a></div>'
+                    // $('#tab_topsellers_content').append(seeMore);
+                    th.mouseHotSellPause(th);
                 },
                 error:function () {
                     layer.msg("网络错误");
@@ -1000,13 +1129,13 @@ var steam=
             });
         },
 
-        showUpComingData:function(th){
+        showUpComingData:function(page,th){
             $.ajax({
-                url:"/upComing_index/0",
+                url:"/upComing_index/"+page,
                 type:"POST",
                 success:function (data) {
                     data=eval("("+data+")");
-                    $('#tab_upcoming_content').empty();
+                    $('#upComingRow').empty();
                     for (var i=0;i<data.msg.length;i++){
                         var parent='<a href="'
                         parent+='/app/'+data.msg[i].id+'"';
@@ -1057,11 +1186,11 @@ var steam=
                         child3=$(child3);
                         child4=$(child4);
                         parent.append(child1,child2,child3,child4);
-                        $('#tab_upcoming_content').append(parent);
+                        $('#upComingRow').append(parent);
                     }
-                    var seeMore='<div class="tab_see_more">查看更多： <a href="#" class="btnv6_white_transparent btn_small_tall"><span>即将推出</span></a></div>'
-                    $('#tab_upcoming_content').append(seeMore);
-                    th.mouseTabPause(th);
+                    // var seeMore='<div class="tab_see_more">查看更多： <a href="#" class="btnv6_white_transparent btn_small_tall"><span>即将推出</span></a></div>'
+                    // $('#tab_upcoming_content').append(seeMore);
+                    th.mouseUpComingPause(th);
                 },
                 error:function () {
                     layer.msg("网络错误");
@@ -1069,58 +1198,6 @@ var steam=
             });
         },
 
-        // showGlobalData:function(data){
-        //     for (var i=0;i<data.msg.length;i++){
-        //         var parent='<a href="'
-        //         parent+='/app/'+data.msg[i].id;
-        //         if (i==0){
-        //             parent+='" class="tab_item app_impression_tracked focus"></a>';
-        //         } else {
-        //             parent+='" class="tab_item app_impression_tracked"></a>';
-        //         }
-        //         var child1='<div class="tab_item_cap"><img class="tab_item_cap_img" style="width: 184px;height: 69px;" src="';
-        //         child1+=data.msg[i].posterImage;
-        //         child1+='"></div>';
-        //         var child2='<div class="discount_block tab_item_discount">';
-        //         if (data.msg[i].discount>0){
-        //             child2+='<div class="discount_pct">';
-        //             child2+='-'+(100-data.msg[i].discount)+'%';
-        //             child2+='</div>';
-        //         }
-        //         child2+='<div class="discount_prices">';
-        //         if (data.msg[i].discount>0){
-        //             child2+='<div class="discount_original_price">';
-        //             child2+='¥ '+data.msg[i].gamePrice;
-        //             child2+='</div>';
-        //         }
-        //         if (data.msg[i].discount>0){
-        //             child2+='<div class="discount_final_price">';
-        //             child2+='¥ '+Math.ceil(data.msg[i].gamePrice*(data.msg[i].discount/100));
-        //         }else {
-        //             child2+='<div class="discount_final_price">';
-        //             child2+='¥ '+data.msg[i].gamePrice;
-        //         }
-        //         child2+='</div></div></div>';
-        //         var child3='<div class="tab_item_content"><div class="tab_item_name">';
-        //         child3+=data.msg[i].gameName;
-        //         child3+='</div><div class="tab_item_details"><span class="platform_img win"></span><span class="platform_img mac"></span><span class="platform_img linux"></span><div class="tab_item_top_tags">';
-        //         for (var j=0;j<data.msg[i].label.length;j++){
-        //             if (j==0){
-        //                 child3+='<span class="top_tag">'+data.msg[i].label[j]+'</span>';
-        //             }else {
-        //                 child3+='<span class="top_tag">, '+data.msg[i].label[j]+'</span>';
-        //             }
-        //         }
-        //         child3+='</div></div></div>';
-        //         var child4='<div style="clear: both;"></div>';
-        //         parent=$(parent);
-        //         child1=$(child1);
-        //         child2=$(child2);
-        //         child3=$(child3);
-        //         child4=$(child4);
-        //         parent.append(child1,child2,child3,child4);
-        //         return parent;
-        // },
 
         showSpecialData:function(){
             $.ajax({
@@ -1420,17 +1497,15 @@ var steam=
             classRecommendValue--;
         },
 
-        mouseTabPause:function(that){
+        mouseNewReleasePause:function(that){
             var indexPreNewReleases=0;
-            var indexPreHotSeller=0;
-            var indexUpComing=0;
-            $('#tab_newreleases_content>a').hover(function () {
+            $('#newReleaseRow>a').hover(function () {
                 var classValue=$(this)[0].getAttribute('class');
                 var appId=$(this)[0].getAttribute('app-id');
                 if (classValue.indexOf('focus')!=-1)
                     return;
-                var indexNext=$('#tab_newreleases_content>a').index(this);
-                $('#tab_newreleases_content>a').eq(indexPreNewReleases)[0].setAttribute('class','tab_item app_impression_tracked');
+                var indexNext=$('#newReleaseRow>a').index(this);
+                $('#newReleaseRow>a').eq(indexPreNewReleases)[0].setAttribute('class','tab_item app_impression_tracked');
                 $(this)[0].setAttribute('class','tab_item app_impression_tracked focus');
                 indexPreNewReleases=indexNext;
                 var flag='#tab_app_'+appId;
@@ -1439,13 +1514,16 @@ var steam=
                 }
             },function () {
             });
+        },
 
-            $('#tab_topsellers_content>a').hover(function () {
+        mouseHotSellPause:function(that){
+            var indexPreHotSeller=0;
+            $('#hotSellRow>a').hover(function () {
                 var classValue=$(this)[0].getAttribute('class');
                 if (classValue.indexOf('focus')!=-1)
                     return;
-                var indexNext=$('#tab_topsellers_content>a').index(this);
-                $('#tab_topsellers_content>a').eq(indexPreHotSeller)[0].setAttribute('class','tab_item app_impression_tracked');
+                var indexNext=$('#hotSellRow>a').index(this);
+                $('#hotSellRow>a').eq(indexPreHotSeller)[0].setAttribute('class','tab_item app_impression_tracked');
                 $(this)[0].setAttribute('class','tab_item app_impression_tracked focus');
                 indexPreHotSeller=indexNext;
                 var appId=$(this)[0].getAttribute('app-id');
@@ -1455,13 +1533,16 @@ var steam=
                 }
             },function () {
             });
+        },
 
-            $('#tab_upcoming_content>a').hover(function () {
+        mouseUpComingPause:function(that){
+            var indexUpComing=0;
+            $('#upComingRow>a').hover(function () {
                 var classValue=$(this)[0].getAttribute('class');
                 if (classValue.indexOf('focus')!=-1)
                     return;
-                var indexNext=$('#tab_upcoming_content>a').index(this);
-                $('#tab_upcoming_content>a').eq(indexUpComing)[0].setAttribute('class','tab_item app_impression_tracked');
+                var indexNext=$('#upComingRow>a').index(this);
+                $('#upComingRow>a').eq(indexUpComing)[0].setAttribute('class','tab_item app_impression_tracked');
                 $(this)[0].setAttribute('class','tab_item app_impression_tracked focus');
                 indexUpComing=indexNext;
                 var appId=$(this)[0].getAttribute('app-id');

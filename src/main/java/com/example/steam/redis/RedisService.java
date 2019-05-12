@@ -114,7 +114,7 @@ public class RedisService {
      * @param key
      * @return
      */
-    public long zcount(RedisPrefixKey keyPrefix,String key){
+    public Long zcount(RedisPrefixKey keyPrefix,String key){
         Jedis jedis=null;
         try{
             jedis=pool.getResource();

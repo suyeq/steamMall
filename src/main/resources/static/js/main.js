@@ -125,7 +125,8 @@ var steam=
 
         initDetail:function(){
             var that=this;
-            this.showGameDetail(that);
+            var id=$('#gameDetail')[0].getAttribute('game-id');
+            this.showGameDetail(that,id);
             this.detailLeft.click(function () {
                 that.detailCarouselLeft();
             });
@@ -139,10 +140,11 @@ var steam=
 
         initClass:function(){
             var that=this;
-            this.showClassCarouselData('动作');
-            this.classNewReleaseGameLoadMore('动作',that);
-            this.classHotSellGameLoadMore('动作',that);
-            this.classUpComingGameLoadMore('动作',that);
+            var typeName=$('#type')[0].getAttribute('type-name');
+            this.showClassCarouselData(typeName);
+            this.classNewReleaseGameLoadMore(typeName,that);
+            this.classHotSellGameLoadMore(typeName,that);
+            this.classUpComingGameLoadMore(typeName,that);
             this.classLeft.click(function () {
                 that.classLeftCarousel();
             });
@@ -296,7 +298,7 @@ var steam=
             page=parseInt(page);
             var sum=null;
             $.ajax({
-                url:"upComing/classGame/"+type,
+                url:"/upComing/classGame/"+type,
                 type:"POST",
                 async:false,
                 success:function (data) {
@@ -326,7 +328,7 @@ var steam=
             page=parseInt(page);
             var sum=null;
             $.ajax({
-                url:"issued/classGame/"+type,
+                url:"/issued/classGame/"+type,
                 type:"POST",
                 async:false,
                 success:function (data) {
@@ -357,7 +359,7 @@ var steam=
             page=parseInt(page);
             var sum=null;
             $.ajax({
-                url:"issued/classGame/"+type,
+                url:"/issued/classGame/"+type,
                 type:"POST",
                 async:false,
                 success:function (data) {
@@ -568,9 +570,9 @@ var steam=
             })
         },
 
-        showGameDetail:function(that){
+        showGameDetail:function(that,id){
             $.ajax({
-                url:"/app/"+1,
+                url:"/app/"+id,
                 type:"POST",
                 async:false,
                 success:function (data) {
@@ -889,7 +891,7 @@ var steam=
                     $('#genre_large_cluster div.carousel_items.store_capsule_container').empty();
                     for (var i=0;i<data.msg.length;i++){
                         var parent='<a href="';
-                        parent+='/app/'+data.msg[i].id;
+                        parent+='/detail/'+data.msg[i].id;
                         if (i==0){
                             parent+='" class="focus"></a>';
                         } else {

@@ -1,11 +1,15 @@
-package com.example.steam;
+package com.example.steam.controller;
 
 import com.example.steam.dao.GameDao;
 import com.example.steam.service.GameService;
 import com.example.steam.service.ImageService;
 import com.example.steam.service.TypeService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -17,7 +21,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @time: 22:18
  */
 @Controller
-public class TemplateController {
+public class PageController {
+
+    Logger log= LoggerFactory.getLogger(PageController.class);
 
     @Autowired
     TypeService typeService;
@@ -29,13 +35,23 @@ public class TemplateController {
     GameDao gameDao;
 
 
-    @RequestMapping("/class")
-    public String classify(){
+//    @RequestMapping("/class")
+//    public String classify(){
+//        return "classlist";
+//    }
+
+    @RequestMapping("/class/{typeName}")
+    public String classify(@PathVariable("typeName")String typeName,
+                           Model model){
+        log.error(typeName);
+        model.addAttribute("typeName",typeName);
         return "classlist";
     }
 
-    @RequestMapping("/detail")
-    public String detail(){
+    @RequestMapping("/detail/{gameId}")
+    public String detail(@PathVariable("gameId")long gameId,
+                         Model model){
+        model.addAttribute("gameId",gameId);
         return "gamedetail";
     }
 
@@ -43,18 +59,4 @@ public class TemplateController {
     public String cart(){
         return "shoppingcart";
     }
-
-    @ResponseBody
-    @RequestMapping("/test")
-    public String test(){
-        long start=System.currentTimeMillis();
-//        gameService.test();
-        long end=System.currentTimeMillis();
-        long result=end-start;
-        System.out.println(result);
-        return "ok";
-    }
-
-
-
 }

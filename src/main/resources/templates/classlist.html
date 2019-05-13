@@ -5,12 +5,12 @@
     <title>分类列表</title>
     <link href="css/motivo.css" rel="stylesheet" type="text/css">
     <th:block th:replace="fragment_header::#head"></th:block>
-    <link href="css/browse.css" rel="stylesheet" type="text/css">
-    <link href="css/discoveryqueue.css" rel="stylesheet" type="text/css">
-    <link href="css/tag.css" rel="stylesheet" type="text/css">
-    <link href="css/contenthub.css" rel="stylesheet" type="text/css">
-    <link href="css/creator.css" rel="stylesheet" type="text/css">
-    <link href="css/sharereponsive.css" rel="stylesheet" type="text/css">
+    <link href="css/browse.css" th:href="@{/css/browse.css}" rel="stylesheet" type="text/css">
+    <link href="css/discoveryqueue.css" th:href="@{/css/discoveryqueue.css}" rel="stylesheet" type="text/css">
+    <link href="css/tag.css" th:href="@{/css/tag.css}" rel="stylesheet" type="text/css">
+    <link href="css/contenthub.css" th:href="@{/css/contenthub.css}" rel="stylesheet" type="text/css">
+    <link href="css/creator.css" th:href="@{/css/creator.css}" rel="stylesheet" type="text/css">
+    <link href="css/sharereponsive.css" th:href="@{/css/sharereponsive.css}" rel="stylesheet" type="text/css">
 </head>
 <body class="v6 tag_page game_bg contenthub_page responsive_page">
 <!--头部-->
@@ -18,7 +18,7 @@
     <div th:replace="fragment_top::#top"></div>
 </div>
 
-<div class="responsive_page_frame with_header">
+<div class="responsive_page_frame with_header" id="type" type-name="" th:attr="type-name=${typeName}">
     <div class="responsive_page_content">
         <div id="responsive_store_nav_ctn"></div>
         <div data-cart-banner-spot="1"></div>

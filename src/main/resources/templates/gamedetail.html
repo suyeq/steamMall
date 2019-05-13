@@ -5,14 +5,14 @@
     <title>游戏详情</title>
     <link href="css/motivo.css" rel="stylesheet" type="text/css">
     <th:block th:replace="fragment_header::#head"></th:block>
-    <link href="css/user_review.css" rel="stylesheet" type="text/css">
-    <link href="css/sharegame.css" rel="stylesheet" type="text/css">
-    <link href="css/game.css" rel="stylesheet" type="text/css">
-    <link href="css/recommended.css" rel="stylesheet" type="text/css">
-    <link href="css/apphub.css" rel="stylesheet" type="text/css">
-    <link href="css/sharereponsive.css" rel="stylesheet" type="text/css">
+    <link href="css/user_review.css" th:href="@{/css/user_review.css}" rel="stylesheet" type="text/css">
+    <link href="css/sharegame.css" th:href="@{/css/sharegame.css}" rel="stylesheet" type="text/css">
+    <link href="css/game.css"  th:href="@{/css/game.css}" rel="stylesheet" type="text/css">
+    <link href="css/recommended.css"  th:href="@{/css/recommended.css}" rel="stylesheet" type="text/css">
+    <link href="css/apphub.css" th:href="@{/css/apphub.css}" rel="stylesheet" type="text/css">
+    <link href="css/sharereponsive.css" th:href="@{/css/sharereponsive.css}" rel="stylesheet" type="text/css">
 </head>
-<body class="v6 app game_bg responsive_page">
+<body class="v6 app game_bg responsive_page" id="gameDetail" game-id="" th:attr="game-id=${gameId}">
 <!--头部-->
 <div class="responsive_page_content">
     <div th:replace="fragment_top::#top"></div>

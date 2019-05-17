@@ -142,6 +142,7 @@ var steam=
             var that=this;
             var typeName=$('#type')[0].getAttribute('type-name');
             this.showClassCarouselData(typeName);
+            this.loadSpikeGame();
             this.classNewReleaseGameLoadMore(typeName,that);
             this.classHotSellGameLoadMore(typeName,that);
             this.classUpComingGameLoadMore(typeName,that);
@@ -210,6 +211,27 @@ var steam=
 
             this.classCarouselStart(that);
             this.mouseClassCarouselPause(that);
+        },
+
+        loadSpikeGame:function(){
+            $.ajax({
+                url:"/spikegame",
+                type:"POST",
+                async:false,
+                success:function (data) {
+                    data=eval("("+data+")");
+                    $('#spike_img a')[0].setAttribute('href','/detail/'+data.msg.gameId);
+                    $('#spike_img a img')[0].setAttribute('src',data.msg.posterImage);
+                    $('#spike_img a img')[0].setAttribute('style','width: 306px;height: 143px;');
+                    $('#spike_price a')[0].setAttribute('href','/spike/'+data.msg.gameId);
+                    $('#spike_price div div.discount_original_price')[0].innerHTML='¥ '+data.msg.gamePrice;
+                    $('#spike_price div div.discount_final_price')[0].innerHTML='¥ '+data.msg.spikePrice;
+                    $('#dailydeal_timer')[0].setAttribute('date-time',data.msg.endTime);
+                },
+                error:function () {
+
+                }
+            })
         },
 
         upComingGameLoadMore:function(that){
@@ -662,7 +684,8 @@ var steam=
                             price+='<div class="discount_prices"><div class="discount_original_price">¥ '+data.msg.gamePrice+'</div>';
                             price+='<div class="discount_final_price">¥ '+Math.ceil(data.msg.gamePrice*(data.msg.discount/100))+'</div></div>';
                         }else {
-                            price+='<div class="discount_final_price">¥ '+data.msg.gamePrice+'</div>';
+                            price+='<div class="game_purchase_price price">¥ '+data.msg.gamePrice+'</div>'
+                            //price+='<div class="discount_final_price">¥ '+data.msg.gamePrice+'</div>';
                         }
                         $('#gamePrice').empty();
                         $('#gamePrice').append(price);
@@ -733,7 +756,7 @@ var steam=
                     data=eval("("+data+")");
                     $('#ComingSoonRows').empty();
                     for (var i=0;i<data.msg.length;i++){
-                        var parent='<a href="/app/'+data.msg[i].id+'" class="tab_item  " appId="'+data.msg[i].id+'"></a>';
+                        var parent='<a href="/detail/'+data.msg[i].id+'" class="tab_item  " appId="'+data.msg[i].id+'"></a>';
                         parent=$(parent);
                         var tab_item_cap='<div class="tab_item_cap"><img class="tab_item_cap_img" style="width: 184px;height: 69px;" src="'+data.msg[i].posterImage+'"></div>';
                         tab_item_cap=$(tab_item_cap);
@@ -784,7 +807,7 @@ var steam=
                     data=eval("("+data+")");
                     $('#TopSellersRows').empty();
                     for (var i=0;i<data.msg.length;i++){
-                        var parent='<a href="/app/'+data.msg[i].id+'" class="tab_item  " appId="'+data.msg[i].id+'"></a>';
+                        var parent='<a href="/detail/'+data.msg[i].id+'" class="tab_item  " appId="'+data.msg[i].id+'"></a>';
                         parent=$(parent);
                         var tab_item_cap='<div class="tab_item_cap"><img class="tab_item_cap_img" style="width: 184px;height: 69px;" src="'+data.msg[i].posterImage+'"></div>';
                         tab_item_cap=$(tab_item_cap);
@@ -837,7 +860,7 @@ var steam=
                     data=eval("("+data+")");
                     $('#NewReleasesRows').empty();
                     for (var i=0;i<data.msg.length;i++){
-                        var parent='<a href="/app/'+data.msg[i].id+'" class="tab_item  " appId="'+data.msg[i].id+'"></a>';
+                        var parent='<a href="/detail/'+data.msg[i].id+'" class="tab_item  " appId="'+data.msg[i].id+'"></a>';
                         parent=$(parent);
                         var tab_item_cap='<div class="tab_item_cap"><img class="tab_item_cap_img" style="width: 184px;height: 69px;" src="'+data.msg[i].posterImage+'"></div>';
                         tab_item_cap=$(tab_item_cap);
@@ -999,7 +1022,7 @@ var steam=
                     $('#newReleaseRow').empty();
                     for (var i=0;i<data.msg.length;i++){
                         var parent='<a href="'
-                        parent+='/app/'+data.msg[i].id+'"';
+                        parent+='/detail/'+data.msg[i].id+'"';
                         parent+='app-id="'+data.msg[i].id+'"';
 
                         if (i==0){
@@ -1071,7 +1094,7 @@ var steam=
                     $('#hotSellRow').empty();
                     for (var i=0;i<data.msg.length;i++){
                         var parent='<a href="'
-                        parent+='/app/'+data.msg[i].id+'"';
+                        parent+='/detail/'+data.msg[i].id+'"';
                         parent+='app-id="'+data.msg[i].id+'"';
                         if (i==0){
                             parent+=' class="tab_item app_impression_tracked focus"></a>';
@@ -1140,7 +1163,7 @@ var steam=
                     $('#upComingRow').empty();
                     for (var i=0;i<data.msg.length;i++){
                         var parent='<a href="'
-                        parent+='/app/'+data.msg[i].id+'"';
+                        parent+='/detail/'+data.msg[i].id+'"';
                         parent+='app-id="'+data.msg[i].id+'"';
                         if (i==0){
                             parent+=' class="tab_item app_impression_tracked focus"></a>';
@@ -1214,7 +1237,7 @@ var steam=
                     var element=new Array(data.msg.length);
                     for (var i=0;i<data.msg.length;i++){
                         element[i]='<div class="specials_target"><a class="store_capsule broadcast_capsule app_impression_tracked" href="';
-                        element[i]+="/app/"+data.msg[i].id;
+                        element[i]+="/detail/"+data.msg[i].id;
                         element[i]+='"> <div class="capsule header"><img style="width: 306px;height: 143.02px;" src="';
                         element[i]+=data.msg[i].posterImage;
                         element[i]+='"></div><div><div class="discount_block  daily_deal_discount discount_block_large"><div class="discount_pct">';
@@ -1270,7 +1293,7 @@ var steam=
                             }else{
                                 parent='<a class="store_main_capsule broadcast_capsule app_impression_tracked" href="';
                             }
-                            parent+='/app/'+data.msg[i].id;
+                            parent+='/detail/'+data.msg[i].id;
                             parent+='"></a>';
                             //存贮四张介绍图信息
                             var elementChild1='<div class="capsule main_capsule" data-background-image-url="';
@@ -1737,9 +1760,9 @@ var steam=
        if (id=='captchaRefreshLink'){
            $('#captchaRefreshLink')[0].setAttribute('value',times);
        }
-       if (id=='dailydeal_timer_b9523fb88ff59a2dd944e424') {
+       if (id=='dailydeal_timer') {
            //console.log($('#dailydeal_timer_b9523fb88ff59a2dd944e424'))
-            $('#dailydeal_timer_b9523fb88ff59a2dd944e424')[0].innerHTML = times;
+            $('#dailydeal_timer')[0].innerHTML = times;
            //document.getElementById('dailydeal_timer_b9523fb88ff59a2dd944e424').innerHTML(times);
        }
         setTimeout(countDown,500,endTime,id);

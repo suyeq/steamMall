@@ -1,5 +1,6 @@
 package com.example.steam.service;
 
+import com.example.steam.config.DynamicDataSourceHolder;
 import com.example.steam.dao.GameDao;
 import com.example.steam.entity.*;
 import com.example.steam.localstore.LocalStoreKey;
@@ -223,7 +224,7 @@ public class GameService implements InitializingBean {
 
     /**
      *
-     * 通过id查找一个游戏
+     * 通过id查找一个游戏的详情数据
      * @param id
      * @return
      */
@@ -256,6 +257,17 @@ public class GameService implements InitializingBean {
         gameDetail.setType(typeService.findTypeNameByGameId(game.getId()));
         redisService.set(GameKey.GAME_ID,id+"",gameDetail);
         return gameDetail;
+    }
+
+    /**
+     * 通过id找到最初始的数据
+     * 可指定数据源
+     * @param id
+     * @return
+     */
+    public Game findOneGameById(long id, String key){
+        DynamicDataSourceHolder.putDataSource(key);
+        return gameDao.findGameById(id);
     }
 
     /**

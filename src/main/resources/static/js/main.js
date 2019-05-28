@@ -143,6 +143,7 @@ var steam=
             var typeName=$('#type')[0].getAttribute('type-name');
             this.showClassCarouselData(typeName);
             this.loadSpikeGame();
+            this.loadTypeLabel();
             this.classNewReleaseGameLoadMore(typeName,that);
             this.classHotSellGameLoadMore(typeName,that);
             this.classUpComingGameLoadMore(typeName,that);
@@ -160,7 +161,7 @@ var steam=
                 }else {
                     page--;
                     $('#NewReleases_ctn')[0].setAttribute('page-id',page);
-                    that.classNewReleaseGameLoadMore('动作',that);
+                    that.classNewReleaseGameLoadMore(typeName,that);
                 }
             });
             this.classNewReleaseNext.click(function () {
@@ -168,7 +169,7 @@ var steam=
                 page=parseInt(page);
                 page++;
                 $('#NewReleases_ctn')[0].setAttribute('page-id',page);
-                that.classNewReleaseGameLoadMore('动作',that);
+                that.classNewReleaseGameLoadMore(typeName,that);
             });
 
             this.classHotSellPre.click(function () {
@@ -179,7 +180,7 @@ var steam=
                 }else {
                     page--;
                     $('#TopSellers_ctn')[0].setAttribute('page-id',page);
-                    that.classHotSellGameLoadMore('动作',that);
+                    that.classHotSellGameLoadMore(typeName,that);
                 }
             });
             this.classHotSellNext.click(function () {
@@ -187,7 +188,7 @@ var steam=
                 page=parseInt(page);
                 page++;
                 $('#TopSellers_ctn')[0].setAttribute('page-id',page);
-                that.classHotSellGameLoadMore('动作',that);
+                that.classHotSellGameLoadMore(typeName,that);
             });
 
             this.classUpComingPre.click(function () {
@@ -198,7 +199,7 @@ var steam=
                 }else {
                     page--;
                     $('#ComingSoon_ctn')[0].setAttribute('page-id',page);
-                    that.classUpComingGameLoadMore('动作',that);
+                    that.classUpComingGameLoadMore(typeName,that);
                 }
             });
             this.classUpComingNext.click(function () {
@@ -206,11 +207,84 @@ var steam=
                 page=parseInt(page);
                 page++;
                 $('#ComingSoon_ctn')[0].setAttribute('page-id',page);
-                that.classUpComingGameLoadMore('动作',that);
+                that.classUpComingGameLoadMore(typeName,that);
             });
 
             this.classCarouselStart(that);
             this.mouseClassCarouselPause(that);
+        },
+
+        initCart:function(){
+            var that=this;
+            this.loadShoppingCart();
+            this.loadSpikeGame();
+        },
+
+        loadShoppingCart:function(){
+          var userId=$('#account_pulldown')[0].getAttribute('user-id');
+          $.ajax({
+             url:"cart/"+userId,
+             type:"POST",
+             async:false,
+             success:function (data) {
+                 $('#cart_row').empty();
+                data=eval("("+data+")");
+                for (var i=0;i<data.msg.length;i++){
+                    var element='<div class="cart_item"'+' id="cart-id-'+data.msg[i].id+'"'+'>'
+                    element+='<div class="cart_item_price_container">\n' +
+                        '<div class="cart_item_price ">\n' +
+                        '<div class="price">¥ ';
+                    element+=data.msg[i].gamePrice;
+                    element+='</div>\n' +
+                        '                                            <a class="remove_link" href="javascript:void(0);" onclick="removeGameOnCart(';
+                    element+=data.msg[i].id;
+                    element+=')">移除</a>\n' +
+                        '                                        </div>\n' +
+                        '                                    </div>\n' +
+                        '                                    <div class="cart_item_img ">\n' +
+                        '                                    \t<a><img style="width: 125px" src="';
+                    element+=data.msg[i].gamePoster;
+                    element+='" border="0"></a>\n' +
+                        '                                    </div>\n' +
+                        '                                    <div class="cart_item_desc">\n' +
+                        '                                        <div class="cart_item_platform">\n' +
+                        '                                            <span class="platform_img win"></span>\t\t\t\t\n' +
+                        '                                            </div>';
+
+                    element+= '<a href="/detail/'+data.msg[i].gameId+'">';
+                    element+=data.msg[i].gameName;
+                    element+='</a><br>\n' +
+                        '                                    </div>\n' +
+                        '                                    <div style="clear: left"></div>\n' +
+                        '                                </div>';
+                    element=$(element);
+                    $('#cart_row').append(element);
+                }
+                 $('#cart_row').append('<div class="ds_options"><div></div></div>');
+             },
+              error:function () {
+                layer.msg("网络错误");
+              }
+          });
+        },
+
+        loadTypeLabel:function(){
+            $.ajax({
+                url:"/type/all",
+                type:"POST",
+                async:false,
+                success:function (data) {
+                    data=eval("("+data+")");
+                    $('#type_id').empty();
+                    $('#type_id').append('<h2>依分类选择</h2>');
+                    for (var i=0;i<data.msg.length;i++){
+                        var element='<a class="btnv6_blue_hoverfade btn_small_tall" style="margin-left: 2px;width: 48%;" href="'+'/class/'+data.msg[i]+'"><span>'+data.msg[i]+'</span></a>';
+                        element=$(element);
+                        $('#type_id').append(element);
+                    }
+                    $('#type_id').append('<div style="clear: both; margin-bottom: 20px;"></div>');
+                }
+            })
         },
 
         loadSpikeGame:function(){
@@ -223,7 +297,7 @@ var steam=
                     $('#spike_img a')[0].setAttribute('href','/detail/'+data.msg.gameId);
                     $('#spike_img a img')[0].setAttribute('src',data.msg.posterImage);
                     $('#spike_img a img')[0].setAttribute('style','width: 306px;height: 143px;');
-                    $('#spike_price a')[0].setAttribute('href','/spike/'+data.msg.gameId);
+                    $('#spike_price a')[0].setAttribute('href','/spike/'+data.msg.id);
                     $('#spike_price div div.discount_original_price')[0].innerHTML='¥ '+data.msg.gamePrice;
                     $('#spike_price div div.discount_final_price')[0].innerHTML='¥ '+data.msg.spikePrice;
                     $('#dailydeal_timer')[0].setAttribute('date-time',data.msg.endTime);
@@ -330,11 +404,17 @@ var steam=
                     }
                 }
             });
+            if (sum==0){
+                $('#ComingSoon_no_results')[0].setAttribute('style','display: block');
+                $('#ComingSoon_ctn')[0].setAttribute('style','display: none');
+            }
             var start=page*10+1;
             var end=page*10+10>sum?sum:page*10+10;
             var pageSum=Math.ceil(sum/10)-1;
             if (page>pageSum){
-                layer.msg('不能再往后了')
+                if (sum!=0){
+                    layer.msg('不能再往后了')
+                }
                 var temp=page-1;
                 $('#ComingSoon_ctn')[0].setAttribute('page-id',temp);
             }else {
@@ -342,6 +422,7 @@ var steam=
                 $('#ComingSoon_end')[0].innerHTML=end;
                 $('#ComingSoon_total')[0].innerHTML=sum;
                 that.showClassupComing(type,page,that);
+                $('#ComingSoon_no_results')[0].setAttribute('style','display: none');
             }
         },
 
@@ -360,11 +441,17 @@ var steam=
                     }
                 }
             });
+            if (sum==0){
+                $('#TopSellers_no_results')[0].setAttribute('style','display: block');
+                $('#TopSellers_ctn')[0].setAttribute('style','display: none');
+            }
             var start=page*10+1;
             var end=page*10+10>sum?sum:page*10+10;
             var pageSum=Math.ceil(sum/10)-1;
             if (page>pageSum){
-                layer.msg('不能再往后了')
+                if (sum!=0){
+                    layer.msg('不能再往后了')
+                }
                 var temp=page-1;
                 $('#TopSellers_ctn')[0].setAttribute('page-id',temp);
             }else {
@@ -372,11 +459,11 @@ var steam=
                 $('#TopSellers_end')[0].innerHTML=end;
                 $('#TopSellers_total')[0].innerHTML=sum;
                 that.showClassHotSell(type,page,that);
+                $('#TopSellers_no_results')[0].setAttribute('style','display: none');
             }
         },
 
          classNewReleaseGameLoadMore:function(type,that){
-            console.log(1)
             var page=$('#NewReleases_ctn')[0].getAttribute('page-id');
             page=parseInt(page);
             var sum=null;
@@ -391,12 +478,17 @@ var steam=
                     }
                 }
             });
-             console.log(2)
+            if (sum==0){
+                $('#NewReleases_no_results')[0].setAttribute('style','display: block');
+                $('#NewReleases_ctn')[0].setAttribute('style','display: none');
+            }
             var start=page*10+1;
             var end=page*10+10>sum?sum:page*10+10;
             var pageSum=Math.ceil(sum/10)-1;
             if (page>pageSum){
-                layer.msg('不能再往后了')
+                if (sum!=0){
+                    layer.msg('不能再往后了')
+                }
                 var temp=page-1;
                 $('#NewReleases_ctn')[0].setAttribute('page-id',temp);
             }else {
@@ -404,6 +496,7 @@ var steam=
                 $('#NewReleases_end')[0].innerHTML=end;
                 $('#NewReleases_total')[0].innerHTML=sum;
                 that.showClassNewRelease(type,page,that);
+                $('#NewReleases_no_results')[0].setAttribute('style','display: none');
             }
         },
 
@@ -544,7 +637,8 @@ var steam=
                                 parent[i].append(element);
                             }
                             that.recentCommentLoad();
-                            if (data.msg.length>=1){
+                            console.log(data.msg.length+"cjhsdhjs")
+                            if (data.msg.length >= 1){
                                 setTimeout(function () {
                                     $('#Reviews_loading')[0].setAttribute('style','display: none');
                                     $('#Reviews_summary')[0].setAttribute('style','display: block;');
@@ -553,6 +647,7 @@ var steam=
                                 page=parseInt(page)+1;
                                 $('#ViewAllReviewssummary')[0].setAttribute('page',page);
                             }else {
+                                $('#Reviews_summary')[0].setAttribute('style','display: block;');
                                 $('#Reviews_loading')[0].setAttribute('style','display: none');
                                 $('#ViewAllReviewssummary')[0].setAttribute('style','display: block');
                             }
@@ -698,6 +793,7 @@ var steam=
                         $('#game_area_description').append(gameAbout);
                         that.showGameSystemNeed(data.msg.lowestSystem,'Left');
                         that.showGameSystemNeed(data.msg.recommendSystem,'Right');
+                        $('#ViewAllReviewssummary')[0].setAttribute('gameId',id);
                     }
                 },
                 error:function () {
@@ -1870,4 +1966,62 @@ var steam=
                 layer.msg("网络错误");
             }
         });
+    }
+
+    //添加置购物车
+    function addCart() {
+        if ($('#account_pulldown').length<1){
+            layer.msg("尚未登录");
+            return;
+        }
+        var userId=$('#account_pulldown')[0].getAttribute('user-id');
+        var gameId=$('#gameDetail')[0].getAttribute('game-id');
+        console.log(userId+" "+gameId)
+        $.ajax({
+            url:"/cart/add",
+            type:"POST",
+            async:false,
+            data:{
+                userId:userId,
+                gameId:gameId
+            },
+            success:function (data) {
+                //data=eval("("+data+")");
+                layer.msg("添加成功")
+            },
+            error:function () {
+
+            }
+        });
+    }
+
+    function removeGameOnCart(id) {
+        $.ajax({
+            url:"/cart/remove/"+id,
+            type:"POST",
+            async:true,
+            success:function () {
+                layer.msg("删除成功")
+            },
+            error:function () {
+            }
+        });
+        var cartid='#cart-id-'+id;
+        $(cartid).remove();
+    }
+
+    function removeAllGameOnCart() {
+    var userId=$('#account_pulldown')[0].getAttribute('user-id');
+        $.ajax({
+            url:"/cart/removeall/"+userId,
+            type:"POST",
+            async:true,
+            success:function () {
+                layer.msg("删除成功")
+            },
+            error:function () {
+            }
+        });
+        $('#cart_row').empty();
+        $('#cart_row').append('<div class="ds_options"><div></div></div>');
     }

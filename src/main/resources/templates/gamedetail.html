@@ -332,11 +332,11 @@
                     </div>
 
                     <!--登录提醒-->
-                    <div class="queue_overflow_ctn">
+                    <div class="queue_overflow_ctn" th:if="${user}==null">
                         <div class="queue_ctn">
                             <div class="queue_actions_ctn">
                                 <p>想要将这件物品添加至您的愿望单、关注它或标记为不感兴趣，请先<a
-                                        href="https://store.steampowered.com/login/?redir=app%2F814380">登录</a></p>
+                                        href="/login">登录</a></p>
                             </div>
                         </div>
                     </div>
@@ -780,13 +780,6 @@
                             <!--加入购物车-->
                             <div class="game_area_purchase_game_wrapper">
                                 <div class="game_area_purchase_game">
-                                    <form name="add_to_cart_350085" action="https://store.steampowered.com/cart/"
-                                          method="POST">
-                                        <input type="hidden" name="snr" value="1_5_9__403">
-                                        <input type="hidden" name="action" value="add_to_cart">
-                                        <input type="hidden" name="sessionid" value="2fdef98103a95f6e3fb64702">
-                                        <input type="hidden" name="subid" value="350085">
-                                    </form>
                                     <div class="game_area_purchase_platform">
                                         <span class="platform_img win"></span>
                                     </div>
@@ -803,7 +796,7 @@
                                             </div>
                                             <div class="btn_addtocart">
                                                 <a class="btnv6_green_white_innerfade btn_medium"
-                                                   href="javascript:addToCart(350085);">
+                                                    onclick="addCart()">
                                                     <span>添加至购物车</span>
                                                 </a>
                                             </div>

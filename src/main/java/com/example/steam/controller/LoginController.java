@@ -49,8 +49,8 @@ public class LoginController {
     Logger log= LoggerFactory.getLogger(LoginController.class);
 
     @RequestMapping("/")
-    public String index(User user, Model model){
-        LoginUser loginUser=userService.converViewLoginUser(user);
+    public String index(LoginUser loginUser, Model model){
+//        LoginUser loginUser=userService.converViewLoginUser(user);
         model.addAttribute("user",loginUser);
         return "index";
     }

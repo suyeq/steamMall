@@ -4,6 +4,7 @@ package com.example.steam.config;
 import com.example.steam.entity.User;
 import com.example.steam.service.UserService;
 import com.example.steam.utils.StaticField;
+import com.example.steam.vo.LoginUser;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
@@ -33,7 +34,7 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
     @Override
     public boolean supportsParameter(MethodParameter methodParameter) {
         Class clazz=methodParameter.getParameterType();
-        return clazz == User.class;
+        return clazz == LoginUser.class;
     }
 
     @Override

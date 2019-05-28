@@ -27,7 +27,7 @@ public class SpikeGameService {
     @Autowired
     RedisService redisService;
 
-    public SpikeGameDetail findOneSpikeGame(){
+    public SpikeGameDetail findOneSpikeGameDetail(){
         SpikeGameDetail spikeGameDetail=redisService.get(SpikeGameKey.SPIKE_ID,1+"",SpikeGameDetail.class);
         if (spikeGameDetail!=null){
             return spikeGameDetail;
@@ -44,5 +44,9 @@ public class SpikeGameService {
         spikeGameDetail.setStockCount(spikeGame.getStockCount());
         redisService.set(SpikeGameKey.SPIKE_ID,1+"",spikeGameDetail);
         return spikeGameDetail;
+    }
+
+    public SpikeGame findOneGame(long gameId){
+       return spikeGameDao.findOneByGameId(gameId);
     }
 }

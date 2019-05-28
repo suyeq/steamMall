@@ -1,9 +1,11 @@
 package com.example.steam.controller;
 
 import com.example.steam.dao.GameDao;
+import com.example.steam.entity.User;
 import com.example.steam.service.GameService;
 import com.example.steam.service.ImageService;
 import com.example.steam.service.TypeService;
+import com.example.steam.vo.LoginUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,32 +33,33 @@ public class PageController {
     GameService gameService;
     @Autowired
     ImageService imageService;
-    @Autowired
-    GameDao gameDao;
 
 
-//    @RequestMapping("/class")
-//    public String classify(){
-//        return "classlist";
-//    }
+
 
     @RequestMapping("/class/{typeName}")
-    public String classify(@PathVariable("typeName")String typeName,
+    public String classify(LoginUser loginUser,
+                           @PathVariable("typeName")String typeName,
                            Model model){
         log.error(typeName);
         model.addAttribute("typeName",typeName);
+        model.addAttribute("user",loginUser);
         return "classlist";
     }
 
     @RequestMapping("/detail/{gameId}")
-    public String detail(@PathVariable("gameId")long gameId,
+    public String detail(LoginUser loginUser,
+                         @PathVariable("gameId")long gameId,
                          Model model){
         model.addAttribute("gameId",gameId);
+        model.addAttribute("user",loginUser);
         return "gamedetail";
     }
 
     @RequestMapping("/cart")
-    public String cart(){
+    public String cart(LoginUser loginUser,
+                       Model model){
+        model.addAttribute("user",loginUser);
         return "shoppingcart";
     }
 }

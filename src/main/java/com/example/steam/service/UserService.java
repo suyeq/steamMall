@@ -67,15 +67,16 @@ public class UserService {
      * @param cookieToken
      * @return
      */
-    public User getUserByToken(HttpServletResponse response, String cookieToken) {
+    public LoginUser getUserByToken(HttpServletResponse response, String cookieToken) {
         if (cookieToken == null){
             return null;
         }
-        User user=redisService.get(UserKey.COOKIE_ID,cookieToken,User.class);
-        if (user != null){
-            addCookie(response,cookieToken,user);
+        LoginUser loginUser=redisService.get(UserKey.COOKIE_ID,cookieToken,LoginUser.class);
+        log.error(loginUser.toString()+" "+2);
+        if (loginUser != null){
+            addCookie(response,cookieToken,null,loginUser);
         }
-        return user;
+        return loginUser;
     }
 
     /**
@@ -117,18 +118,29 @@ public class UserService {
         }else {
             cookieId=cookie.getValue();
         }
-        addCookie(response,cookieId,user);
+        addCookie(response,cookieId,user,null);
     }
 
-    private void addCookie(HttpServletResponse response,String cookieId,User user){
+    private void addCookie(HttpServletResponse response,String cookieId,User user,LoginUser loginUr){
         Cookie cookie=new Cookie(StaticField.COOKIE_KEY,cookieId);
         cookie.setMaxAge(cookieMaxAge);
         log.error(cookieMaxAge+"");
         response.addCookie(cookie);
         //UserKey.COOKIE_ID.setExpiredTime(cookieMaxAge);
-        redisService.set(UserKey.COOKIE_ID,cookieId,user);
+        LoginUser loginUser;
+        if (loginUr!=null){
+            loginUser=loginUr;
+        }else {
+            loginUser=new LoginUser();
+            loginUser.setId(user.getId());
+            loginUser.setEmail(user.getEmail());
+            loginUser.setIsAdmin(user.getIsAdmin());
+            loginUser.setNickName(user.getNickName());
+            loginUser.setAvatar(imageService.findImageUrlById(user.getAvatar()));
+        }
+        redisService.set(UserKey.COOKIE_ID,cookieId,loginUser);
         //CookieKey.EMAIL.setExpiredTime(cookieMaxAge);
-        redisService.set(CookieKey.EMAIL,user.getEmail(),cookieId);
+        redisService.set(CookieKey.EMAIL,loginUser.getEmail(),cookieId);
     }
 
     private Cookie findCookie(HttpServletRequest request){

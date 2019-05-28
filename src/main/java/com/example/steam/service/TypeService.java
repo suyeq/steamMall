@@ -23,7 +23,11 @@ public class TypeService {
     @Autowired
     TypeDao typeDao;
 
-    @Transactional
+
+    public List<String> findAllType(){
+        return typeDao.findAllType();
+    }
+
     public List<String> findTypeNameByGameId(long gameId){
         List<GameType> gameTypeList=typeDao.findTypesByGameId(gameId);
         List<String> typeNameList=new LinkedList<>();

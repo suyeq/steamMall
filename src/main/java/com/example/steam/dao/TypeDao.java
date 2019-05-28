@@ -26,4 +26,7 @@ public interface TypeDao {
 
     @Select("select typename from type where id=#{id}")
     String findTypeNameById(@Param("id") long id);
+
+    @Select("select typename from type")
+    List<String> findAllType();
 }

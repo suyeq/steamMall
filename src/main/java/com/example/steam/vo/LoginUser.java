@@ -74,4 +74,9 @@ public class LoginUser {
     public void setIsAdmin(int isAdmin) {
         this.isAdmin = isAdmin;
     }
+
+    @Override
+    public String toString(){
+        return id+"";
+    }
 }

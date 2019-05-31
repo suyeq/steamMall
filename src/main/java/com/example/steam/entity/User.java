@@ -34,6 +34,18 @@ public class User {
 
     public User(){}
 
+    public User(String nickName,String email,String salt,String password){
+        this.nickName=nickName;
+        this.email=email;
+        this.salt=salt;
+        this.password=password;
+        this.avatar=1L;
+        this.playTime=0;
+        this.buyGames=0;
+        this.commmentNum=0;
+        this.isAdmin=0;
+    }
+
     public Long getId() {
         return id;
     }

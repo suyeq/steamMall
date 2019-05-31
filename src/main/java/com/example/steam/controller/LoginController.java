@@ -1,26 +1,22 @@
 package com.example.steam.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.example.steam.entity.User;
+import com.example.steam.mq.Event;
+import com.example.steam.mq.EventType;
+import com.example.steam.mq.MQProducer;
 import com.example.steam.redis.RedisService;
-import com.example.steam.redis.key.UserKey;
 import com.example.steam.service.ImageService;
 import com.example.steam.service.UserService;
-import com.example.steam.utils.Md5PasswordConver;
 import com.example.steam.utils.ResultMsg;
-import com.example.steam.utils.UUIDUntil;
-import com.example.steam.vo.LoginUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -45,21 +41,19 @@ public class LoginController {
     RedisService redisService;
     @Autowired
     ImageService imageService;
+    @Autowired
+    MQProducer mqProducer;
 
     Logger log= LoggerFactory.getLogger(LoginController.class);
 
-    @RequestMapping("/")
-    public String index(LoginUser loginUser, Model model){
-//        LoginUser loginUser=userService.converViewLoginUser(user);
-        model.addAttribute("user",loginUser);
-        return "index";
-    }
-
-    @RequestMapping("/login")
-    public String login(){
-        return "login";
-    }
-
+    /**
+     * 登录验证
+     * @param email
+     * @param password
+     * @param response
+     * @param request
+     * @return
+     */
     @ResponseBody
     @RequestMapping("/userVerification")
     public String userLogin(@RequestParam("email")String email,
@@ -70,11 +64,32 @@ public class LoginController {
         return JSON.toJSONString(userService.handleLogin(email,password,request,response));
     }
 
-    @RequestMapping("/register")
-    public String register(){
-        return "register";
+
+    @RequestMapping("/registerVerification")
+    public String userRegister(@RequestParam("email")String email,
+                               @RequestParam("password")String password,
+                               @RequestParam("code")String code){
+
+        return JSON.toJSONString(ResultMsg.SUCCESS(userService.handleRegister(email,password,code)));
     }
 
+    /**
+     * 发送验证码邮件
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/verificationCode")
+    public String sendVerificationCode(@RequestParam("email")String email){
+        log.info(email);
+        mqProducer.productEvent(new Event(EventType.SEND_EMAIL_VERIFICATION_CODE).
+                setEtrMsg(Event.EMAIL,email));
+        return JSON.toJSONString(ResultMsg.SUCCESS("ok"));
+    }
 
+    @ResponseBody
+    @RequestMapping("/logout")
+    public String logout(@RequestParam("email")String email){
+        return JSON.toJSONString(ResultMsg.SUCCESS(userService.handleLogout(email)));
+    }
 
 }

@@ -9,7 +9,7 @@ import org.apache.commons.codec.digest.DigestUtils;
  * @date: 2019-04-25
  * @time: 17:02
  */
-public class Md5PasswordConver {
+public class Md5PassUtil {
 
     private final static String salt="1q2w3e";
 

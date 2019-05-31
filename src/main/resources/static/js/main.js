@@ -1967,6 +1967,42 @@ var steam=
             }
         });
     }
+    
+    function logout() {
+        var email=$('#account_pulldown')[0].getAttribute("email");
+        console.log(email)
+        $.ajax({
+            url:"/logout",
+            type:"POST",
+            async:false,
+            data:{
+               email:email
+            },
+            success:function (data) {
+                data=eval("("+data+")");
+                console.log(data)
+                clearCookie('token')
+                window.location.href="/";
+                layer.msg("成功注销");
+            },
+            error:function () {
+
+            }
+        })
+    }
+
+    //设置cookie
+    function setCookie(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays*24*60*60*1000));
+        var expires = "expires="+d.toUTCString();
+        document.cookie = cname + "=" + cvalue + "; " + expires;
+    }
+
+    //清除cookie
+    function clearCookie(name) {
+        setCookie(name, "", -1);
+    }
 
     //添加置购物车
     function addCart() {
@@ -2025,3 +2061,38 @@ var steam=
         $('#cart_row').empty();
         $('#cart_row').append('<div class="ds_options"><div></div></div>');
     }
+
+    //邮箱验证码倒计时
+    function EmailVerificationCountDown(endTime) {
+        var now=new Date();
+        var result = parseInt((endTime-now.getTime())/1000);
+        $('#captchaRefreshLink')[0].setAttribute('value',result+'s');
+        if(result<=0){
+            $('#captchaRefreshLink')[0].setAttribute('value',"发送");
+            $('#captchaRefreshLink').on("click",function(){
+                sendEmailverification();
+            });
+            return;
+        }
+        setTimeout(EmailVerificationCountDown,500,endTime);
+    }
+
+    //发送验证码
+    function sendEmailverification() {
+        $('#captchaRefreshLink').unbind("click");
+        var email=$("#email").val();
+        var now=new Date();
+        var endTime=now.getTime()+90*1000;
+        EmailVerificationCountDown(endTime);
+        $.ajax({
+            url:"/verificationCode",
+            type:"POST",
+            data:{
+                email:email
+            },
+            success:function (data) {
+                layer.msg("发送成功")
+            }
+        })
+    }
+

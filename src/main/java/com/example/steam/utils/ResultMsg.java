@@ -13,11 +13,17 @@ public class ResultMsg {
 
     public static ResultMsg LOGIN_SUCCESS=new ResultMsg("201","登陆成功");
 
+    public static ResultMsg REGISTER_SUCCESS=new ResultMsg("202","注册成功");
+
     public static ResultMsg NO_EMAIL=new ResultMsg("501","该邮箱不存在");
 
     public static ResultMsg PASS_ERROR=new ResultMsg("502","密码错误");
 
     public static ResultMsg HAD_Login=new ResultMsg("503","已在其他客户端登录");
+
+    public static ResultMsg HAD_REGISTER=new ResultMsg("504","邮箱已被注册");
+
+    public static ResultMsg CODE_ERROR=new ResultMsg("505","验证码错误");
 
 
     private String code;

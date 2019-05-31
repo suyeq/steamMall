@@ -67,6 +67,60 @@ public class RedisService {
     }
 
     /**
+     * 删除某个键
+     * @param keyPrefix
+     * @param key
+     */
+    public void del(RedisPrefixKey keyPrefix,String key){
+        Jedis jedis=null;
+        try {
+            jedis=pool.getResource();
+            String realKey=keyPrefix.getThisPrefix()+key;
+            jedis.del(realKey);
+        }finally {
+            jedis.close();
+        }
+    }
+
+    /**
+     * 队列push
+     * @param keyPrefix
+     * @param key
+     * @param value
+     * @param <T>
+     */
+    public <T> void lpush(RedisPrefixKey keyPrefix,String key,T value){
+        Jedis jedis=null;
+        try {
+            jedis=pool.getResource();
+            String realKey=keyPrefix.getThisPrefix()+key;
+            jedis.lpush(realKey,beanToString(value));
+        }finally {
+            jedis.close();
+        }
+    }
+
+    /**
+     * 队列pop
+     * @param keyPrefix
+     * @param key
+     * @param tClass
+     * @param <T>
+     * @return
+     */
+    public <T> T rpop(RedisPrefixKey keyPrefix,String key,Class<T> tClass){
+        Jedis jedis=null;
+        try {
+            jedis=pool.getResource();
+            String realKey=keyPrefix.getThisPrefix()+key;
+            String value=jedis.rpop(realKey);
+            return stringToBean(value,tClass);
+        }finally {
+            jedis.close();
+        }
+    }
+
+    /**
      * zset增加
      * @param keyPrefix
      * @param key

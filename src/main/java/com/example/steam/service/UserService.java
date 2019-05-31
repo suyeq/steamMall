@@ -1,12 +1,12 @@
 package com.example.steam.service;
 
-import com.alibaba.fastjson.JSON;
 import com.example.steam.dao.UserDao;
 import com.example.steam.entity.User;
 import com.example.steam.redis.RedisService;
 import com.example.steam.redis.key.CookieKey;
+import com.example.steam.redis.key.EmailKey;
 import com.example.steam.redis.key.UserKey;
-import com.example.steam.utils.Md5PasswordConver;
+import com.example.steam.utils.Md5PassUtil;
 import com.example.steam.utils.ResultMsg;
 import com.example.steam.utils.StaticField;
 import com.example.steam.utils.UUIDUntil;
@@ -17,7 +17,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;
@@ -62,6 +61,16 @@ public class UserService {
     }
 
     /**
+     * 增加一个用户
+     * @param user
+     * @return
+     */
+    public int addUser(User user){
+        redisService.set(UserKey.USER_ID,user.getEmail(),user);
+        return userDao.addUser(user);
+    }
+
+    /**
      * 通过token从缓存中获取user对象
      * @param response
      * @param cookieToken
@@ -72,7 +81,7 @@ public class UserService {
             return null;
         }
         LoginUser loginUser=redisService.get(UserKey.COOKIE_ID,cookieToken,LoginUser.class);
-        log.error(loginUser.toString()+" "+2);
+        //log.error(loginUser.toString()+" "+2);
         if (loginUser != null){
             addCookie(response,cookieToken,null,loginUser);
         }
@@ -102,12 +111,48 @@ public class UserService {
         if (user == null){
             return ResultMsg.NO_EMAIL;
         }
-        String finalPass= Md5PasswordConver.secondMd5(password,user.getSalt());
+        String finalPass= Md5PassUtil.secondMd5(password,user.getSalt());
         if (!finalPass.equals(user.getPassword())){
             return ResultMsg.PASS_ERROR;
         }
         cookieIsNullAndCreate(request,response,user);
         return ResultMsg.LOGIN_SUCCESS;
+    }
+
+    /**
+     * 处理注册用户
+     * @param email
+     * @param password
+     * @return
+     */
+    public ResultMsg handleRegister(String email,String password,String code){
+        User user=((UserService)applicationContext.getBean("userService")).findByEmail(email);
+        if (user!=null){
+            return ResultMsg.HAD_REGISTER;
+        }
+        String verificationCode=redisService.get(EmailKey.VERIFICATION_CODE,email,String.class);
+        if (!code.equals(verificationCode)){
+            return ResultMsg.CODE_ERROR;
+        }
+        String nickName=UUIDUntil.randomUUID().substring(0,5);
+        String salt=UUIDUntil.randomUUID().substring(0,5);
+        String finalPass=Md5PassUtil.md5Conver(password,salt);
+        User newUser=new User(nickName,email,salt,finalPass);
+        ((UserService) applicationContext.getBean("userService")).addUser(newUser);
+        return ResultMsg.REGISTER_SUCCESS;
+    }
+
+    /**
+     * 删除登录信息
+     * @param email
+     * @return
+     */
+    public ResultMsg handleLogout(String email){
+        String cookieId=redisService.get(CookieKey.EMAIL,email,String.class);
+        redisService.del(CookieKey.EMAIL,email);
+        redisService.del(UserKey.COOKIE_ID,cookieId);
+        log.info("已注销"+cookieId);
+        return ResultMsg.SUCCESS(cookieId);
     }
 
     private void cookieIsNullAndCreate(HttpServletRequest request, HttpServletResponse response, User user){

@@ -42,7 +42,6 @@ public class ImageService {
         return images;
     }
 
-    @Transactional(readOnly = true)
     public List<Image> findGameImagesByGameId(long gameId){
         GameImage gameImage=imageDao.findImagesByGameId(gameId);
         List<Image> images=new LinkedList<>();

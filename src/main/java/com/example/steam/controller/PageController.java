@@ -34,8 +34,21 @@ public class PageController {
     @Autowired
     ImageService imageService;
 
+    @RequestMapping("/")
+    public String index(LoginUser loginUser, Model model){
+        model.addAttribute("user",loginUser);
+        return "index";
+    }
 
+    @RequestMapping("/login")
+    public String login(){
+        return "login";
+    }
 
+    @RequestMapping("/register")
+    public String register(){
+        return "register";
+    }
 
     @RequestMapping("/class/{typeName}")
     public String classify(LoginUser loginUser,

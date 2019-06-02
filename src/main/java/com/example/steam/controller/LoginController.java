@@ -1,6 +1,7 @@
 package com.example.steam.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.example.steam.entity.User;
 import com.example.steam.mq.Event;
 import com.example.steam.mq.EventType;
 import com.example.steam.mq.MQProducer;
@@ -64,13 +65,13 @@ public class LoginController {
         return JSON.toJSONString(userService.handleLogin(email,password,request,response));
     }
 
-
+    @ResponseBody
     @RequestMapping("/registerVerification")
     public String userRegister(@RequestParam("email")String email,
                                @RequestParam("password")String password,
                                @RequestParam("code")String code){
-
-        return JSON.toJSONString(ResultMsg.SUCCESS(userService.handleRegister(email,password,code)));
+        log.info("email:"+email+","+"pass:"+password+","+"code:"+code);
+        return JSON.toJSONString(userService.handleRegister(email,password,code));
     }
 
     /**
@@ -91,5 +92,14 @@ public class LoginController {
     public String logout(@RequestParam("email")String email){
         return JSON.toJSONString(ResultMsg.SUCCESS(userService.handleLogout(email)));
     }
+
+//    @ResponseBody
+//    @RequestMapping("/addUser")
+//    public String addUser(){
+//        User user=new User("111","111","111","111");
+//        return JSON.toJSONString(userService.addUser(user));
+//    }
+
+
 
 }

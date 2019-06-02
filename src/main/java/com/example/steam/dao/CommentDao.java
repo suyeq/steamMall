@@ -1,8 +1,7 @@
 package com.example.steam.dao;
 
 import com.example.steam.entity.Comment;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -20,4 +19,12 @@ public interface CommentDao {
 
     @Select("select count(*) from comment")
     int commentSum();
+
+    @Select("select max(id) from comment")
+    long findLastCommentId();
+
+    @Insert("insert into comment(content,commentdate,email,gameid,zannum,cainum,recommendstatu)" +
+            "value(#{content},NOW(),#{email},#{gameId},0,0,#{recommendStatu})")
+    @Options(useGeneratedKeys = true,keyColumn = "id",keyProperty = "id")
+    long addComment(Comment comment);
 }

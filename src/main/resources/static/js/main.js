@@ -1967,7 +1967,8 @@ var steam=
             }
         });
     }
-    
+
+    //登出
     function logout() {
         var email=$('#account_pulldown')[0].getAttribute("email");
         console.log(email)
@@ -2031,6 +2032,7 @@ var steam=
         });
     }
 
+    //移除某个用户购物车里的某一个游戏
     function removeGameOnCart(id) {
         $.ajax({
             url:"/cart/remove/"+id,
@@ -2045,7 +2047,8 @@ var steam=
         var cartid='#cart-id-'+id;
         $(cartid).remove();
     }
-
+    
+    //移除某用户的所有购物车里的游戏
     function removeAllGameOnCart() {
     var userId=$('#account_pulldown')[0].getAttribute('user-id');
         $.ajax({
@@ -2092,6 +2095,33 @@ var steam=
             },
             success:function (data) {
                 layer.msg("发送成功")
+            }
+        })
+    }
+
+    //注册信息提交
+    function registerSubmit() {
+        var email=$('#email').val();
+        var password=$('#password').val();
+        var code=$('#code').val();
+        $.ajax({
+            url:"/registerVerification",
+            type:"POST",
+            data:{
+              email:email,
+              password:password,
+              code:code
+            },
+            success:function (data) {
+                data=eval("("+data+")");
+                //console.log(data)
+                layer.msg(data.msg);
+                if (data.code<300){
+                    window.location.href="/login";
+                }
+            },
+            error:function () {
+                layer.msg("网络错误");
             }
         })
     }

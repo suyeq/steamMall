@@ -32,6 +32,14 @@ public class Comment {
 
     public Comment(){}
 
+    public Comment(String content,String email,long gameId,int recommendStatu){
+        this.content=content;
+        this.commentDate=new Date();
+        this.email=email;
+        this.gameId=gameId;
+        this.recommendStatu=recommendStatu;
+    }
+
     public Long getId() {
         return id;
     }

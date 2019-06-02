@@ -26,7 +26,7 @@ public class User {
 
     private double playTime;
 
-    private int commmentNum;
+    private int commentNum;
 
     private int buyGames;
 
@@ -42,7 +42,7 @@ public class User {
         this.avatar=1L;
         this.playTime=0;
         this.buyGames=0;
-        this.commmentNum=0;
+        this.commentNum=0;
         this.isAdmin=0;
     }
 
@@ -102,14 +102,6 @@ public class User {
         this.playTime = playTime;
     }
 
-    public int getCommmentNum() {
-        return commmentNum;
-    }
-
-    public void setCommmentNum(int commmentNum) {
-        this.commmentNum = commmentNum;
-    }
-
     public int getBuyGames() {
         return buyGames;
     }
@@ -124,5 +116,13 @@ public class User {
 
     public void setIsAdmin(int isAdmin) {
         this.isAdmin = isAdmin;
+    }
+
+    public int getCommentNum() {
+        return commentNum;
+    }
+
+    public void setCommentNum(int commentNum) {
+        this.commentNum = commentNum;
     }
 }

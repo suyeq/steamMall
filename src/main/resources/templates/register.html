@@ -58,7 +58,7 @@
                                     <!--<label class="country_select">发送验证码：</label>-->
                                     <!--<input type="button" value="确认发送" style="background-color: rgba( 0, 0, 0, 0.2 );color: #fff;border: 1px solid #000;border-radius: 3px;box-shadow: 1px 1px 0px #45556c;width:60px;height: 20px"/>-->
                                     <label class="country_select">输入验证码：</label>
-                                    <input type="text" style="width: 60px">
+                                    <input type="text" style="width: 60px" id="code">
                                     <input type="button" id="captchaRefreshLink" value="发送" style="background-color: rgba( 0, 0, 0, 0.2 );color: #fff;border: 1px solid #000;border-radius: 3px;box-shadow: 1px 1px 0px #45556c;width:60px;height: 20px"/>
                                     <!--<a id="captchaRefreshLink"></a>-->
                                     <!--</div>-->
@@ -81,7 +81,7 @@
 
                             <div class="form_row">
                                 <div id="priv_and_sub">
-                                    <a id="createAccountButton" class="btnv6_blue_hoverfade btn_medium" href="javascript:CreateAccount();" style="float: right;">
+                                    <a id="createAccountButton" class="btnv6_blue_hoverfade btn_medium" href="javascript:void(0);" onclick="registerSubmit()" style="float: right;">
                                         <span>注册</span>
                                     </a>
                                     <div style="clear: right;"></div>

@@ -340,47 +340,17 @@
                             </div>
                         </div>
                     </div>
+
+
                     <!--评测游戏-->
-                    <div class="game_area_play_stats" style="display: none;">
-                        <div class="already_owned_actions">
-                            <!-- install steam link -->
-                            <div class="game_area_already_owned_btn">
-                                <a class="btnv6_lightblue_blue btnv6_border_2px btn_medium" href="https://store.steampowered.com/about/">
-										<span>
-											安装 Steam										</span>
-                                </a>
-                            </div>
-                            <!-- play link -->
-                            <div class="game_area_already_owned_btn">
-                                <a class="btnv6_lightblue_blue btnv6_border_2px btn_medium" href="steam://run/578080">
-										<span>
-											马上开玩										</span>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="block myactivity_block" id="my_activity">
-
-                            <div class="details_block hours_played">
-                                过去 2 周 20.4 小时 /
-                                总时数 559.8 小时								</div>
-
-                            <div class="details_block">
-                                <a href="https://steamcommunity.com/profiles/76561198399564591/stats/appid/578080">
-                                    查看您的统计资料									</a>
-                                <a href="https://steamcommunity.com/stats/578080/achievements">
-                                    查看全球游戏统计资料									</a>
-                            </div>
-
-                        </div>
-
+                    <div class="game_area_play_stats" style="display: block;">
                         <div style="clear:left;"></div>
 
                         <div id="review_container">
                             <div id="review_create">
                                 <h1>为 PLAYERUNKNOWN'S BATTLEGROUNDS 撰写一篇评测</h1>
                                 <p id="review_describe">
-                                    您认为这款游戏有什么优点或缺点？您是否会将这款游戏推荐给他人？请写下您的看法。<br>请注意保持礼貌并遵守<a href="https://support.steampowered.com/kb_article.php?ref=4045-USHJ-3810">《规则及指引》</a>。			</p>
+                                    您认为这款游戏有什么优点或缺点？您是否会将这款游戏推荐给他人？请写下您的看法。</p>
                                 <div class="avatar_block">
 
                                     <a href="https://steamcommunity.com/profiles/76561198399564591/">
@@ -391,48 +361,9 @@
 
                                 </div>
                                 <div class="content">
-                                    <div class="error_message" id="recommendation_error" style="display: none;">
-                                        在保存您的评测时发生错误。请稍后再试。
-                                    </div>
 
                                     <textarea class="input_box" id="game_recommendation" maxlength="8000"></textarea>
                                     <div class="controls">
-                                        <div class="review_controls">
-                                            <div class="controlblock">
-							<span class="controltext">
-								可见性：							</span>
-                                                <div class="dselect_container" id="ReviewVisibility_dselect_container">
-                                                    <input id="ReviewVisibility" type="hidden" name="ReviewVisibility" value="" onchange="OnReviewDselectChange( this, 'ReviewVisibility' );">
-                                                    <a class="trigger" id="ReviewVisibility_trigger" href="javascript:DSelectNoop();" onfocus="DSelectOnFocus( 'ReviewVisibility');" onblur="DSelectOnBlur( 'ReviewVisibility');" onclick="DSelectOnTriggerClick('ReviewVisibility');">公开</a>
-
-                                                    <div class="dropcontainer" style="position: absolute; top: 1174.39px; left: 391.828px; width: 62px;">
-                                                        <ul class="dropdownhidden" id="ReviewVisibility_droplist"><li class="emptyvalue"><a class="inactive_selection" tabindex="99999" href="javascript:DSelectNoop();" onmouseover="DHighlightItem( 'ReviewVisibility', 0, false );" id="0" onclick="DHighlightItem( 'ReviewVisibility', 0, true );">公开</a></li><li><a class="inactive_selection" tabindex="99999" href="javascript:DSelectNoop();" onmouseover="DHighlightItem( 'ReviewVisibility', 1, false );" id="1" onclick="DHighlightItem( 'ReviewVisibility', 1, true );">仅限好友</a></li></ul>
-                                                    </div></div><script language="javascript">$J( function() { $J('#ReviewVisibility_dselect_container').on('keydown', HandleKeyDown ); });</script>						</div>
-
-                                            <div class="controlblock">
-							<span class="controltext">
-								语言：							</span>
-
-                                                <div class="dselect_container" id="ReviewLanguage_dselect_container">
-                                                    <input id="ReviewLanguage" type="hidden" name="ReviewLanguage" value="schinese" onchange="OnReviewDselectChange( this, 'ReviewLanguage' );">
-                                                    <a class="trigger" id="ReviewLanguage_trigger" href="javascript:DSelectNoop();" onfocus="DSelectOnFocus( 'ReviewLanguage');" onblur="DSelectOnBlur( 'ReviewLanguage');" onclick="DSelectOnTriggerClick('ReviewLanguage');">简体中文</a>
-
-                                                    <div class="dropcontainer" style="position: absolute; top: 1174.39px; left: 526.5px; width: 86px;">
-                                                        <ul class="dropdownhidden" id="ReviewLanguage_droplist"><li><a class="inactive_selection" tabindex="99999" href="javascript:DSelectNoop();" onmouseover="DHighlightItem( 'ReviewLanguage', 0, false );" id="schinese" onclick="DHighlightItem( 'ReviewLanguage', 0, true );">简体中文</a></li><li><a class="inactive_selection" tabindex="99999" href="javascript:DSelectNoop();" onmouseover="DHighlightItem( 'ReviewLanguage', 1, false );" id="tchinese" onclick="DHighlightItem( 'ReviewLanguage', 1, true );">繁体中文</a></li><li><a class="inactive_selection" tabindex="99999" href="javascript:DSelectNoop();" onmouseover="DHighlightItem( 'ReviewLanguage', 2, false );" id="japanese" onclick="DHighlightItem( 'ReviewLanguage', 2, true );">日语</a></li><li><a class="inactive_selection" tabindex="99999" href="javascript:DSelectNoop();" onmouseover="DHighlightItem( 'ReviewLanguage', 3, false );" id="koreana" onclick="DHighlightItem( 'ReviewLanguage', 3, true );">韩语</a></li><li><a class="inactive_selection" tabindex="99999" href="javascript:DSelectNoop();" onmouseover="DHighlightItem( 'ReviewLanguage', 4, false );" id="thai" onclick="DHighlightItem( 'ReviewLanguage', 4, true );">泰语</a></li><li><a class="inactive_selection" tabindex="99999" href="javascript:DSelectNoop();" onmouseover="DHighlightItem( 'ReviewLanguage', 5, false );" id="bulgarian" onclick="DHighlightItem( 'ReviewLanguage', 5, true );">保加利亚语</a></li><li><a class="inactive_selection" tabindex="99999" href="javascript:DSelectNoop();" onmouseover="DHighlightItem( 'ReviewLanguage', 6, false );" id="czech" onclick="DHighlightItem( 'ReviewLanguage', 6, true );">捷克语</a></li><li><a class="inactive_selection" tabindex="99999" href="javascript:DSelectNoop();" onmouseover="DHighlightItem( 'ReviewLanguage', 7, false );" id="danish" onclick="DHighlightItem( 'ReviewLanguage', 7, true );">丹麦语</a></li><li><a class="inactive_selection" tabindex="99999" href="javascript:DSelectNoop();" onmouseover="DHighlightItem( 'ReviewLanguage', 8, false );" id="german" onclick="DHighlightItem( 'ReviewLanguage', 8, true );">德语</a></li><li><a class="inactive_selection" tabindex="99999" href="javascript:DSelectNoop();" onmouseover="DHighlightItem( 'ReviewLanguage', 9, false );" id="english" onclick="DHighlightItem( 'ReviewLanguage', 9, true );">英语</a></li><li><a class="inactive_selection" tabindex="99999" href="javascript:DSelectNoop();" onmouseover="DHighlightItem( 'ReviewLanguage', 10, false );" id="spanish" onclick="DHighlightItem( 'ReviewLanguage', 10, true );">西班牙语 - 西班牙</a></li><li><a class="inactive_selection" tabindex="99999" href="javascript:DSelectNoop();" onmouseover="DHighlightItem( 'ReviewLanguage', 11, false );" id="latam" onclick="DHighlightItem( 'ReviewLanguage', 11, true );">西班牙语 - 拉丁美洲</a></li><li><a class="inactive_selection" tabindex="99999" href="javascript:DSelectNoop();" onmouseover="DHighlightItem( 'ReviewLanguage', 12, false );" id="greek" onclick="DHighlightItem( 'ReviewLanguage', 12, true );">希腊语</a></li><li><a class="inactive_selection" tabindex="99999" href="javascript:DSelectNoop();" onmouseover="DHighlightItem( 'ReviewLanguage', 13, false );" id="french" onclick="DHighlightItem( 'ReviewLanguage', 13, true );">法语</a></li><li><a class="inactive_selection" tabindex="99999" href="javascript:DSelectNoop();" onmouseover="DHighlightItem( 'ReviewLanguage', 14, false );" id="italian" onclick="DHighlightItem( 'ReviewLanguage', 14, true );">意大利语</a></li><li><a class="inactive_selection" tabindex="99999" href="javascript:DSelectNoop();" onmouseover="DHighlightItem( 'ReviewLanguage', 15, false );" id="hungarian" onclick="DHighlightItem( 'ReviewLanguage', 15, true );">匈牙利语</a></li><li><a class="inactive_selection" tabindex="99999" href="javascript:DSelectNoop();" onmouseover="DHighlightItem( 'ReviewLanguage', 16, false );" id="dutch" onclick="DHighlightItem( 'ReviewLanguage', 16, true );">荷兰语</a></li><li><a class="inactive_selection" tabindex="99999" href="javascript:DSelectNoop();" onmouseover="DHighlightItem( 'ReviewLanguage', 17, false );" id="norwegian" onclick="DHighlightItem( 'ReviewLanguage', 17, true );">挪威语</a></li><li><a class="inactive_selection" tabindex="99999" href="javascript:DSelectNoop();" onmouseover="DHighlightItem( 'ReviewLanguage', 18, false );" id="polish" onclick="DHighlightItem( 'ReviewLanguage', 18, true );">波兰语</a></li><li><a class="inactive_selection" tabindex="99999" href="javascript:DSelectNoop();" onmouseover="DHighlightItem( 'ReviewLanguage', 19, false );" id="portuguese" onclick="DHighlightItem( 'ReviewLanguage', 19, true );">葡萄牙语</a></li><li><a class="inactive_selection" tabindex="99999" href="javascript:DSelectNoop();" onmouseover="DHighlightItem( 'ReviewLanguage', 20, false );" id="brazilian" onclick="DHighlightItem( 'ReviewLanguage', 20, true );">葡萄牙语 - 巴西</a></li><li><a class="inactive_selection" tabindex="99999" href="javascript:DSelectNoop();" onmouseover="DHighlightItem( 'ReviewLanguage', 21, false );" id="romanian" onclick="DHighlightItem( 'ReviewLanguage', 21, true );">罗马尼亚语</a></li><li><a class="inactive_selection" tabindex="99999" href="javascript:DSelectNoop();" onmouseover="DHighlightItem( 'ReviewLanguage', 22, false );" id="russian" onclick="DHighlightItem( 'ReviewLanguage', 22, true );">俄语</a></li><li><a class="inactive_selection" tabindex="99999" href="javascript:DSelectNoop();" onmouseover="DHighlightItem( 'ReviewLanguage', 23, false );" id="finnish" onclick="DHighlightItem( 'ReviewLanguage', 23, true );">芬兰语</a></li><li><a class="inactive_selection" tabindex="99999" href="javascript:DSelectNoop();" onmouseover="DHighlightItem( 'ReviewLanguage', 24, false );" id="swedish" onclick="DHighlightItem( 'ReviewLanguage', 24, true );">瑞典语</a></li><li><a class="inactive_selection" tabindex="99999" href="javascript:DSelectNoop();" onmouseover="DHighlightItem( 'ReviewLanguage', 25, false );" id="turkish" onclick="DHighlightItem( 'ReviewLanguage', 25, true );">土耳其语</a></li><li><a class="inactive_selection" tabindex="99999" href="javascript:DSelectNoop();" onmouseover="DHighlightItem( 'ReviewLanguage', 26, false );" id="vietnamese" onclick="DHighlightItem( 'ReviewLanguage', 26, true );">越南语</a></li><li><a class="inactive_selection" tabindex="99999" href="javascript:DSelectNoop();" onmouseover="DHighlightItem( 'ReviewLanguage', 27, false );" id="ukrainian" onclick="DHighlightItem( 'ReviewLanguage', 27, true );">乌克兰语</a></li></ul>
-                                                    </div></div><script language="javascript">$J( function() { $J('#ReviewLanguage_dselect_container').on('keydown', HandleKeyDown ); });</script>						</div>
-
-                                            <div class="controlblock enable_review_comments">
-                                                <input type="checkbox" id="EnableReviewComments"><label for="EnableReviewComments">允许留言</label>
-                                            </div>
-
-                                            <div class="controlblock formattinghelp">
-                                                <a href="javascript:void(0)" onclick="window.open( 'https://steamcommunity.com/comment/Recommendation/formattinghelp','formattinghelp','height=640,width=640,resize=yes,scrollbars=yes' );">Formatting Help</a>
-                                            </div>
-
-                                            <div class="review_received_comp">
-                                                <input type="checkbox" id="ReviewReceivedCompensation"><label for="ReviewReceivedCompensation">如果您是免费获取此产品的，请勾选此框 <a data-tooltip-text="如果您是免费获取的此产品，请勾选此框。您的评测旁会显示“免费获取的产品”。如果您评测此游戏还收到了其他报酬，必须在您的评测文本中披露。">(?)</a></label>
-                                            </div>
-                                        </div>
 
                                         <div class="review_controls_left">
                                             <div class="review_control_didyouenjoy">
@@ -454,7 +385,7 @@
 
                             </div>
                         </div>
-                        <div class="recommendation_area" id="recommendation_success" style="display: none;">
+                        <div class="recommendation_area" id="recommendation_success" style="display: block;">
                             <div class="reviewDate">
                                 您于 4月23日 评测了这款游戏		</div>
                             <div class="review_box">

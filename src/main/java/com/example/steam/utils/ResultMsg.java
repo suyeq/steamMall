@@ -25,6 +25,7 @@ public class ResultMsg {
 
     public static ResultMsg CODE_ERROR=new ResultMsg("505","验证码错误");
 
+    public static ResultMsg CODE_INVALID=new ResultMsg("506","验证码失效，请重新发送");
 
     private String code;
 

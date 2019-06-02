@@ -56,7 +56,9 @@ public class UserService {
             return user;
         }
         user=userDao.findUserByEmail(email);
-        redisService.set(UserKey.USER_ID,email,user);
+        if (user!=null){
+            redisService.set(UserKey.USER_ID,email,user);
+        }
         return user;
     }
 
@@ -123,19 +125,26 @@ public class UserService {
      * 处理注册用户
      * @param email
      * @param password
+     * @param code 验证码
      * @return
      */
     public ResultMsg handleRegister(String email,String password,String code){
+        String verificationCode=redisService.get(EmailKey.VERIFICATION_CODE,email,String.class);
+        if (verificationCode==null){
+            return ResultMsg.CODE_INVALID;
+        }
         User user=((UserService)applicationContext.getBean("userService")).findByEmail(email);
         if (user!=null){
             return ResultMsg.HAD_REGISTER;
         }
-        String verificationCode=redisService.get(EmailKey.VERIFICATION_CODE,email,String.class);
         if (!code.equals(verificationCode)){
             return ResultMsg.CODE_ERROR;
         }
+        /**
+         * 随机昵称，salt值，两次MD5密码加密
+         */
         String nickName=UUIDUntil.randomUUID().substring(0,5);
-        String salt=UUIDUntil.randomUUID().substring(0,5);
+        String salt=UUIDUntil.randomUUID().substring(0,6);
         String finalPass=Md5PassUtil.md5Conver(password,salt);
         User newUser=new User(nickName,email,salt,finalPass);
         ((UserService) applicationContext.getBean("userService")).addUser(newUser);

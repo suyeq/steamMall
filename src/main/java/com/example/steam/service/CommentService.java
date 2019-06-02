@@ -1,5 +1,6 @@
 package com.example.steam.service;
 
+import com.example.steam.config.DynamicDataSourceHolder;
 import com.example.steam.dao.CommentDao;
 import com.example.steam.entity.Comment;
 import com.example.steam.entity.User;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -77,7 +79,7 @@ public class CommentService implements InitializingBean{
         commentDetail.setCaiNum(comment.getCaiNum());
         commentDetail.setZanNum(comment.getZanNum());
         commentDetail.setCommentDate(comment.getCommentDate());
-        commentDetail.setCommmentNum(user.getCommmentNum());
+        commentDetail.setCommmentNum(user.getCommentNum());
         commentDetail.setContent(comment.getContent());
         commentDetail.setNickName(user.getNickName());
         commentDetail.setEmail(user.getEmail());
@@ -154,6 +156,40 @@ public class CommentService implements InitializingBean{
         sum=commentDao.commentSum();
         redisService.set(CommentKey.COMMENT_SUM,CommentKey.COMMENT_SUM_KEY,sum);
         return sum;
+    }
+
+    /**
+     * 从主库中查询最后一条评论的id
+     * @return
+     */
+    public long findLastCommentId(){
+        DynamicDataSourceHolder.putDataSource(DynamicDataSourceHolder.MASTER);
+        return commentDao.findLastCommentId();
+    }
+
+    /**
+     * 增加一个评论
+     * @param comment
+     * @return
+     */
+    public long addComment(Comment comment){
+        commentDao.addComment(comment);
+        /**
+         * 加入缓存，以及排名
+         */
+        redisService.set(CommentKey.COMMENT_ID,comment.getId()+"",comment);
+        CommentRank commentRank=new CommentRank();
+        commentRank.setId(comment.getId());
+        commentRank.setGameId(comment.getGameId());
+        RankScoreValue zanRank=new RankScoreValue();
+        zanRank.setScore(comment.getZanNum());
+        zanRank.setValue(commentRank);
+        RankScoreValue timeRank=new RankScoreValue();
+        timeRank.setScore(comment.getCommentDate().getTime());
+        timeRank.setValue(commentRank);
+        redisService.zadd(CommentKey.COMMENT_RANK_ZANNUM,CommentKey.COMMENT_RANK_ZANNUM_KEY,zanRank);
+        redisService.zadd(CommentKey.COMMENT_RANK_TIME,CommentKey.COMMENT_RANK_TIME_KEY,timeRank);
+        return comment.getId();
     }
 
 

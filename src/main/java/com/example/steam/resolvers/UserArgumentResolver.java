@@ -1,4 +1,4 @@
-package com.example.steam.config;
+package com.example.steam.resolvers;
 
 
 import com.example.steam.entity.User;
@@ -42,7 +42,9 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
         HttpServletRequest request=(HttpServletRequest)nativeWebRequest.getNativeRequest();
         HttpServletResponse response=(HttpServletResponse)nativeWebRequest.getNativeResponse();
         String cookieToken=getCookieValue(request, StaticField.COOKIE_KEY);
-        return userService.getUserByToken(response,cookieToken);
+        LoginUser user=userService.getUserByToken(response,cookieToken);
+        //request.getSession().setAttribute("email",user.getEmail());
+        return user;
     }
 
     private String getCookieValue(HttpServletRequest request, String cookie_token) {

@@ -5,6 +5,7 @@ import com.example.steam.entity.User;
 import com.example.steam.service.GameService;
 import com.example.steam.service.ImageService;
 import com.example.steam.service.TypeService;
+import com.example.steam.service.UserGameService;
 import com.example.steam.vo.LoginUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +34,8 @@ public class PageController {
     GameService gameService;
     @Autowired
     ImageService imageService;
+    @Autowired
+    UserGameService userGameService;
 
     @RequestMapping("/")
     public String index(LoginUser loginUser, Model model){
@@ -54,7 +57,7 @@ public class PageController {
     public String classify(LoginUser loginUser,
                            @PathVariable("typeName")String typeName,
                            Model model){
-        log.error(typeName);
+        log.info(typeName);
         model.addAttribute("typeName",typeName);
         model.addAttribute("user",loginUser);
         return "classlist";
@@ -64,8 +67,13 @@ public class PageController {
     public String detail(LoginUser loginUser,
                          @PathVariable("gameId")long gameId,
                          Model model){
+        Boolean contains=null;
+        if (loginUser!=null){
+            contains=userGameService.isContains(loginUser.getEmail(),gameId);
+        }
         model.addAttribute("gameId",gameId);
         model.addAttribute("user",loginUser);
+        model.addAttribute("contains",contains);
         return "gamedetail";
     }
 

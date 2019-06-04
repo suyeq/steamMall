@@ -2126,3 +2126,37 @@ var steam=
         })
     }
 
+    function SetOwnerRatingPositive() {
+        $('#VoteUpBtn')[0].setAttribute("style","background:#417a9b");
+        $('#VoteDownBtn')[0].setAttribute("style","background:rgba( 103, 193, 245, 0.2 )");
+        $('#recommendStatu')[0].setAttribute('value','1');
+    }
+
+    function SetOwnerRatingNegative() {
+        $('#VoteDownBtn')[0].setAttribute("style","background:#417a9b");
+        $('#VoteUpBtn')[0].setAttribute("style","background:rgba( 103, 193, 245, 0.2 )");
+        $('#recommendStatu')[0].setAttribute('value','0');
+    }
+
+    //增加评论
+    function addComment() {
+        var content=$('#game_recommendation').val();
+        var email=$('#account_pulldown')[0].getAttribute("email");
+        var gameId=$('#gameDetail')[0].getAttribute('game-id');
+        var recommendStatu=$('#recommendStatu')[0].getAttribute('value');
+        $.ajax({
+           url:"/comment/add",
+            type:"POST",
+            data:{
+               content:content,
+               email:email,
+               gameId:gameId,
+               recommendStatu:recommendStatu
+            },
+            success:function () {
+                layer.msg("发表成功")
+            }
+        });
+
+    }
+

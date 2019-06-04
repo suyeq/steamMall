@@ -45,6 +45,25 @@ public class RedisService {
     }
 
     /**
+     * 转化list
+     * @param keyPrefix
+     * @param key
+     * @param clazz
+     * @param <T>
+     * @return
+     */
+    public <T> List<T> getList(RedisPrefixKey keyPrefix,String key,Class<T> clazz){
+        Jedis jedis=null;
+        try {
+            jedis=pool.getResource();
+            String value=jedis.get(keyPrefix.getThisPrefix()+key);
+            return stringToArrayBean(value,clazz);
+        }finally {
+            jedis.close();
+        }
+    }
+
+    /**
      * 设置一个值
      * @param keyPrefix
      * @param key
@@ -223,6 +242,13 @@ public class RedisService {
             return (T) value;
         }
         return JSON.parseObject(value,tClass);
+    }
+
+    public static <T> List<T> stringToArrayBean(String value,Class<T> tClass){
+        if (value == null){
+            return null;
+        }
+        return JSON.parseArray(value,tClass);
     }
 
     public Long decr(RedisPrefixKey keyPrefix,String key) {

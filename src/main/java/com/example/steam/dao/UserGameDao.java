@@ -1,7 +1,6 @@
 package com.example.steam.dao;
 
 import com.example.steam.entity.UserGame;
-import org.apache.catalina.LifecycleState;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;

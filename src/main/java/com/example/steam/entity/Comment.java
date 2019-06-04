@@ -38,6 +38,8 @@ public class Comment {
         this.email=email;
         this.gameId=gameId;
         this.recommendStatu=recommendStatu;
+        this.zanNum=0;
+        this.caiNum=0;
     }
 
     public Long getId() {

@@ -343,19 +343,19 @@
 
 
                     <!--评测游戏-->
-                    <div class="game_area_play_stats" style="display: block;">
+                    <div class="game_area_play_stats" style="display: block;" th:if="${contains}">
                         <div style="clear:left;"></div>
 
                         <div id="review_container">
                             <div id="review_create">
-                                <h1>为 PLAYERUNKNOWN'S BATTLEGROUNDS 撰写一篇评测</h1>
+                                <h1>为该游戏撰写一篇评测</h1>
                                 <p id="review_describe">
                                     您认为这款游戏有什么优点或缺点？您是否会将这款游戏推荐给他人？请写下您的看法。</p>
                                 <div class="avatar_block">
 
-                                    <a href="https://steamcommunity.com/profiles/76561198399564591/">
+                                    <a href="javascript:void(0);">
                                         <div class="avatar avatar_block_status_offline">
-                                            <img src="https://media.st.dl.bscstorage.net/steamcommunity/public/images/avatars/95/959986934ff7a3782a0746a96d5f5df8524d9c2b_full.jpg">
+                                            <img th:src="${user.avatar}" src="https://media.st.dl.bscstorage.net/steamcommunity/public/images/avatars/95/959986934ff7a3782a0746a96d5f5df8524d9c2b_full.jpg">
                                         </div>
                                     </a>
 
@@ -369,13 +369,14 @@
                                             <div class="review_control_didyouenjoy">
                                                 您推荐这款游戏吗？						</div>
                                             <div class="controlblock review_create_vote_controls" id="VoteUpDownBtnCtn">
-                                                <a class="btnv6_blue_hoverfade  btn_medium ico_hover" href="#" id="VoteUpBtn" onclick="return SetOwnerRatingPositive()"><span><i class="ico18 thumb_up"></i> 是</span></a>
-                                                <a class="btnv6_blue_hoverfade  btn_medium ico_hover" href="#" id="VoteDownBtn" onclick="return SetOwnerRatingNegative()"><span><i class="ico18 thumb_down"></i> 否</span></a>
+                                                <a class="btnv6_blue_hoverfade  btn_medium ico_hover" style="" href="javascript:void(0);" id="VoteUpBtn" onclick="SetOwnerRatingPositive()"><span><i class="ico18 thumb_up"></i> 是</span></a>
+                                                <a class="btnv6_blue_hoverfade  btn_medium ico_hover" style="" href="javascript:void(0);" id="VoteDownBtn" onclick="SetOwnerRatingNegative()"><span><i class="ico18 thumb_down"></i> 否</span></a>
                                             </div>
+                                            <input type="hidden" id="recommendStatu" value="">
                                         </div>
                                         <div class="review_controls_right">
                                             <div class="review_submit_ctn" style="clear: right; float: right;">
-                                                <a class="btnv6_lightblue_blue btnv6_border_2px btn_medium" style="float: right" href="#" onclick="SubmitRecommendation('game_recommendation'); return false;" id="recommendation_submit"><span>发布评测</span></a>
+                                                <a class="btnv6_lightblue_blue btnv6_border_2px btn_medium" style="float: right" href="javascript:void(0);" onclick="addComment()" id="recommendation_submit"><span>发布评测</span></a>
                                             </div>
                                         </div>
                                         <div style="clear: both"></div>

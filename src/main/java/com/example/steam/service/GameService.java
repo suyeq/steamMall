@@ -129,21 +129,23 @@ public class GameService implements InitializingBean {
      * @return
      */
     public List<SpecialGame> findGamesToClassCarousel(String typeName){
-        Set<GameDetail> gameDetailSet=localStoreService.get(LocalStoreKey.CLASS_CAROUSEL_KEY(),Set.class,"0");
+        int count=0;
+        Set<GameDetail> gameDetailSet=localStoreService.get(LocalStoreKey.CLASS_CAROUSEL_KEY(),Set.class,typeName);
         if (gameDetailSet!=null){
             return new LinkedList<>(gameDetailSet);
         }
         int sum=redisService.get(GameKey.GAME_SUM,GameKey.GAME_SUM_KEY,int.class);
         Random random=new Random();
         gameDetailSet=new HashSet<>();
-        while (gameDetailSet.size()<CLASS_CAROUSEL_SIZE){
+        while (count<sum && gameDetailSet.size()<CLASS_CAROUSEL_SIZE){
             int seed=random.nextInt(sum)+1;
             GameDetail gameDetail=redisService.get(GameKey.GAME_ID,seed+"",GameDetail.class);
             if (gameDetail!=null && typeService.isExists(gameDetail.getType(),typeName)){
                 gameDetailSet.add(gameDetail);
             }
+            count++;
         }
-        localStoreService.set(LocalStoreKey.CLASS_CAROUSEL_KEY(),gameDetailSet,"0");
+        localStoreService.set(LocalStoreKey.CLASS_CAROUSEL_KEY(),gameDetailSet,typeName);
         return new LinkedList<>(gameDetailSet);
     }
 
@@ -156,7 +158,7 @@ public class GameService implements InitializingBean {
         //GamePriorityQueue<GameDetail> priorityQueue=new GamePriorityQueue<>(new TimeComparator());
         long count=0;
         long cursor=0;
-        List<GameDetail> gameDetailList=localStoreService.get(LocalStoreKey.NEW_RELEASE_CLASS_KEY(),List.class,page+"");
+        List<GameDetail> gameDetailList=localStoreService.get(LocalStoreKey.NEW_RELEASE_CLASS_KEY(),List.class,typeName+page);
         if (gameDetailList!=null){
             return gameDetailList;
         }
@@ -168,7 +170,7 @@ public class GameService implements InitializingBean {
             count=iteratorClass(page,count,iterator,typeName,gameDetailList);
             cursor+=100;
         }
-        localStoreService.set(LocalStoreKey.NEW_RELEASE_CLASS_KEY(),gameDetailList,page+"");
+        localStoreService.set(LocalStoreKey.NEW_RELEASE_CLASS_KEY(),gameDetailList,typeName+page);
         return gameDetailList;
     }
 
@@ -182,7 +184,7 @@ public class GameService implements InitializingBean {
     public List<GameDetail> findGamesHotSellByType(String typeName,long page){
         long count=0;
         long cursor=0;
-        List<GameDetail> gameDetailList=localStoreService.get(LocalStoreKey.HOT_SELL_CLASS_KEY(),List.class,page+"");
+        List<GameDetail> gameDetailList=localStoreService.get(LocalStoreKey.HOT_SELL_CLASS_KEY(),List.class,typeName+page);
         if (gameDetailList!=null){
             return gameDetailList;
         }
@@ -194,7 +196,7 @@ public class GameService implements InitializingBean {
             count=iteratorClass(page,count,iterator,typeName,gameDetailList);
             cursor+=100;
         }
-        localStoreService.set(LocalStoreKey.HOT_SELL_CLASS_KEY(),gameDetailList,page+"");
+        localStoreService.set(LocalStoreKey.HOT_SELL_CLASS_KEY(),gameDetailList,typeName+page);
         return gameDetailList;
     }
 
@@ -218,7 +220,7 @@ public class GameService implements InitializingBean {
             count=iteratorClass(page,count,iterator,typeName,gameDetailList);
             cursor+=100;
         }
-        localStoreService.set(LocalStoreKey.UP_COMING_CLASS_KEY(),gameDetailList,page+"");
+        localStoreService.set(LocalStoreKey.UP_COMING_CLASS_KEY(),gameDetailList,typeName+page);
         return gameDetailList;
     }
 

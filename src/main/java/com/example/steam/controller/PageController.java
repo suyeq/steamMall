@@ -53,7 +53,7 @@ public class PageController {
         return "register";
     }
 
-    @RequestMapping("/class/{typeName}")
+    @RequestMapping("/classification/{typeName}")
     public String classify(LoginUser loginUser,
                            @PathVariable("typeName")String typeName,
                            Model model){

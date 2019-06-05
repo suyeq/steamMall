@@ -141,6 +141,7 @@ var steam=
         initClass:function(){
             var that=this;
             var typeName=$('#type')[0].getAttribute('type-name');
+            console.log(typeName)
             this.showClassCarouselData(typeName);
             this.loadSpikeGame();
             this.loadTypeLabel();
@@ -171,7 +172,6 @@ var steam=
                 $('#NewReleases_ctn')[0].setAttribute('page-id',page);
                 that.classNewReleaseGameLoadMore(typeName,that);
             });
-
             this.classHotSellPre.click(function () {
                 var page=$('#TopSellers_ctn')[0].getAttribute('page-id');
                 page=parseInt(page);
@@ -190,7 +190,6 @@ var steam=
                 $('#TopSellers_ctn')[0].setAttribute('page-id',page);
                 that.classHotSellGameLoadMore(typeName,that);
             });
-
             this.classUpComingPre.click(function () {
                 var page=$('#ComingSoon_ctn')[0].getAttribute('page-id');
                 page=parseInt(page);
@@ -209,7 +208,6 @@ var steam=
                 $('#ComingSoon_ctn')[0].setAttribute('page-id',page);
                 that.classUpComingGameLoadMore(typeName,that);
             });
-
             this.classCarouselStart(that);
             this.mouseClassCarouselPause(that);
         },
@@ -278,7 +276,7 @@ var steam=
                     $('#type_id').empty();
                     $('#type_id').append('<h2>依分类选择</h2>');
                     for (var i=0;i<data.msg.length;i++){
-                        var element='<a class="btnv6_blue_hoverfade btn_small_tall" style="margin-left: 2px;width: 48%;" href="'+'/class/'+data.msg[i]+'"><span>'+data.msg[i]+'</span></a>';
+                        var element='<a class="btnv6_blue_hoverfade btn_small_tall" style="margin-left: 2px;width: 48%;" href="'+'/classification/'+data.msg[i]+'"><span>'+data.msg[i]+'</span></a>';
                         element=$(element);
                         $('#type_id').append(element);
                     }
@@ -2158,5 +2156,15 @@ var steam=
             }
         });
 
+    }
+    
+    function showClassGameList() {
+        var element=$('#genre_flyout')[0].getAttribute('style');
+        //console.log('kkkkk')
+        if (element=='display: none;'){
+            $('#genre_flyout')[0].setAttribute('style','display: block;');
+        } else {
+            $('#genre_flyout')[0].setAttribute('style','display: none;');
+        }
     }
 

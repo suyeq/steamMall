@@ -51,7 +51,7 @@ public class CommentService implements InitializingBean{
     ApplicationContext applicationContext;
 
     /**
-     * 从数据库中查询或者从缓存层查询
+     * 从数据库中查询或者从缓存层查询评论
      * @param id
      * @return
      */

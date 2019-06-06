@@ -58,6 +58,7 @@ public class MQCustomer implements InitializingBean, DisposableBean {
                 eventMap.put(typeList.get(i),handleList);
             }
         }
+        System.out.println(eventMap.toString());
         threadPoolExecutor.execute(new Runnable() {
             @Override
             public void run() {

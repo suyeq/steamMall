@@ -16,6 +16,12 @@ public class Event {
 
     public final static String EMAIL="email";
 
+    public final static String SPIKE="spike";
+
+//    public final static String SPIKE_ID="spikeId";
+
+//    public final static String USER_ID="userId";
+
     private EventType eventType;
     /**
      * 存贮信息

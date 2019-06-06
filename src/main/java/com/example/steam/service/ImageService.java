@@ -1,5 +1,6 @@
 package com.example.steam.service;
 
+import com.example.steam.config.DynamicDataSourceHolder;
 import com.example.steam.dao.ImageDao;
 import com.example.steam.entity.GameImage;
 import com.example.steam.entity.Image;
@@ -29,6 +30,11 @@ public class ImageService {
 
     public String findImageUrlById(long id){
           return imageDao.findImageUrlById(id);
+    }
+
+    public String findImageUrlById(long id, String dataSource){
+        DynamicDataSourceHolder.putDataSource(dataSource);
+        return imageDao.findImageUrlById(id);
     }
 
     public List<String> findGameImageUrlsByGameId(long gameId){

@@ -15,6 +15,8 @@ public class ResultMsg {
 
     public static ResultMsg REGISTER_SUCCESS=new ResultMsg("202","注册成功");
 
+    public static ResultMsg SPIKE_SUCCESS=new ResultMsg("203","秒杀成功");
+
     public static ResultMsg NO_EMAIL=new ResultMsg("501","该邮箱不存在");
 
     public static ResultMsg PASS_ERROR=new ResultMsg("502","密码错误");
@@ -26,6 +28,16 @@ public class ResultMsg {
     public static ResultMsg CODE_ERROR=new ResultMsg("505","验证码错误");
 
     public static ResultMsg CODE_INVALID=new ResultMsg("506","验证码失效，请重新发送");
+
+    public static ResultMsg STOCK_IS_NULL=new ResultMsg("507","秒杀游戏库为零");
+
+    public static ResultMsg NO_LOGIN=new ResultMsg("508","尚未登录");
+
+    public static ResultMsg NO_GAME=new ResultMsg("509","该游戏未参与秒杀");
+
+    public static ResultMsg SPIKE_ING=new ResultMsg("510","秒杀中...");
+
+    public static ResultMsg SPIKE_REPEAT=new ResultMsg("511","不能重复秒杀");
 
     private String code;
 

@@ -11,9 +11,13 @@ import com.example.steam.redis.BaseKey;
  */
 public class SpikeGameKey extends BaseKey {
 
-    public SpikeGameKey(int expiredTime) {
+    public static final String SPIKE_STOCK_KEY="stock:";
+
+    private SpikeGameKey(int expiredTime) {
         super(expiredTime);
     }
 
     public static SpikeGameKey SPIKE_ID=new SpikeGameKey(0);
+
+    public static SpikeGameKey SPIKE_STOCK=new SpikeGameKey(0);
 }

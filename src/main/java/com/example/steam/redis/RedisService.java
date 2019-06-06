@@ -198,6 +198,16 @@ public class RedisService {
         }
     }
 
+    public Long decKey(RedisPrefixKey keyPrefix,String key) {
+        Jedis jedis=null;
+        try {
+            jedis=pool.getResource();
+            String realKey=keyPrefix.getThisPrefix()+key;
+            return jedis.decr(realKey);
+        }finally {
+            jedis.close();
+        }
+    }
 
     /**
      * 判断键是否存在
@@ -249,17 +259,6 @@ public class RedisService {
             return null;
         }
         return JSON.parseArray(value,tClass);
-    }
-
-    public Long decr(RedisPrefixKey keyPrefix,String key) {
-        Jedis jedis=null;
-        try {
-            jedis=pool.getResource();
-            String realKey=keyPrefix.getThisPrefix()+key;
-            return jedis.decr(realKey);
-        }finally {
-            jedis.close();
-        }
     }
 
 

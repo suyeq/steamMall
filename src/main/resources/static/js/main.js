@@ -295,7 +295,8 @@ var steam=
                     $('#spike_img a')[0].setAttribute('href','/detail/'+data.msg.gameId);
                     $('#spike_img a img')[0].setAttribute('src',data.msg.posterImage);
                     $('#spike_img a img')[0].setAttribute('style','width: 306px;height: 143px;');
-                    $('#spike_price a')[0].setAttribute('href','/spike/'+data.msg.id);
+                    $('#spike_price a')[0].setAttribute('href','javascript:void(0);');
+                    $('#spike_price a')[0].setAttribute('onclick','spike('+data.msg.id+')');
                     $('#spike_price div div.discount_original_price')[0].innerHTML='¥ '+data.msg.gamePrice;
                     $('#spike_price div div.discount_final_price')[0].innerHTML='¥ '+data.msg.spikePrice;
                     $('#dailydeal_timer')[0].setAttribute('date-time',data.msg.endTime);
@@ -2157,7 +2158,8 @@ var steam=
         });
 
     }
-    
+
+    //展示分类
     function showClassGameList() {
         var element=$('#genre_flyout')[0].getAttribute('style');
         //console.log('kkkkk')
@@ -2166,5 +2168,45 @@ var steam=
         } else {
             $('#genre_flyout')[0].setAttribute('style','display: none;');
         }
+    }
+
+    function spike(spikeId) {
+        $.ajax({
+            url:"/spike/"+spikeId,
+            type:"POST",
+            async:false,
+            success:function (data) {
+                data=eval("("+data+")");
+                //console.log(data)
+                if (data.code>500) {
+                    layer.msg(data.msg)
+                }
+                if (data.code==200){
+                    spikeResult(data.msg.userId,data.msg.spikeGameId);
+                }
+            }
+        })
+    }
+
+    function spikeResult(userId,spikeId) {
+        $.ajax({
+            url:"/spike/result",
+            type:"POST",
+            async:false,
+            data:{
+                userId:userId,
+                spikeId:spikeId
+            },
+            success:function (data) {
+                data=eval("("+data+")");
+                if (data.code==510){
+                    spikeResult(userId,spikeId);
+                }
+                if (data.code==203) {
+                    layer.msg(data.msg)
+                    window.location.href="/cart";
+                }
+            }
+        })
     }
 

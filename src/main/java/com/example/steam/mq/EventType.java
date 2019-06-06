@@ -12,7 +12,9 @@ public enum  EventType {
     /**
      * 发送验证码事件类型
      */
-    SEND_EMAIL_VERIFICATION_CODE("发送验证码");
+    SEND_EMAIL_VERIFICATION_CODE("发送验证码"),
+
+    SPIKE_GAME("秒杀游戏");
 
     private String value;
 

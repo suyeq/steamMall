@@ -2124,13 +2124,13 @@ var steam=
             }
         })
     }
-
+    //评论推荐
     function SetOwnerRatingPositive() {
         $('#VoteUpBtn')[0].setAttribute("style","background:#417a9b");
         $('#VoteDownBtn')[0].setAttribute("style","background:rgba( 103, 193, 245, 0.2 )");
         $('#recommendStatu')[0].setAttribute('value','1');
     }
-
+    //评论不推荐
     function SetOwnerRatingNegative() {
         $('#VoteDownBtn')[0].setAttribute("style","background:#417a9b");
         $('#VoteUpBtn')[0].setAttribute("style","background:rgba( 103, 193, 245, 0.2 )");
@@ -2170,7 +2170,11 @@ var steam=
         }
     }
 
+    //秒杀功能
     function spike(spikeId) {
+        var loadId=layer.load(1, {
+            shade: [0.1,'#fff'] //0.1透明度的白色背景
+        });
         $.ajax({
             url:"/spike/"+spikeId,
             type:"POST",
@@ -2179,16 +2183,18 @@ var steam=
                 data=eval("("+data+")");
                 //console.log(data)
                 if (data.code>500) {
+                    layer.close(loadId);
                     layer.msg(data.msg)
                 }
                 if (data.code==200){
-                    spikeResult(data.msg.userId,data.msg.spikeGameId);
+                    spikeResult(data.msg.userId,data.msg.spikeGameId,loadId);
                 }
             }
         })
     }
 
-    function spikeResult(userId,spikeId) {
+    //秒杀结果轮询操作
+    function spikeResult(userId,spikeId,loadId) {
         $.ajax({
             url:"/spike/result",
             type:"POST",
@@ -2203,6 +2209,7 @@ var steam=
                     spikeResult(userId,spikeId);
                 }
                 if (data.code==203) {
+                    layer.close(loadId);
                     layer.msg(data.msg)
                     window.location.href="/cart";
                 }

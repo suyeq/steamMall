@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>搜索结果</title>
+    <link href="css/motivo.css" rel="stylesheet" type="text/css">
+    <th:block th:replace="fragment_header::#head"></th:block>
+    <link href="css/browse.css" th:href="@{/css/browse.css}" rel="stylesheet" type="text/css">
+    <link href="css/discoveryqueue.css" th:href="@{/css/discoveryqueue.css}" rel="stylesheet" type="text/css">
+    <link href="css/tag.css" th:href="@{/css/tag.css}" rel="stylesheet" type="text/css">
+    <link href="css/contenthub.css" th:href="@{/css/contenthub.css}" rel="stylesheet" type="text/css">
+    <link href="css/creator.css" th:href="@{/css/creator.css}" rel="stylesheet" type="text/css">
+    <link href="css/sharereponsive.css" th:href="@{/css/sharereponsive.css}" rel="stylesheet" type="text/css">
+    <link href="css/search.css" th:href="@{/css/search.css}" rel="stylesheet" type="text/css">
+</head>
+<body class="v6 tag_page game_bg contenthub_page responsive_page">
+<!--头部-->
+<div class="responsive_page_content">
+    <div th:replace="fragment_top::#top"></div>
+</div>
+
+<div class="responsive_page_frame with_header" id="type" type-name="" th:attr="type-name=${typeName}">
+    <div class="responsive_page_content">
+        <div id="responsive_store_nav_ctn"></div>
+        <div data-cart-banner-spot="1"></div>
+        <div class="responsive_page_template_content">
+
+            <div class="contenthub_page_background "
+                 style="background-image: url('https://media.st.dl.bscstorage.net/steam/apps/105600/page_bg_generated_v6b.jpg?t=1548954652');">
+
+
+                <div class="page_content_ctn">
+                    <!--菜单-->
+                    <div th:replace="fragment_menu::#menu"></div>
+                </div>
+
+
+
+                <!-- Main Content -->
+                <div class="page_content_ctn">
+                    <div class="page_content">
+                        <div class="leftcol large">
+
+                            <div class="searchbar">
+
+                                <div class="searchbar_left">
+                                    <input type="text" class="text" id="term" name="displayterm" onfocus="if(this.value=='输入搜索词或标签'){this.value=''}" onchange="$('realterm').value= (this.value=='输入搜索词或标签') ? '' : this.value" onblur="if(this.value==''){this.value='输入搜索词或标签';}" value="返校" maxlength="64" autocomplete="off">
+                                    <input type="hidden" name="term" id="realterm" value="返校">
+                                    <input type="hidden" name="hide_filtered_results_warning" id="hide_filtered_results_warning" value="">
+                                    <input type="hidden" name="ignore_preferences" id="ignore_preferences" value="">
+                                    <button type="submit" class="btnv6_blue_hoverfade btn_small"><span>搜索</span></button>
+                                    <div id="term_options" class="autocomplete" style="display: none;"><ul></ul></div>
+                                </div>
+                                <div style="clear: both;"></div>
+                            </div>
+
+
+                            <script type="text/javascript">
+                                new Ajax.Autocompleter( $('advsearchform').elements['displayterm'], 'term_options', 'https://store.steampowered.com/search/suggest', {frequency: 0.2, method: "get", paramName: 'term', parameters : 'cc=CN&l=schinese&excluded_content_descriptors%5B0%5D=3&excluded_content_descriptors%5B1%5D=4', allowFreeEntry: true, afterUpdateElement:function() { $('realterm').value=$('term').value; AjaxSearchResults(); } });
+                            </script>
+
+                            <div id="search_results_filtered_warning_persistent" class="search_results_filtered_warning collapsed"></div>
+                            <div id="search_results">
+
+                                <script type="text/javascript">
+
+                                    function shareLinkClick(link){
+                                        $('url_box').show();
+                                        $('sharearrow').show();
+                                        $('url_textarea').select();
+                                        link.style.color = "#7da6c8";
+
+                                    }
+
+                                </script>
+
+                                <script>
+                                    g_strUnfilteredURL = 'https://store.steampowered.com/search/?snr=1_4_4__12&term=%E8%BF%94%E6%A0%A1&ignore_preferences=1';
+                                </script>
+                                <div id="search_result_container">
+
+                                    <div class="search_rule"></div>
+
+
+
+                                    <!-- List Items -->
+                                    <div>
+                                        <!-- Extra empty div to hack around lame IE7 layout bug -->
+                                        <div></div>
+                                        <!-- End Extra empty div -->
+                                        <a href="https://store.steampowered.com/app/736190/__Chinese_Parents/?snr=1_7_7_151_150_1" data-ds-appid="736190" data-ds-tagids="[599,597,122,492,4182,4085,4136]" data-ds-crtrids="[33018259,33976403]" onmouseover="GameHover( this, event, 'global_hover', {&quot;type&quot;:&quot;app&quot;,&quot;id&quot;:736190,&quot;public&quot;:1,&quot;v6&quot;:1} );" onmouseout="HideGameHover( this, event, 'global_hover' )" class="search_result_row ds_collapse_flag  app_impression_tracked">
+                                            <div class="col search_capsule"><img src="https://media.st.dl.bscstorage.net/steam/apps/736190/capsule_sm_120_schinese.jpg?t=1556092983"></div>
+                                            <div class="responsive_search_name_combined">
+                                                <div class="col search_name ellipsis">
+                                                    <span class="title">中国式家长 / Chinese Parents</span>
+                                                    <p>
+                                                        <span class="platform_img win"></span><span class="platform_img mac"></span>							</p>
+                                                </div>
+                                                <div class="col search_released responsive_secondrow">2018年9月29日</div>
+                                                <div class="col search_reviewscore responsive_secondrow">
+															<span class="search_review_summary positive" data-tooltip-html="特别好评<br>10,490 篇用户的游戏评测中有 89% 为好评。">
+								</span>
+                                                </div>
+
+
+                                                <div class="col search_price_discount_combined responsive_secondrow" data-price-final="3600">
+                                                    <div class="col search_discount responsive_secondrow">
+
+                                                    </div>
+                                                    <div class="col search_price  responsive_secondrow">
+                                                        ¥ 36							</div>
+                                                </div>
+                                            </div>
+
+
+                                            <div style="clear: left;"></div>
+                                        </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                        <!-- End List Items -->
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <div style="clear: both;"></div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- End Main Background -->
+        </div>
+        <!--右边悬浮框,每个74px-->
+        <div class="hover game_hover" id="global_hover" style="left: 812.5px; top: 664px; display: none; opacity: 1;">
+            <div class="game_hover_box hover_box">
+                <div class="content" id="global_hover_content">
+                    <div id="hover_app" style="display: block;">
+                        <div class="hover_top_area" style="display: none;"></div>
+                        <h4>Gamble Fight Plus</h4>
+                        <div class="hover_release"> 发行于: 2019年4月20日 </div>
+                        <div class="hover_screenshots">
+                            <div class="screenshot" style="background-image: url( https://media.st.dl.bscstorage.net/steam/apps/1028130/ss_51a3078d9108939e6e476eb18968f5db1cae2ff4.600x338.jpg?t=1555723821  )"></div>
+                            <div class="screenshot" style="background-image: url( https://media.st.dl.bscstorage.net/steam/apps/1028130/ss_6ee40a87899b6dcab4bab08f86950674b408d06a.600x338.jpg?t=1555723821  )"></div>
+                            <div class="screenshot" style="background-image: url( https://media.st.dl.bscstorage.net/steam/apps/1028130/ss_3c6e18d7b8c8beb6c06b9ee224bda43e5cad278f.600x338.jpg?t=1555723821  )"></div>
+                            <div class="screenshot" style="background-image: url( https://media.st.dl.bscstorage.net/steam/apps/1028130/ss_5477f54bac458060e4a053f3cf833415c2ae4d3f.600x338.jpg?t=1555723821  )"></div>
+                        </div>
+                        <div class="hover_body">
+                            <div class="hover_review_summary">
+                                <div class="title">总体用户评测：</div>
+                                <span class="game_review_summary mixed">褒贬不一</span>
+                                (41 篇评测)
+                            </div>
+                            <div style="clear: left;"></div>
+                        </div>
+                        <div class="hover_body">
+                            用户标签：
+                            <div class="hover_tag_row">
+                                <div class="app_tag">色情内容</div>
+                                <div class="app_tag">裸露</div>
+                                <div class="app_tag">动作</div>
+                                <div class="app_tag">独立</div>
+                                <div class="app_tag">动漫</div>
+                                <div class="app_tag">女性主角</div>
+                                <div class="app_tag">单人</div>
+                                <div class="app_tag">可爱</div>
+                                <div class="app_tag">3D 平台</div>
+                                <div class="app_tag">快节奏</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="hover_arrow_left" style="top: 35px;"></div>
+            <div class="hover_arrow_right" style="display: none;"></div>
+        </div>
+
+        <div style="clear: both;"></div>
+    </div>    <!-- responsive_page_legacy_content -->
+</div>
+<!--脚部-->
+<div th:replace="fragment_foot::#foot"></div>
+<script type="text/javascript">
+    steam.initClass()
+    var date=new Date(parseInt($('#dailydeal_timer')[0].getAttribute('date-time')));
+    Y = date.getFullYear() + '/';
+    M = date.getMonth()+1+'/';
+    D = date.getDate()+',';
+    h = date.getHours()+':';
+    m = date.getMinutes()+':';
+    s = date.getSeconds();
+    date=Y+M+D+h+m+s;
+    countDown(date,'dailydeal_timer');
+</script>
+</body>
+</html>

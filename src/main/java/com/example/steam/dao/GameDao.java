@@ -38,4 +38,7 @@ public interface GameDao {
 
     @Select("select count(*) from game")
     int gamesSum();
+
+    @Select("select * from game where gamename like concat('%',#{content},'%') or gameintroduction like concat('%',#{content},'%')")
+    List<Game> findGamesBySearchContent(@Param("content")String content);
 }

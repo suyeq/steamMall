@@ -83,4 +83,10 @@ public class PageController {
         model.addAttribute("user",loginUser);
         return "shoppingcart";
     }
+
+    @RequestMapping("search")
+    public String searchResult(LoginUser loginUser, Model model){
+        model.addAttribute("user",loginUser);
+        return "searchresult";
+    }
 }

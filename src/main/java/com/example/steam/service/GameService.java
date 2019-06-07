@@ -62,6 +62,41 @@ public class GameService implements InitializingBean {
     CommentService commentService;
 
     /**
+     * 查找相关游戏
+     * @param content
+     * @return
+     */
+    public List<GameDetail> findGamesBySearchContent(String content){
+        List<Game> gameList=gameDao.findGamesBySearchContent(content);
+        List<GameDetail> gameDetailList=new LinkedList<>();
+        for (Game game:gameList){
+            GameDetail gameDetail=new GameDetail();
+            gameDetail.setId(game.getId());
+            gameDetail.setGameName(game.getGameName());
+            gameDetail.setGamePrice(game.getGamePrice());
+            gameDetail.setDiscount(game.getDiscount());
+            gameDetail.setGameIntroduction(game.getGameIntroduction());
+            gameDetail.setGameAbout(game.getGameAbout());
+            gameDetail.setIssuedDate(game.getIssuedDate());
+            gameDetail.setSellNum(game.getSellNum());
+            gameDetail.setIssuedStatu(game.getIssuedStatu());
+            gameDetail.setPosterImage(imageService.findImageUrlById(game.getPosterImage()));
+            List<String> imageUrlList=imageService.findGameImageUrlsByGameId(game.getId());
+            gameDetail.setImageIntro1(imageUrlList.get(0));
+            gameDetail.setImageIntro2(imageUrlList.get(1));
+            gameDetail.setImageIntro3(imageUrlList.get(2));
+            gameDetail.setImageIntro4(imageUrlList.get(3));
+            gameDetail.setImageIntro5(imageUrlList.get(4));
+            gameDetail.setLabel(labelService.findLabelNamesByGameId(game.getId()));
+            gameDetail.setLowestSystem(game.getLowestSystem());
+            gameDetail.setRecommendSystem(game.getRecommendSystem());
+            gameDetail.setType(typeService.findTypeNameByGameId(game.getId()));
+            gameDetailList.add(gameDetail);
+        }
+        return gameDetailList;
+    }
+
+    /**
      * 找出已发布的所有游戏总数
      * @return
      */

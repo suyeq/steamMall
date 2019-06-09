@@ -218,6 +218,55 @@ var steam=
             this.loadSpikeGame();
         },
 
+        initSearch:function(){
+            this.loadSearchResult();
+        },
+
+        loadSearchResult:function(){
+            var content=$('#search')[0].getAttribute('content');
+            $.ajax({
+                url:"searchresult",
+                type:"POST",
+                async:false,
+                data:{
+                  content:content
+                },
+                success:function (data) {
+                    data=eval("("+data+")");
+                    console.log(data)
+                    $('#search_result_container').empty();
+                    for (var i=0;i<data.msg.length;i++){
+                        var parent='<a href="'+'/detail/'+data.msg[i].id+'"  class="search_result_row ds_collapse_flag  app_impression_tracked"></a>';
+                        var img='<div class="col search_capsule"><img style="width: 123px;height: 45px;" src="'+data.msg[i].posterImage+'"></div>';
+                        var gameMsg='<div class="responsive_search_name_combined"></div>';
+                        var namePlatForm='<div class="col search_name ellipsis"><span class="title">'+data.msg[i].gameName+'</span><p><span class="platform_img win"></span></p></div>';
+                        var time=parseInt(data.msg[i].issuedDate);
+                        time = new Date(time);
+                        Y = time.getFullYear() + '年';
+                        M = (time.getMonth()+1 < 10 ? '0'+(time.getMonth()+1) : time.getMonth()+1) + '月';
+                        D = time.getDate() + '日';
+                        var date=Y+M+D;
+                        date='<div class="col search_released responsive_secondrow">'+date+'</div>';
+                        var price='<div class="col search_price_discount_combined responsive_secondrow">';
+                        if (data.msg[i].discount>0){
+                            price+='<div class="col search_discount responsive_secondrow"><span>-'+(100-data.msg[i].discount)+'%</span></div>';
+                        }
+                        price+='<div class="col search_price discounted responsive_secondrow">'
+                        if (data.msg[i].discount>0){
+                            price+='<span style="color: #888888;"><strike>¥'+data.msg[i].gamePrice+'</strike></span><br>¥ '+Math.ceil(data.msg[i].gamePrice*(data.msg[i].discount/100))+'</div></div>';
+                        }else {
+                            price+='¥ '+data.msg[i].gamePrice+'</div></div>';
+                        }
+                        parent=$(parent);
+                        gameMsg=$(gameMsg);
+                        gameMsg.append(namePlatForm,date,price);
+                        parent.append(img,gameMsg);
+                        $('#search_result_container').append(parent);
+                    }
+                }
+            })
+        },
+
         loadShoppingCart:function(){
           var userId=$('#account_pulldown')[0].getAttribute('user-id');
           $.ajax({
@@ -1860,11 +1909,11 @@ var steam=
             $('#dailydeal_timer')[0].innerHTML = times;
            //document.getElementById('dailydeal_timer_b9523fb88ff59a2dd944e424').innerHTML(times);
        }
-        setTimeout(countDown,500,endTime,id);
         //当倒计时结束时，改变内容
         if(result<=0){
-
+            $('#dailydeal_timer')[0].innerHTML="秒杀结束";
         }
+        setTimeout(countDown,500,endTime,id);
     }
 
     function classTabSelect(selects) {
@@ -2143,20 +2192,26 @@ var steam=
         var email=$('#account_pulldown')[0].getAttribute("email");
         var gameId=$('#gameDetail')[0].getAttribute('game-id');
         var recommendStatu=$('#recommendStatu')[0].getAttribute('value');
-        $.ajax({
-           url:"/comment/add",
-            type:"POST",
-            data:{
-               content:content,
-               email:email,
-               gameId:gameId,
-               recommendStatu:recommendStatu
-            },
-            success:function () {
-                layer.msg("发表成功")
+        if (content.length==0){
+            layer.msg("评测不能为空")
+        } else {
+            if (recommendStatu.length==0){
+                recommendStatu=1;
             }
-        });
-
+            $.ajax({
+                url:"/comment/add",
+                type:"POST",
+                data:{
+                    content:content,
+                    email:email,
+                    gameId:gameId,
+                    recommendStatu:recommendStatu
+                },
+                success:function () {
+                    layer.msg("发表成功")
+                }
+            });
+        }
     }
 
     //展示分类
@@ -2215,5 +2270,23 @@ var steam=
                 }
             }
         })
+    }
+
+    //搜索
+    function searchResult() {
+        var content=$('#content_search').val();
+        if (content.length==0){
+            layer.msg("搜索不能为空")
+        }else {
+            $('#searchform').submit();
+        }
+    }
+    
+    //在搜索页面搜索
+    function searchOnPage() {
+        var content=$('#term').val();
+        console.log(content)
+        window.location.href="/search?content="+content;
+
     }
 

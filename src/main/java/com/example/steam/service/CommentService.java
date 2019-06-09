@@ -51,6 +51,30 @@ public class CommentService implements InitializingBean{
     ApplicationContext applicationContext;
 
     /**
+     * 通过游戏id得到该游戏的评论总数
+     * @param gameId 游戏id
+     * @return
+     */
+    public long  findCommentNumberByGameId(long gameId){
+        long count=0;
+        long cursor=0;
+        List<CommentDetail> commentDetailList=new LinkedList<>();
+        int sum=((CommentService)applicationContext.getBean("commentService")).findCommentSum();
+        while (cursor<sum){
+            Set<CommentRank> commentRankSet=redisService.zrange(CommentKey.COMMENT_RANK_TIME,CommentKey.COMMENT_RANK_TIME_KEY,cursor,cursor+100,CommentRank.class);
+            Iterator<CommentRank> iterator=commentRankSet.iterator();
+            while (iterator.hasNext()){
+                CommentRank commentRank=iterator.next();
+                if (commentRank.getGameId()==gameId){
+                    count++;
+                }
+            }
+            cursor+=100;
+        }
+        return count;
+    }
+
+    /**
      * 从数据库中查询或者从缓存层查询评论
      * @param id
      * @return
@@ -178,6 +202,7 @@ public class CommentService implements InitializingBean{
          * 加入缓存，以及排名
          */
         redisService.set(CommentKey.COMMENT_ID,comment.getId()+"",comment);
+        redisService.incKey(CommentKey.COMMENT_SUM,CommentKey.COMMENT_SUM_KEY);
         CommentRank commentRank=new CommentRank();
         commentRank.setId(comment.getId());
         commentRank.setGameId(comment.getGameId());

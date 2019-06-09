@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.Pipeline;
+import redis.clients.jedis.Response;
 
 import java.util.*;
 
@@ -58,6 +60,37 @@ public class RedisService {
             jedis=pool.getResource();
             String value=jedis.get(keyPrefix.getThisPrefix()+key);
             return stringToArrayBean(value,clazz);
+        }finally {
+            jedis.close();
+        }
+    }
+
+    /**
+     * 通过管道技术批处理获取
+     * @param keyPrefix
+     * @param keyList
+     * @param clazz
+     * @param <T>
+     * @return
+     */
+    public <T> List<T> getPipelineBatch(RedisPrefixKey keyPrefix,List<String> keyList,Class<T> clazz){
+        Jedis jedis=null;
+        List<T> valueList=null;
+        HashMap<String, Response<String>> intrmMap=null;
+        try {
+            jedis=pool.getResource();
+            valueList=new LinkedList<>();
+            intrmMap=new HashMap<>();
+            Pipeline pipeline=jedis.pipelined();
+            for (String key:keyList){
+                String finalKey=keyPrefix.getThisPrefix()+key;
+                intrmMap.put(finalKey,pipeline.get(finalKey));
+            }
+            for (Map.Entry<String,Response<String>> entry:intrmMap.entrySet()){
+                String value=entry.getValue().get();
+                valueList.add(stringToBean(value,clazz));
+            }
+            return valueList;
         }finally {
             jedis.close();
         }
@@ -198,12 +231,35 @@ public class RedisService {
         }
     }
 
+    /**
+     * 键自增，使用于string
+     * @param keyPrefix
+     * @param key
+     * @return
+     */
     public Long decKey(RedisPrefixKey keyPrefix,String key) {
         Jedis jedis=null;
         try {
             jedis=pool.getResource();
             String realKey=keyPrefix.getThisPrefix()+key;
             return jedis.decr(realKey);
+        }finally {
+            jedis.close();
+        }
+    }
+
+    /**
+     * 键自增
+     * @param keyPrefix
+     * @param key
+     * @return
+     */
+    public Long incKey(RedisPrefixKey keyPrefix,String key){
+        Jedis jedis=null;
+        try {
+            jedis=pool.getResource();
+            String realKey=keyPrefix.getThisPrefix()+key;
+            return jedis.incr(realKey);
         }finally {
             jedis.close();
         }

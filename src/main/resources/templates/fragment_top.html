@@ -10,11 +10,11 @@
             </div>
 
             <div class="supernav_container">
-                <a class="menuitem supernav" href="#" data-tooltip-type="selector"
+                <a class="menuitem supernav" href="/" data-tooltip-type="selector"
                    data-tooltip-content=".submenu_store">
                     商店
                 </a>
-                <a class="menuitem supernav" style="display: block" href="#"
+                <a class="menuitem supernav" style="display: block" href="/"
                    data-tooltip-type="selector" data-tooltip-content=".submenu_community">
                     社区
                 </a>
@@ -22,28 +22,28 @@
 
             <div id="global_actions">
                 <div id="global_action_menu">
-                    <div class="header_installsteam_btn header_installsteam_btn_green">
+                    <!--<div class="header_installsteam_btn header_installsteam_btn_green">-->
 
-                        <a class="header_installsteam_btn_content" href="https://store.steampowered.com/about/">
-                            安装 Steam </a>
-                    </div>
+                        <!--<a class="header_installsteam_btn_content" href="https://store.steampowered.com/about/">-->
+                            <!--安装 Steam </a>-->
+                    <!--</div>-->
 
 
                         <a class="global_action_link" th:if="${user}==null"
                            href="/login">登录</a>
                         &nbsp;|&nbsp;
-                        <span class="pulldown global_action_link" id="language_pulldown" th:if="${user}==null"
-                              onclick="ShowMenu( this, 'language_dropdown', 'right' );">语言</span>
-                        <div class="popup_block_new" id="language_dropdown" style="display: none;" th:if="${user}==null">
-                            <div class="popup_body popup_menu">
-                                 <a class="popup_menu_item tight" href="?l=tchinese&amp;filter=topsellers"
-                                    onclick="ChangeLanguage( 'tchinese' ); return false;">繁體中文（繁体中文）</a>
-                                <a class="popup_menu_item tight" href="?l=japanese&amp;filter=topsellers"
-                                    onclick="ChangeLanguage( 'japanese' ); return false;">日本語（日语）</a>
-                                <a class="popup_menu_item tight" href="?l=koreana&amp;filter=topsellers"
-                                    onclick="ChangeLanguage( 'koreana' ); return false;">한국어（韩语）</a>
-                            </div>
-                        </div>
+                        <!--<span class="pulldown global_action_link" id="language_pulldown" th:if="${user}==null"-->
+                              <!--onclick="ShowMenu( this, 'language_dropdown', 'right' );">语言</span>-->
+                        <!--<div class="popup_block_new" id="language_dropdown" style="display: none;" th:if="${user}==null">-->
+                            <!--<div class="popup_body popup_menu">-->
+                                 <!--<a class="popup_menu_item tight" href="?l=tchinese&amp;filter=topsellers"-->
+                                    <!--onclick="ChangeLanguage( 'tchinese' ); return false;">繁體中文（繁体中文）</a>-->
+                                <!--<a class="popup_menu_item tight" href="?l=japanese&amp;filter=topsellers"-->
+                                    <!--onclick="ChangeLanguage( 'japanese' ); return false;">日本語（日语）</a>-->
+                                <!--<a class="popup_menu_item tight" href="?l=koreana&amp;filter=topsellers"-->
+                                    <!--onclick="ChangeLanguage( 'koreana' ); return false;">한국어（韩语）</a>-->
+                            <!--</div>-->
+                        <!--</div>-->
 
 
 

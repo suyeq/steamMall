@@ -4,16 +4,6 @@
 
             <div id="app_reviews_hash" class="app_reviews_area">
                 <h2 class="user_reviews_header no_bottom_margin">消费者评测</h2>
-
-                <input type="hidden" id="review_appid" value="814380">
-                <input type="hidden" id="review_default_day_range" value="30">
-                <input type="hidden" id="review_start_date" value="-1">
-                <input type="hidden" id="review_end_date" value="-1">
-                <input type="hidden" id="review_summary_num_positive_reviews" value="13665">
-                <input type="hidden" id="review_summary_num_reviews" value="15843">
-
-                <div id="review_recent_events_container" class="review_recent_events  ">
-                </div>
                 <div id="review_histograms_container" class="collapsed">
                     <canvas id="review_graph_canvas"></canvas>
                     <div id="review_histogram_rollup_section" class="review_histogram_section">
@@ -23,19 +13,10 @@
                                 <span class="game_review_summary positive"
                                       data-tooltip-html="15,843 篇用户的游戏评测中有 86% 为好评。">特别好评</span>
                                 <span>(15,843 篇评测)</span>
-                                <a class="tooltip" data-tooltip-text="此概要只使用从 Steam 直接购买游戏的消费者评测。"><img
-                                        src="https://store.st.dl.bscstorage.net/public/shared/images/ico/icon_questionmark.png"></a>
                             </div>
                         </div>
-                        <div id="review_histogram_rollup_container" class="review_histogram">
-                            <div id="review_histogram_rollup"></div>
-                        </div>
-                    </div><!--
-			-->
-
+                    </div>
                 </div>
-
-                <div id="review_selected_filters"></div>
 
                 <div id="Reviews_summary" class="user_reviews_container" style="display: none;"><div id="Reviewssummary0">
 
@@ -43,62 +24,6 @@
                         <div class="user_reviews_sub_header">最有价值的评测&nbsp;
                             <span class="user_reviews_most_helpful_days">（过去 7 天内）</span>
                         </div>
-                        <!--<div class="review_box ">-->
-                            <!--<div id="ReviewContentsummary50108315">-->
-
-
-                                <!--<div class="leftcol">-->
-                                    <!--<div class="avatar">-->
-                                        <!--<a href="https://steamcommunity.com/id/dark_felix/">-->
-                                            <!--<div class="playerAvatar online" data-miniprofile="208120373">-->
-                                                <!--<img src="https://media.st.dl.bscstorage.net/steamcommunity/public/images/avatars/7e/7e405e5313ff88314be731a7db59a270d4d87622.jpg" srcset="https://media.st.dl.bscstorage.net/steamcommunity/public/images/avatars/7e/7e405e5313ff88314be731a7db59a270d4d87622.jpg 1x, https://media.st.dl.bscstorage.net/steamcommunity/public/images/avatars/7e/7e405e5313ff88314be731a7db59a270d4d87622_medium.jpg 2x">						</div>-->
-                                        <!--</a>-->
-                                    <!--</div>-->
-                                    <!--<div class="persona_name"><a href="https://steamcommunity.com/id/dark_felix/" data-miniprofile="208120373">兔兔那麼可愛</a></div>-->
-                                    <!--<div class="num_owned_games"><a href="https://steamcommunity.com/id/dark_felix/games/?tab=all">帐户内拥有 394 项产品</a></div>-->
-                                    <!--<div class="num_reviews"><a href="https://steamcommunity.com/id/dark_felix/recommended/">6 篇评测</a></div>-->
-                                <!--</div>-->
-
-                                <!--<div class="rightcol">-->
-                                    <!--<a href="https://steamcommunity.com/id/dark_felix/recommended/814380/" class="vote_header tooltip" data-tooltip-text="阅读完整评测">-->
-                                        <!--<div class="thumb">-->
-                                            <!--<img src="https://store.st.dl.bscstorage.net/public/shared/images/userreviews/icon_thumbsUp_v6.png" width="40" height="40">-->
-                                        <!--</div>-->
-
-                                        <!--<img class="review_source tooltip" data-tooltip-text="产品是从 Steam 直接购买的" src="https://store.st.dl.bscstorage.net/public/shared/images/userreviews/icon_review_steam.png">-->
-
-                                        <!--<div class="title ellipsis">推荐</div>-->
-                                        <!--<div class="hours ellipsis">总时数 66.8 小时</div>-->
-                                    <!--</a>-->
-
-
-                                    <!--<div class="postedDate">发布于：4月13日									</div>-->
-
-
-                                    <!--<div class="content">-->
-                                        <!--我翻开历史一查，这历史没有年代，歪歪斜斜的每页上都写着“死”字。<br><br>我横竖睡不着，仔细看了半夜，才从字缝里看出字来，满本都写着一句话：<br><br><div class="bb_h1">“犹豫，就会败北！”</div><br>——节选自《只狼日记》					<div class="gradient"></div>-->
-                                    <!--</div>-->
-
-                                    <!--<div class="posted">-->
-                                        <!--<div class="view_more"><a href="#" onclick="UserReviewShowMore('50108315', 'summary' ); return false;">展开阅读</a></div>-->
-                                        <!--&nbsp;-->
-                                    <!--</div>-->
-
-                                    <!--<div class="hr"></div>-->
-                                    <!--<div class="control_block">-->
-
-                                        <!--<span class="text">这篇评测是否有价值？</span>-->
-
-                                        <!--<a href="javascript:void(0)" onclick="UserReviewVoteUp( '50108315' )" class="btnv6_grey_black btn_small_thin ico_hover " id="RecommendationVoteUpBtnsummary50108315"><span><i class="ico16 thumb_upv6"></i> 是</span></a>-->
-                                        <!--<a href="javascript:void(0)" onclick="UserReviewVoteDown( '50108315' )" class="btnv6_grey_black btn_small_thin ico_hover " id="RecommendationVoteDownBtnsummary50108315"><span><i class="ico16 thumb_downv6"></i> 否</span></a>-->
-                                        <!--<a href="javascript:void(0)" onclick="UserReviewVoteTag( '50108315', 1, 'RecommendationVoteTagBtnsummary50108315_1' )" class="btnv6_grey_black btn_small_thin ico_hover " id="RecommendationVoteTagBtnsummary50108315_1"><span><i class="ico16 funny"></i> 欢乐</span></a>-->
-                                    <!--</div>-->
-                                    <!--<div class="vote_info">-->
-                                        <!--有 81 人觉得这篇评测有价值										<br>有 218 人觉得这篇评测很欢乐				</div>-->
-                                <!--</div>-->
-                                <!--<div style="clear: left;"></div>-->
-                            <!--</div>-->
-                        <!--</div>-->
 
                     </div>
                     <div class="rightcol recent_reviews" id="comment_short">

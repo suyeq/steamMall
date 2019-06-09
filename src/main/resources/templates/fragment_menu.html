@@ -2,19 +2,6 @@
     <div class="home_page_content">
         <div id="store_header" class="">
             <div class="content">
-                <div id="store_controls">
-                    <div id="cart_status_data">
-                        <div class="store_header_btn_green store_header_btn" id="store_header_cart_btn"
-                             style="display: none;">
-                            <div class="store_header_btn_caps store_header_btn_leftcap"></div>
-                            <div class="store_header_btn_caps store_header_btn_rightcap"></div>
-                            <a id="cart_link" class="store_header_btn_content"
-                               href="https://store.steampowered.com/cart/?snr=1_4_4__12">
-                                购物车 (<span id="cart_item_count_value">0</span>)
-                            </a>
-                        </div>
-                    </div>
-                </div>
                 <div id="store_nav_area">
                     <div class="store_nav_leftcap"></div>
                     <div class="store_nav_bg">
@@ -157,16 +144,13 @@
                             <div class="search_area">
                                 <div id="store_search">
                                     <form id="searchform" name="searchform" method="get"
-                                          action="https://store.steampowered.com/search/"
-                                          onsubmit="return SearchSuggestCheckTerm(this);">
-                                        <input type="hidden" name="snr" value="1_4_4__12">
+                                          action="/search">
                                         <div class="searchbox">
-                                            <input id="store_nav_search_term" name="term" type="text"
+                                            <input id="content_search" name="content" type="text"
                                                    class="default" placeholder="搜索商店" size="22"
                                                    autocomplete="off">
-                                            <a href="#" id="store_search_link"
-                                               onclick="var $Form = $J(this).parents('form'); $Form.submit(); return false;"><img
-                                                    src="https://store.st.dl.bscstorage.net/public/images/blank.gif"></a>
+                                            <a href="javascript:void (0);" id="store_search_link" onclick="searchResult()">
+                                               <img src="https://store.st.dl.bscstorage.net/public/images/blank.gif"></a>
                                         </div>
                                     </form>
                                 </div>

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -84,8 +85,11 @@ public class PageController {
         return "shoppingcart";
     }
 
-    @RequestMapping("search")
-    public String searchResult(LoginUser loginUser, Model model){
+    @RequestMapping("/search")
+    public String searchResult(LoginUser loginUser,
+                               @RequestParam("content")String content,
+                               Model model){
+        model.addAttribute("content",content);
         model.addAttribute("user",loginUser);
         return "searchresult";
     }

@@ -74,7 +74,7 @@ public class GameController {
 
     @ResponseBody
     @RequestMapping("/app/{id}")
-    public String OnegameDetail(@PathVariable("id")long id){
+    public String oneGameDetail(@PathVariable("id")long id){
         return JSON.toJSONString(ResultMsg.SUCCESS(gameService.findGameById(id)));
     }
 
@@ -132,7 +132,7 @@ public class GameController {
     @ResponseBody
     @RequestMapping("/searchresult")
     public String searchResult(@RequestParam("content")String content){
-        return JSON.toJSONString(gameService.findGamesBySearchContent(content));
+        return JSON.toJSONString(ResultMsg.SUCCESS(gameService.findGamesBySearchContent(content)));
     }
 
 

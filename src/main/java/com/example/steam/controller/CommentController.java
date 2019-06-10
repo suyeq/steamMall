@@ -60,5 +60,25 @@ public class CommentController{
         return JSON.toJSONString(commentService.addComment(comment));
     }
 
+    @ResponseBody
+    @RequestMapping("/comment/num/{gameId}")
+    public String findCommentNumberByGameId(@PathVariable("gameId")long gameId){
+        long start=System.currentTimeMillis();
+        long num=commentService.findCommentListNumberByGameId(gameId).size();
+        long end=System.currentTimeMillis();
+        log.error(end-start+"");
+        return JSON.toJSONString(ResultMsg.SUCCESS(num));
+    }
+
+    @ResponseBody
+    @RequestMapping("/comment/statu/{gameId}")
+    public String findCommentStatuByGameId(@PathVariable("gameId")long gameId){
+        long goodnum=commentService.findGoodCommentNumberByGameId(gameId);
+        long ungoodnum=commentService.findUnGoodCommentNumberByGameId(gameId);
+        return JSON.toJSONString(ResultMsg.SUCCESS(commentService.getCommentStatu(goodnum,ungoodnum)));
+    }
+
+
+
 
 }

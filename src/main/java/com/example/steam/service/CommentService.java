@@ -1,5 +1,6 @@
 package com.example.steam.service;
 
+import com.alibaba.fastjson.JSON;
 import com.example.steam.config.DynamicDataSourceHolder;
 import com.example.steam.dao.CommentDao;
 import com.example.steam.entity.Comment;
@@ -8,7 +9,10 @@ import com.example.steam.redis.RedisService;
 import com.example.steam.redis.key.CommentKey;
 import com.example.steam.utils.CommentRank;
 import com.example.steam.utils.RankScoreValue;
+import com.example.steam.utils.ResultMsg;
 import com.example.steam.vo.CommentDetail;
+import com.sun.org.apache.regexp.internal.RE;
+import com.sun.org.apache.xerces.internal.xs.LSInputList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -33,8 +37,13 @@ import java.util.Set;
 @Service
 public class CommentService implements InitializingBean{
 
+    /**
+     * 每页显示的最近评论数
+     */
     private final static long RECENT_CONMENT_SIZE=6;
-
+    /**
+     * 每页显示的最受欢迎评论数
+     */
     private final static long POPULAR_COMMENT_SIZE=5;
 
     Logger log= LoggerFactory.getLogger(CommentService.class);
@@ -51,14 +60,15 @@ public class CommentService implements InitializingBean{
     ApplicationContext applicationContext;
 
     /**
-     * 通过游戏id得到该游戏的评论总数
+     * 通过游戏id得到该游戏的评论id集合
      * @param gameId 游戏id
      * @return
      */
-    public long  findCommentNumberByGameId(long gameId){
-        long count=0;
+    public List<Long> findCommentListNumberByGameId(long gameId){
+        //long count=0;
         long cursor=0;
         List<CommentDetail> commentDetailList=new LinkedList<>();
+        List<Long> commentIdList=new LinkedList<>();
         int sum=((CommentService)applicationContext.getBean("commentService")).findCommentSum();
         while (cursor<sum){
             Set<CommentRank> commentRankSet=redisService.zrange(CommentKey.COMMENT_RANK_TIME,CommentKey.COMMENT_RANK_TIME_KEY,cursor,cursor+100,CommentRank.class);
@@ -66,10 +76,55 @@ public class CommentService implements InitializingBean{
             while (iterator.hasNext()){
                 CommentRank commentRank=iterator.next();
                 if (commentRank.getGameId()==gameId){
-                    count++;
+                    //count++;
+                    commentIdList.add(commentRank.getId());
                 }
             }
             cursor+=100;
+        }
+        return commentIdList;
+    }
+
+    /**
+     * 通过游戏id找到该游戏评论下的推荐
+     * 评论数
+     * @param gameId
+     * @return
+     */
+    public long findGoodCommentNumberByGameId(long gameId){
+        long count=0;
+        List<String> list=new LinkedList<>();
+        List<Long> commentIdList=((CommentService)applicationContext.getBean("commentService")).findCommentListNumberByGameId(gameId);
+        for (Long id:commentIdList){
+            list.add(id+"");
+        }
+        List<Comment> commentList=redisService.getPipelineBatch(CommentKey.COMMENT_ID,list,Comment.class);
+        for (Comment comment:commentList){
+            if (comment.getRecommendStatu()==1){
+                count++;
+            }
+        }
+        return count;
+    }
+
+    /**
+     * 通过游戏id找到该游戏评论下的不推荐
+     * 评论数
+     * @param gameId
+     * @return
+     */
+    public long findUnGoodCommentNumberByGameId(long gameId){
+        long count=0;
+        List<String> list=new LinkedList<>();
+        List<Long> commentIdList=((CommentService)applicationContext.getBean("commentService")).findCommentListNumberByGameId(gameId);
+        for (Long id:commentIdList){
+            list.add(id+"");
+        }
+        List<Comment> commentList=redisService.getPipelineBatch(CommentKey.COMMENT_ID,list,Comment.class);
+        for (Comment comment:commentList){
+            if (comment.getRecommendStatu()==0){
+                count++;
+            }
         }
         return count;
     }
@@ -215,6 +270,22 @@ public class CommentService implements InitializingBean{
         redisService.zadd(CommentKey.COMMENT_RANK_ZANNUM,CommentKey.COMMENT_RANK_ZANNUM_KEY,zanRank);
         redisService.zadd(CommentKey.COMMENT_RANK_TIME,CommentKey.COMMENT_RANK_TIME_KEY,timeRank);
         return comment.getId();
+    }
+
+    public String getCommentStatu(long goodCommentNum,long unGoodCommentNum){
+        double statu=(double)goodCommentNum/(double)(goodCommentNum+unGoodCommentNum);
+        if (goodCommentNum==0 && unGoodCommentNum==0){
+            return "无评测";
+        }
+        if(statu>=0.8){
+            return  "好评如潮";
+        }else if (statu>=0.6 && statu <0.8){
+            return "好评较多";
+        }else if (statu>=0.4 && statu <0.6){
+            return "褒贬不一";
+        }else {
+            return "差评较多";
+        }
     }
 
 

@@ -87,13 +87,15 @@ public class CommentService implements InitializingBean{
 
     /**
      * 通过游戏id找到该游戏评论下的推荐
-     * 评论数
+     * 与不推荐评论数
      * @param gameId
      * @return
      */
-    public long findGoodCommentNumberByGameId(long gameId){
-        long count=0;
+    public List<Long> findCommentDescriptionNumberByGameId(long gameId){
+        long goodCount=0;
+        long unGoodCount=0;
         List<String> list=new LinkedList<>();
+        List<Long> result=new LinkedList<>();
         List<Long> commentIdList=((CommentService)applicationContext.getBean("commentService")).findCommentListNumberByGameId(gameId);
         for (Long id:commentIdList){
             list.add(id+"");
@@ -101,32 +103,14 @@ public class CommentService implements InitializingBean{
         List<Comment> commentList=redisService.getPipelineBatch(CommentKey.COMMENT_ID,list,Comment.class);
         for (Comment comment:commentList){
             if (comment.getRecommendStatu()==1){
-                count++;
+                goodCount++;
+            }else {
+                unGoodCount++;
             }
         }
-        return count;
-    }
-
-    /**
-     * 通过游戏id找到该游戏评论下的不推荐
-     * 评论数
-     * @param gameId
-     * @return
-     */
-    public long findUnGoodCommentNumberByGameId(long gameId){
-        long count=0;
-        List<String> list=new LinkedList<>();
-        List<Long> commentIdList=((CommentService)applicationContext.getBean("commentService")).findCommentListNumberByGameId(gameId);
-        for (Long id:commentIdList){
-            list.add(id+"");
-        }
-        List<Comment> commentList=redisService.getPipelineBatch(CommentKey.COMMENT_ID,list,Comment.class);
-        for (Comment comment:commentList){
-            if (comment.getRecommendStatu()==0){
-                count++;
-            }
-        }
-        return count;
+        result.add(goodCount);
+        result.add(unGoodCount);
+        return result;
     }
 
     /**
@@ -175,7 +159,7 @@ public class CommentService implements InitializingBean{
      * @param gameId
      * @return
      */
-    public List<CommentDetail> findRangeCommentDetailByTime(long page,long gameId){
+    public ResultMsg findRangeCommentDetailByTime(long page,long gameId){
         long count=0;
         long cursor=0;
         List<CommentDetail> commentDetailList=new LinkedList<>();
@@ -195,7 +179,7 @@ public class CommentService implements InitializingBean{
             }
             cursor+=100;
         }
-        return commentDetailList;
+        return ResultMsg.SUCCESS(commentDetailList);
     }
 
     /**
@@ -204,7 +188,7 @@ public class CommentService implements InitializingBean{
      * @param gameId
      * @return
      */
-    public List<CommentDetail> findRangeCommentDetailByZanNum(long page,long gameId){
+    public ResultMsg findRangeCommentDetailByZanNum(long page,long gameId){
         long count=0;
         long cursor=0;
         List<CommentDetail> commentDetailList=new LinkedList<>();
@@ -224,9 +208,13 @@ public class CommentService implements InitializingBean{
             }
             cursor+=100;
         }
-        return commentDetailList;
+        return ResultMsg.SUCCESS(commentDetailList);
     }
 
+    /**
+     * 获得评论总数
+     * @return
+     */
     public int findCommentSum(){
         Integer sum=redisService.get(CommentKey.COMMENT_SUM,CommentKey.COMMENT_SUM_KEY,Integer.class);
         if (sum!=null){

@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  *
@@ -40,14 +42,14 @@ public class CommentController{
     @RequestMapping("/commentDetail/{gameId}/time/{index}")
     public String findComentDetailByIndexTime(@PathVariable("gameId")long gameId,
                                           @PathVariable("index")long index){
-        return JSON.toJSONString(ResultMsg.SUCCESS(commentService.findRangeCommentDetailByTime(index,gameId)));
+        return JSON.toJSONString(commentService.findRangeCommentDetailByTime(index,gameId));
     }
 
     @ResponseBody
     @RequestMapping("/commentDetail/{gameId}/zan/{index}")
     public String findComentDetailByIndexZan(@PathVariable("gameId")long gameId,
                                           @PathVariable("index")long index){
-        return JSON.toJSONString(ResultMsg.SUCCESS(commentService.findRangeCommentDetailByZanNum(index,gameId)));
+        return JSON.toJSONString(commentService.findRangeCommentDetailByZanNum(index,gameId));
     }
 
     @ResponseBody
@@ -73,9 +75,8 @@ public class CommentController{
     @ResponseBody
     @RequestMapping("/comment/statu/{gameId}")
     public String findCommentStatuByGameId(@PathVariable("gameId")long gameId){
-        long goodnum=commentService.findGoodCommentNumberByGameId(gameId);
-        long ungoodnum=commentService.findUnGoodCommentNumberByGameId(gameId);
-        return JSON.toJSONString(ResultMsg.SUCCESS(commentService.getCommentStatu(goodnum,ungoodnum)));
+        List<Long> list =commentService.findCommentDescriptionNumberByGameId(gameId);
+        return JSON.toJSONString(ResultMsg.SUCCESS(commentService.getCommentStatu(list.get(0),list.get(1))));
     }
 
 

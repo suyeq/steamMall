@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * Created with IntelliJ IDEA.
- *
+ * 邮件服务
  * @author: Suyeq
  * @date: 2019-05-30
  * @time: 15:58

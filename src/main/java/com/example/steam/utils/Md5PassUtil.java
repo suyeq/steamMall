@@ -4,7 +4,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 /**
  * Created with IntelliJ IDEA.
- *
+ * MD5加密工具
  * @author: Suyeq
  * @date: 2019-04-25
  * @time: 17:02

@@ -11,6 +11,8 @@ import java.util.Stack;
  */
 public class ResultMsg {
 
+    public static ResultMsg SUCCESS=new ResultMsg("200","成功");
+
     public static ResultMsg LOGIN_SUCCESS=new ResultMsg("201","登陆成功");
 
     public static ResultMsg REGISTER_SUCCESS=new ResultMsg("202","注册成功");
@@ -38,6 +40,8 @@ public class ResultMsg {
     public static ResultMsg SPIKE_ING=new ResultMsg("510","秒杀中...");
 
     public static ResultMsg SPIKE_REPEAT=new ResultMsg("511","不能重复秒杀");
+
+    public static ResultMsg LABEL_PRESENCE=new ResultMsg("512","标签已存在");
 
     private String code;
 

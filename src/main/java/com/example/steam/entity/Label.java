@@ -20,6 +20,12 @@ public class Label {
 
     public Label(){}
 
+    public Label(Long id,String name,Integer hotNum){
+        this.id=id;
+        this.name=name;
+        this.hotNum=hotNum;
+    }
+
     public Long getId() {
         return id;
     }
@@ -43,5 +49,10 @@ public class Label {
 
     public void setHotNum(int hotNum) {
         this.hotNum = hotNum;
+    }
+
+    @Override
+    public String toString(){
+        return "[name="+name+",hot="+hotNum+"]";
     }
 }

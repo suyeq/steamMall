@@ -93,25 +93,14 @@
                                         <div class="user_reviews">
                                             <div class="user_reviews_summary_row"
                                                  onclick="window.location='#app_reviews_hash'"
-                                                 style="cursor: pointer;"
-                                                 data-tooltip-html="15,843 篇用户的游戏评测中有 86% 为好评。"
-                                                 itemprop="aggregateRating" itemscope
-                                                 itemtype="http://schema.org/AggregateRating">
+                                                 style="cursor: pointer;">
                                                 <div class="subtitle column all">全部评测:</div>
-                                                <div class="summary column">
+                                                <div class="summary column" id="comment_description">
                                                         <span class="game_review_summary positive"
-                                                              itemprop="description">特别好评</span>
+                                                              itemprop="description" >特别好评</span>
                                                     <span class="responsive_hidden">
 													(15,843)
 												</span>
-                                                    <span class="nonresponsive_hidden responsive_reviewdesc">
-												- 15,843 篇用户的游戏评测中有 86% 为好评。											</span>
-
-                                                    <!-- microdata -->
-                                                    <meta itemprop="reviewCount" content="15843">
-                                                    <meta itemprop="ratingValue" content="9">
-                                                    <meta itemprop="bestRating" content="10">
-                                                    <meta itemprop="worstRating" content="1">
                                                 </div>
                                             </div>
 
@@ -124,18 +113,18 @@
                                             <div class="dev_row">
                                                 <div class="subtitle column">开发商:</div>
                                                 <div class="summary column" id="developers_list">
-                                                    <a href="https://store.steampowered.com/search/?developer=FromSoftware&snr=1_5_9__400">FromSoftware</a>
+                                                    <a href="javascript:void(0);">FromSoftware</a>
                                                 </div>
                                             </div>
 
                                             <div class="dev_row" id="publisherValue">
                                                 <div class="subtitle column">发行商:</div>
                                                 <div class="summary column">
-                                                    <a href="https://store.steampowered.com/search/?publisher=Activision%20%28Excluding%20Japan%20and%20Asia%29&snr=1_5_9__422">Activision
+                                                    <a href="javascript:void(0);">Activision
                                                         (Excluding Japan and Asia)</a>,
-                                                    <a href="https://store.steampowered.com/search/?publisher=FromSoftware%20%28Japan%29&snr=1_5_9__422">FromSoftware
+                                                    <a href="javascript:void(0);">FromSoftware
                                                     (Japan)</a>,
-                                                    <a href="https://store.steampowered.com/publisher/CubeGame?snr=1_5_9__2000">方块游戏
+                                                    <a href="javascript:void(0);">方块游戏
                                                     (Asia)</a>
                                                 </div>
                                                 <div class="more_btn" onclick="showMorePublisher()">+</div>
@@ -335,7 +324,7 @@
                     <div class="queue_overflow_ctn" th:if="${user}==null">
                         <div class="queue_ctn">
                             <div class="queue_actions_ctn">
-                                <p>想要将这件物品添加至您的愿望单、关注它或标记为不感兴趣，请先<a
+                                <p>想要将这件物品添加至你的购物车，请先<a
                                         href="/login">登录</a></p>
                             </div>
                         </div>
@@ -418,48 +407,48 @@
                         <div class="block responsive_apppage_details_left" id="category_block">
                             <div class="game_area_details_specs">
                                 <div class="icon"><a
-                                        href="https://store.steampowered.com/search/?category2=2&snr=1_5_9__423"><img
+                                        href="javascript:void(0);"><img
                                         class="category_icon"
                                         src="https://store.st.dl.bscstorage.net/public/images/v6/ico/ico_singlePlayer.png"></a>
                                 </div>
                                 <a class="name"
-                                   href="https://store.steampowered.com/search/?category2=2&snr=1_5_9__423">单人</a>
+                                   href="javascript:void(0);">单人</a>
                             </div>
                             <div class="game_area_details_specs">
                                 <div class="icon"><a
-                                        href="https://store.steampowered.com/search/?category2=22&snr=1_5_9__423"><img
+                                        href="javascript:void(0);"><img
                                         class="category_icon"
                                         src="https://store.st.dl.bscstorage.net/public/images/v6/ico/ico_achievements.png"></a>
                                 </div>
                                 <a class="name"
-                                   href="https://store.steampowered.com/search/?category2=22&snr=1_5_9__423">Steam
+                                   href="javascript:void(0);">Steam
                                     成就</a></div>
                             <div class="game_area_details_specs">
                                 <div class="icon"><a
-                                        href="https://store.steampowered.com/search/?category2=28&snr=1_5_9__423"><img
+                                        href="javascript:void(0);"><img
                                         class="category_icon"
                                         src="https://store.st.dl.bscstorage.net/public/images/v6/ico/ico_controller.png"></a>
                                 </div>
                                 <a class="name"
-                                   href="https://store.steampowered.com/search/?category2=28&snr=1_5_9__423">完全支持控制器</a>
+                                   href="javascript:void(0);">完全支持控制器</a>
                             </div>
                             <div class="game_area_details_specs">
                                 <div class="icon"><a
-                                        href="https://store.steampowered.com/search/?category2=29&snr=1_5_9__423"><img
+                                        href="javascript:void(0);"><img
                                         class="category_icon"
                                         src="https://store.st.dl.bscstorage.net/public/images/v6/ico/ico_cards.png"></a>
                                 </div>
                                 <a class="name"
-                                   href="https://store.steampowered.com/search/?category2=29&snr=1_5_9__423">Steam
+                                   href="javascript:void(0);">Steam
                                     集换式卡牌</a></div>
                             <div class="game_area_details_specs">
                                 <div class="icon"><a
-                                        href="https://store.steampowered.com/search/?category2=23&snr=1_5_9__423"><img
+                                        href="javascript:void(0);"><img
                                         class="category_icon"
                                         src="https://store.st.dl.bscstorage.net/public/images/v6/ico/ico_cloud.png"></a>
                                 </div>
                                 <a class="name"
-                                   href="https://store.steampowered.com/search/?category2=23&snr=1_5_9__423">Steam
+                                   href="javascript:void(0);">Steam
                                     云</a></div>
                         </div>
                         <!--语言支持-->
@@ -687,11 +676,11 @@
                         <div class="block responsive_apppage_details_left">
                             <a class="btnv6_blue_hoverfade btn_medium" href="javascript:void(0);"
                                onclick="showShareModel();"><span>分享</span></a>
-                            <a class="btnv6_blue_hoverfade btn_medium" href="#"
-                               onclick="ShowEmbedWidget(814380); return false;"><span>嵌入</span></a>
-                            <a id="ReportAppBtn" class="btnv6_blue_hoverfade btn_medium" href="javascript:void(0)"
-                               onclick="ShowReportDialog(814380)"><span data-tooltip-text="举报该产品"><i
-                                    class="ico16 reportv6"></i>&nbsp;</span></a>
+                            <!--<a class="btnv6_blue_hoverfade btn_medium" href="#"-->
+                               <!--onclick="ShowEmbedWidget(814380); return false;"><span>嵌入</span></a>-->
+                            <!--<a id="ReportAppBtn" class="btnv6_blue_hoverfade btn_medium" href="javascript:void(0)"-->
+                               <!--onclick="ShowReportDialog(814380)"><span data-tooltip-text="举报该产品"><i-->
+                                    <!--class="ico16 reportv6"></i>&nbsp;</span></a>-->
                         </div>
 
                     </div>
@@ -899,8 +888,8 @@
             <div class="title_text" id="model_name">分享</div>
         </div>
     </div>
-    <div class="newmodal_content_border">
-        <div class="newmodal_content" style="max-height: 237px;">
+    <div class="newmodal_content_border" style="width: 580px;height: 280px;">
+        <div class="newmodal_content" style="max-height: 200px;">
             <div>
                 <div id="ShareModal" style="display: none;">
                     <div class="share">&nbsp;
@@ -912,31 +901,13 @@
                             <img src="https://store.st.dl.bscstorage.net/public/images/v6/social/reddit.png"></a>
                     </div>
                 </div>
-                <div id="app_tagging_modal" class="app_tag_modal nologin" style="display: none;">
+                <div id="app_tagging_modal" class="app_tag_modal nologin" style="display: none;" th:if="${user}==null">
                     <div class="app_tag_modal_content">
-                        <div class="app_tag_modal_seperator"></div>
                         <div class="app_tag_modal_left">
-                            <h2>该产品的热门用户自定义标签：<span class="app_tag_modal_tooltip" data-tooltip-text="这些是由大多数用户应用在产品上的标签。点击一个标签，您可以查找到应用该标签的其他产品。您也可以在任意已经存在的标签上点击加号，以此来提升该标签在这项产品上的热门度。">(?)</span></h2>
-                            <div class="app_tags popular_tags">
-                                <div class="app_tag_control popular" data-tagid="19">
-                                    <div data-tooltip-text="" class="app_tag_checkbox"></div>
-                                    <a class="app_tag" href="https://store.steampowered.com/tag/zh-cn/%E5%8A%A8%E4%BD%9C/?snr=1_5_9__410">动作</a>
-                                </div>
-                                <div class="app_tag_control popular" data-tagid="29482">
-                                    <div data-tooltip-text="" class="app_tag_checkbox"></div>
-                                    <a class="app_tag" href="https://store.steampowered.com/tag/zh-cn/%E7%B1%BB%E9%AD%82%E7%B3%BB%E5%88%97/?snr=1_5_9__410">类魂系列</a>
-                                </div>
-                                <div class="app_tag_control popular" data-tagid="4026">
-                                    <div data-tooltip-text="" class="app_tag_checkbox"></div>
-                                    <a class="app_tag" href="https://store.steampowered.com/tag/zh-cn/%E5%9B%B0%E9%9A%BE/?snr=1_5_9__410">困难</a>
-                                </div>
-                                <div class="app_tag_control popular" data-tagid="4182"><div data-tooltip-text="" class="app_tag_checkbox"></div><a class="app_tag" href="https://store.steampowered.com/tag/zh-cn/%E5%8D%95%E4%BA%BA/?snr=1_5_9__410">单人</a></div><div class="app_tag_control popular" data-tagid="1688"><div data-tooltip-text="" class="app_tag_checkbox"></div><a class="app_tag" href="https://store.steampowered.com/tag/zh-cn/%E5%BF%8D%E8%80%85/?snr=1_5_9__410">忍者</a></div><div class="app_tag_control popular" data-tagid="1687"><div data-tooltip-text="" class="app_tag_checkbox"></div><a class="app_tag" href="https://store.steampowered.com/tag/zh-cn/%E6%BD%9C%E8%A1%8C/?snr=1_5_9__410">潜行</a></div><div class="app_tag_control popular" data-tagid="21"><div data-tooltip-text="" class="app_tag_checkbox"></div><a class="app_tag" href="https://store.steampowered.com/tag/zh-cn/%E5%86%92%E9%99%A9/?snr=1_5_9__410">冒险</a></div><div class="app_tag_control popular" data-tagid="4667"><div data-tooltip-text="" class="app_tag_checkbox"></div><a class="app_tag" href="https://store.steampowered.com/tag/zh-cn/%E6%9A%B4%E5%8A%9B/?snr=1_5_9__410">暴力</a></div><div class="app_tag_control popular" data-tagid="1697"><div data-tooltip-text="" class="app_tag_checkbox"></div><a class="app_tag" href="https://store.steampowered.com/tag/zh-cn/%E7%AC%AC%E4%B8%89%E4%BA%BA%E7%A7%B0%E8%A7%86%E8%A7%92/?snr=1_5_9__410">第三人称视角</a></div><div class="app_tag_control popular" data-tagid="4166"><div data-tooltip-text="" class="app_tag_checkbox"></div><a class="app_tag" href="https://store.steampowered.com/tag/zh-cn/%E6%B0%9B%E5%9B%B4/?snr=1_5_9__410">氛围</a></div><div class="app_tag_control popular" data-tagid="4604"><div data-tooltip-text="" class="app_tag_checkbox"></div><a class="app_tag" href="https://store.steampowered.com/tag/zh-cn/%E9%BB%91%E6%9A%97%E5%A5%87%E5%B9%BB/?snr=1_5_9__410">黑暗奇幻</a></div><div class="app_tag_control popular" data-tagid="4136"><div data-tooltip-text="" class="app_tag_checkbox"></div><a class="app_tag" href="https://store.steampowered.com/tag/zh-cn/%E6%AC%A2%E4%B9%90/?snr=1_5_9__410">欢乐</a></div><div class="app_tag_control popular" data-tagid="4376"><div data-tooltip-text="" class="app_tag_checkbox"></div><a class="app_tag" href="https://store.steampowered.com/tag/zh-cn/%E6%9A%97%E6%9D%80/?snr=1_5_9__410">暗杀</a></div><div class="app_tag_control popular" data-tagid="1695"><div data-tooltip-text="" class="app_tag_checkbox"></div><a class="app_tag" href="https://store.steampowered.com/tag/zh-cn/%E5%BC%80%E6%94%BE%E4%B8%96%E7%95%8C/?snr=1_5_9__410">开放世界</a></div><div class="app_tag_control popular" data-tagid="1742"><div data-tooltip-text="" class="app_tag_checkbox"></div><a class="app_tag" href="https://store.steampowered.com/tag/zh-cn/%E5%89%A7%E6%83%85%E4%B8%B0%E5%AF%8C/?snr=1_5_9__410">剧情丰富</a></div><div class="app_tag_control popular" data-tagid="1756"><div data-tooltip-text="" class="app_tag_checkbox"></div><a class="app_tag" href="https://store.steampowered.com/tag/zh-cn/%E5%A5%BD%E8%AF%84%E5%8E%9F%E5%A3%B0%E9%9F%B3%E8%BD%A8/?snr=1_5_9__410">好评原声音轨</a></div><div class="app_tag_control popular" data-tagid="4345"><div data-tooltip-text="" class="app_tag_checkbox"></div><a class="app_tag" href="https://store.steampowered.com/tag/zh-cn/%E8%A1%80%E8%85%A5/?snr=1_5_9__410">血腥</a></div><div class="app_tag_control popular" data-tagid="4342"><div data-tooltip-text="" class="app_tag_checkbox"></div><a class="app_tag" href="https://store.steampowered.com/tag/zh-cn/%E9%BB%91%E6%9A%97/?snr=1_5_9__410">黑暗</a></div><div class="app_tag_control popular" data-tagid="1646"><div data-tooltip-text="" class="app_tag_checkbox"></div><a class="app_tag" href="https://store.steampowered.com/tag/zh-cn/%E7%A0%8D%E6%9D%80/?snr=1_5_9__410">砍杀</a></div><div class="app_tag_control popular" data-tagid="122"><div data-tooltip-text="" class="app_tag_checkbox"></div><a class="app_tag" href="https://store.steampowered.com/tag/zh-cn/%E8%A7%92%E8%89%B2%E6%89%AE%E6%BC%94/?snr=1_5_9__410">角色扮演</a></div></div>
-                        </div>
-                        <div class="app_tag_modal_right">
                             <h2>登录</h2>
                             <p>在为该产品添加属于您自己的标签前，请先登录。</p>
                             <p>
-                                <a class="btnv6_blue_hoverfade btn_medium" href="https://store.steampowered.com/login/?redir=app/814380">
+                                <a class="btnv6_blue_hoverfade btn_medium" href="/login">
                                     <span>登录</span>
                                 </a>
                             </p>
@@ -944,36 +915,36 @@
                         <div style="clear: both;"></div>
                     </div>
                 </div>
-                <div id="app_tagging_modal" class="app_tag_modal " style="display:none;">
+                <div id="app_tagging_modal" class="app_tag_modal " style="display:none;" th:if="${user}">
                     <div class="app_tag_modal_content">
-                        <div class="app_tag_modal_seperator"></div>
+                        <!--<div class="app_tag_modal_seperator"></div>-->
                         <div class="app_tag_modal_left">
-                            <h2>该产品的热门用户自定义标签：<span class="app_tag_modal_tooltip" data-tooltip-text="这些是由大多数用户应用在产品上的标签。点击一个标签，您可以查找到应用该标签的其他产品。您也可以在任意已经存在的标签上点击加号，以此来提升该标签在这项产品上的热门度。">(?)</span></h2>
-                            <div class="app_tags popular_tags">
-                                <div class="app_tag_control popular" data-tagid="19">
-                                    <div data-tooltip-text="" class="app_tag_checkbox"></div>
+                            <h2>该产品的热门用户自定义标签：</h2>
+                            <div class="app_tags popular_tags" id="show_tags">
+                                <div class="app_tag_control popular">
+                                    <div class="app_tag_checkbox"></div>
                                     <div class="app_tag_report"></div>
-                                    <a class="app_tag" href="https://store.steampowered.com/tag/zh-cn/%E5%8A%A8%E4%BD%9C/?snr=1_5_9__410">动作</a>
+                                    <a class="app_tag" href="javascript:void(0);">动作</a>
                                 </div>
-                                <div class="app_tag_control popular" data-tagid="29482">
-                                    <div data-tooltip-text="" class="app_tag_checkbox"></div>
+                                <div class="app_tag_control popular">
+                                    <div class="app_tag_checkbox"></div>
                                     <div class="app_tag_report"></div>
-                                    <a class="app_tag" href="https://store.steampowered.com/tag/zh-cn/%E7%B1%BB%E9%AD%82%E7%B3%BB%E5%88%97/?snr=1_5_9__410">类魂系列</a>
+                                    <a class="app_tag" href="javascript:void(0);">类魂系列</a>
                                 </div>
                         </div>
                         <div class="app_tag_modal_right">
-                            <h2>您应用于该产品上的标签：<span class="app_tag_modal_tooltip" data-tooltip-text="这些是您应用于该产品上的标签。">(?)</span></h2>
-                            <div class="app_tags your_tags"><div class="app_tag_control no_tags_yet">暂未输入标签</div></div>
+                            <!--<h2>您应用于该产品上的标签：</h2>-->
+                            <!--<div class="app_tags your_tags"><div class="app_tag_control no_tags_yet">暂未输入标签</div></div>-->
                             <p>用简体中文‎输入一个新标签：</p>
                             <p class="small">适宜的标签应该能让其他用户在浏览时觉得有用。</p>
-                            <form id="app_tag_form" name="app_tag_form">
-                                <div class="app_tag_form_ctn">
-                                    <button class="btnv6_blue_hoverfade btn_medium btn_disabled" type="submit"><span>添加</span></button>
+                            <!--<form id="app_tag_form" name="app_tag_form">-->
+                                <div class="app_tag_form_ctn" style="margin-bottom: 18px;">
+                                    <button class="btnv6_blue_hoverfade btn_medium btn"  onclick="addLabel()"><span>添加</span></button>
                                     <div class="gray_bevel for_text_input fullwidth" style="margin-right: 72px;">
-                                        <input type="text" name="tag" value="" autocomplete="off" placeholder="输入一个标签">
+                                        <input type="text" id="addLabel" name="tag" value="" autocomplete="off" placeholder="输入一个标签">
                                     </div>
                                 </div>
-                            </form>
+                            <!--</form>-->
                             <div class="previous_tags_ctn" style="display: none;">
                                 <p>应用一个您已经用于其它产品的标签：</p>
                                 <div class="app_tags previous_tags"></div>

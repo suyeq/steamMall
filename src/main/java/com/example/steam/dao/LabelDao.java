@@ -2,8 +2,8 @@ package com.example.steam.dao;
 
 import com.example.steam.entity.GameLabel;
 import com.example.steam.entity.Label;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -26,4 +26,21 @@ public interface LabelDao {
 
     @Select("select * from label where id=#{labelId}")
     Label findLabelByLabelId(@Param("labelId") long labelId);
+
+    @Select("select * from label where name =#{labelName}")
+    Label findLabelByLableName(@Param("labelName") String labelName);
+
+    @Select("select * from game_label where gameid=#{gameId} and labelid=#{labelId}")
+    Label findLabelByLabelIdAndGameId(@Param("gameId")long gameId,@Param("labelId")long labelId);
+
+    @Update("update game_label set hotnum=hotnum+1 where gameid=#{gameId} and labelid=#{labelId}")
+    int labelHotNumIncr(@Param("gameId") long gameId,@Param("labelId") long labelId);
+
+    @Insert("insert into label(name,hotnum) value(#{name},#{hotNum})")
+    @Options(useGeneratedKeys = true,keyProperty = "id",keyColumn = "id")
+    int addLabel(Label label);
+
+    @Insert("insert into game_label(gameid,labelid,hotnum) value(#{gameId},#{labelId},#{hotNum})")
+    int addLabelInGame(GameLabel gameLabel);
+
 }

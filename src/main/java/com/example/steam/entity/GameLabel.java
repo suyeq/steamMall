@@ -18,7 +18,16 @@ public class GameLabel {
 
     private Long labelId;
 
+    private Integer hotNum;
+
     public GameLabel(){}
+
+    public GameLabel(long id,long gameId,long labelId,int hotNum){
+        this.id=id;
+        this.gameId=gameId;
+        this.labelId=labelId;
+        this.hotNum=hotNum;
+    }
 
     public Long getId() {
         return id;
@@ -42,5 +51,13 @@ public class GameLabel {
 
     public void setLabelId(Long labelId) {
         this.labelId = labelId;
+    }
+
+    public Integer getHotNum() {
+        return hotNum;
+    }
+
+    public void setHotNum(Integer hotNum) {
+        this.hotNum = hotNum;
     }
 }

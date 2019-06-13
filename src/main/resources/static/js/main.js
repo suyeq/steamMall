@@ -222,6 +222,35 @@ var steam=
             this.loadSearchResult();
         },
 
+        loadCommentDecriptionByGameId:function(gameId){
+            var result;
+            $.ajax({
+                url:"/comment/statu/"+gameId,
+                type:"POST",
+                async:false,
+                success:function (data) {
+                    data=eval("("+data+")");
+                    result= data.msg;
+                }
+            });
+            console.log(result)
+            return result;
+        },
+
+        loadCommentTotalByGameId:function(gameId){
+            var result;
+            $.ajax({
+                url:"/comment/num/"+gameId,
+                type:"POST",
+                async:false,
+                success:function (data) {
+                    data=eval("("+data+")");
+                    result=data.msg;
+                }
+            });
+            return result;
+        },
+
         loadSearchResult:function(){
             var content=$('#search')[0].getAttribute('content');
             $.ajax({
@@ -842,6 +871,13 @@ var steam=
                         that.showGameSystemNeed(data.msg.lowestSystem,'Left');
                         that.showGameSystemNeed(data.msg.recommendSystem,'Right');
                         $('#ViewAllReviewssummary')[0].setAttribute('gameId',id);
+                        var commentDescription=that.loadCommentDecriptionByGameId(id);
+                        var commentTotal=that.loadCommentTotalByGameId(id);
+                        console.log(commentDescription+" "+commentTotal)
+                        $('#comment_description span.game_review_summary').text(commentDescription);
+                        $('#comment_description span.responsive_hidden').text("("+commentTotal+")");
+                        $('#comment_top_description span.game_review_summary').text(commentDescription);
+                        $('#comment_top_description span.comment_total').text("("+commentTotal+" 篇评测)");
                     }
                 },
                 error:function () {
@@ -850,7 +886,7 @@ var steam=
             })
         },
 
-        showClassLayerData:function(id){
+        showClassLayerData:function(id,that){
             $.ajax({
                 url:"/app/"+id,
                 type:"POST",
@@ -868,7 +904,7 @@ var steam=
                     item3+='</div>';
                     item3=$(item3);
                     var item4='<div class="hover_body">\n' +
-                        '                            <div class="hover_review_summary">\n' +
+                        '                            <div class="hover_review_summary" id="comment_class_description">\n' +
                         '                                <div class="title">总体用户评测：</div>\n' +
                         '                                <span class="game_review_summary mixed">褒贬不一</span>\n' +
                         '                                (41 篇评测)\n' +
@@ -884,6 +920,12 @@ var steam=
                     item5=$(item5);
                     $('#hover_app').empty();
                     $('#hover_app').append(item1,item2,item3,item4,item5);
+                    var commentDescription=that.loadCommentDecriptionByGameId(id);
+                    var commentTotal=that.loadCommentTotalByGameId(id);
+                    $('#comment_class_description').empty();
+                    $('#comment_class_description').append('<div class="title">总体用户评测：</div>\n' +
+                    '                                <span class="game_review_summary mixed">'+commentDescription+'</span>\n' +
+                    '                                ('+commentTotal+' 篇评测)\n');
                 },
                 error:function () {
                     layer.msg("网络错误");
@@ -1111,7 +1153,7 @@ var steam=
             })
         },
 
-        showGameDetailLayer:function(id){
+        showGameDetailLayer:function(id,that){
             $.ajax({
                 url:"/app/"+id,
                 type:"POST",
@@ -1123,7 +1165,7 @@ var steam=
                     var parent=$('<div class="tab_preview focus"></div>')
                     var title='<h2>'+data.msg.gameName+'</h2>';
                     title=$(title);
-                    var review='<div class="tab_review_summary"><div class="title">总体用户评测：</div><span class="game_review_summary positive">特别好评</span><span>&nbsp;(440)</span></div>';
+                    var review='<div class="tab_review_summary" id="comment_index_description"><div class="title">总体用户评测：</div><span class="game_review_summary positive">特别好评</span><span class="comment_total">&nbsp;(440)</span></div>';
                     review=$(review);
                     var tag='<div class="tags">';
                     for (var i=0;i<data.msg.label.length;i++){
@@ -1149,6 +1191,10 @@ var steam=
                     intro4=$(intro4);
                     parent.append(title,review,tag,intro1,intro2,intro3,intro4);
                     $('#tab_preview_container').append(parent);
+                    var commentDescription=that.loadCommentDecriptionByGameId(id);
+                    var commentTotal=that.loadCommentTotalByGameId(id);
+                    $('#comment_index_description span.game_review_summary').text(commentDescription);
+                    $('#comment_index_description span.comment_total').text(" ("+commentTotal+")");
                 },
                 error:function () {
 
@@ -1219,7 +1265,7 @@ var steam=
                     }
                     var flag='#tab_app_'+data.msg[0].id;
                     if ($(flag).length==0){
-                        that.showGameDetailLayer(data.msg[0].id);
+                        that.showGameDetailLayer(data.msg[0].id,that);
                     }
                     that.mouseNewReleasePause(that);
                 },
@@ -1577,7 +1623,7 @@ var steam=
             var height=null;
             $('#TopSellersRows a').hover(function () {
                 var appId=$(this)[0].getAttribute('appId');
-                that.showClassLayerData(appId);
+                that.showClassLayerData(appId,that);
                 var newStyle=$('#global_hover')[0].getAttribute('style').replace('display: none;','display: block;');
                 $('#global_hover')[0].setAttribute('style',newStyle);
                 var index=$('#TopSellersRows a').index(this);
@@ -1598,7 +1644,7 @@ var steam=
             var height=null;
             $('#NewReleasesRows a').hover(function () {
                 var appId=$(this)[0].getAttribute('appId');
-                that.showClassLayerData(appId);
+                that.showClassLayerData(appId,that);
                 var newStyle=$('#global_hover')[0].getAttribute('style').replace('display: none;','display: block;');
                 $('#global_hover')[0].setAttribute('style',newStyle);
                 var index=$('#NewReleasesRows a').index(this);
@@ -1619,7 +1665,7 @@ var steam=
             var height=null;
             $('#ComingSoonRows a').hover(function () {
                 var appId=$(this)[0].getAttribute('appId');
-                that.showClassLayerData(appId);
+                that.showClassLayerData(appId,that);
                 var newStyle=$('#global_hover')[0].getAttribute('style').replace('display: none;','display: block;');
                 $('#global_hover')[0].setAttribute('style',newStyle);
                 var index=$('#ComingSoonRows a').index(this);
@@ -1679,7 +1725,7 @@ var steam=
                 indexPreNewReleases=indexNext;
                 var flag='#tab_app_'+appId;
                 if ($(flag).length==0){
-                    that.showGameDetailLayer(appId);
+                    that.showGameDetailLayer(appId,that);
                 }
             },function () {
             });
@@ -1698,7 +1744,7 @@ var steam=
                 var appId=$(this)[0].getAttribute('app-id');
                 var flag='#tab_app_'+appId;
                 if ($(flag).length==0){
-                    that.showGameDetailLayer(appId);
+                    that.showGameDetailLayer(appId,that);
                 }
             },function () {
             });
@@ -1717,7 +1763,7 @@ var steam=
                 var appId=$(this)[0].getAttribute('app-id');
                 var flag='#tab_app_'+appId;
                 if ($(flag).length==0){
-                    that.showGameDetailLayer(appId);
+                    that.showGameDetailLayer(appId,that);
                 }
             },function () {
             });
@@ -1942,20 +1988,45 @@ var steam=
         $('#publisherValue .summary.column')[0].setAttribute('style','overflow: visible; white-space: normal;');
         $('#publisherValue .more_btn')[0].setAttribute('style','display:none;');
     }
-
+    //展示标签
     function showTagModel() {
         //app_tagging_modal
+        var gameId=$('#gameDetail')[0].getAttribute("game-id");
+        if (getCookie("token")!=null){
+            $.ajax({
+                url:"/label/gameid",
+                type:"POST",
+                async:false,
+                data:{
+                    gameId:gameId
+                },
+                success:function (data) {
+                    data=eval("("+data+")");
+                    console.log(data);
+                    $('#show_tags').empty();
+                    for (var i=0;i<data.msg.length;i++){
+                        var element='<div class="app_tag_control popular"><a class="app_tag_checkbox" title="赞同该标签" onclick="zanLabel('+data.msg[i].id+')"></a>'
+                        element+='<a class="app_tag" href="javascript:void(0);">'+data.msg[i].name+'</a></div>';
+                        $('#show_tags').append(element);
+                    }
+                }
+            })
+        }
+        $('#model_name').empty();
+        $('#model_name').append("标签");
         $('#model_bg')[0].setAttribute('style','opacity: 0.8; display: block;');
         $('#model')[0].setAttribute('style','position: fixed; z-index: 1000; max-width: 1269px; left: 424px; top: 67px;display: block;');
         $('#app_tagging_modal')[0].setAttribute('style','display: block;');
     }
-
+    //展示分享
     function showShareModel() {
         $('#model_bg')[0].setAttribute('style','opacity: 0.8; display: block;');
         $('#model')[0].setAttribute('style','position: fixed; z-index: 1000; max-width: 1269px; left: 424px; top: 67px;display: block;');
         $('#ShareModal')[0].setAttribute('style','display: block;');
+        $('#model_name').empty();
+        $('#model_name').append("分享");
     }
-
+    //关闭弹窗
     function closeModel() {
         $('#model_bg')[0].setAttribute('style','opacity: 0.8; display: none;');
         $('#model')[0].setAttribute('style','position: fixed; z-index: 1000; max-width: 1269px; left: 424px; top: 67px;display: none;');
@@ -2047,8 +2118,17 @@ var steam=
         var expires = "expires="+d.toUTCString();
         document.cookie = cname + "=" + cvalue + "; " + expires;
     }
+    //获取cookie
+    function getCookie(name)
+    {
+        var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+        if(arr=document.cookie.match(reg))
+            return unescape(arr[2]);
+        else
+            return null;
+    }
 
-    //清除cookie
+//清除cookie
     function clearCookie(name) {
         setCookie(name, "", -1);
     }
@@ -2288,5 +2368,51 @@ var steam=
         console.log(content)
         window.location.href="/search?content="+content;
 
+    }
+
+    //给某个游戏的标签加一个赞同，展示的标签根据赞的多少显示前5个
+    function zanLabel(labelId) {
+        var gameId=$('#gameDetail')[0].getAttribute('game-id');
+        $.ajax({
+            url:"/label/updatehot",
+            type:"POST",
+            data:{
+                gameId:gameId,
+                labelId:labelId
+            },
+            success:function () {
+                layer.msg("赞同成功")
+            },
+            error:function () {
+                layer.msg("网络错误")
+            }
+        })
+    }
+    //增加一个标签
+    function addLabel() {
+        var gameId=$('#gameDetail')[0].getAttribute('game-id');
+        var labelName=$('#addLabel').val();
+        $.ajax({
+            url:"/label/add",
+            type:"POST",
+            data:{
+                gameId:gameId,
+                labelName:labelName
+            },
+            success:function (data) {
+                data=eval("("+data+")");
+                if (data.code>500){
+                    layer.msg(data.msg)
+                }else {
+                    var element='<div class="app_tag_control popular"><a class="app_tag_checkbox" title="赞同该标签" onclick="zanLabel('+data.msg+')"></a>'
+                    element+='<a class="app_tag" href="javascript:void(0);">'+labelName+'</a></div>';
+                    $('#show_tags').append(element);
+                    layer.msg("添加成功")
+                }
+            },
+            error:function () {
+                layer.msg("网络错误")
+            }
+        })
     }
 

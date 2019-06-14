@@ -20,6 +20,12 @@ public class UserGame {
 
     public UserGame(){}
 
+    public UserGame(Long id,String email,Long gameId){
+        this.id=id;
+        this.email=email;
+        this.gameId=gameId;
+    }
+
     public Long getId() {
         return id;
     }

@@ -20,7 +20,7 @@ public class Event {
 
 //    public final static String SPIKE_ID="spikeId";
 
-//    public final static String USER_ID="userId";
+    public final static String USER_ID="userId";
 
     private EventType eventType;
     /**

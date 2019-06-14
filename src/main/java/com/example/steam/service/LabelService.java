@@ -127,7 +127,7 @@ public class LabelService {
      * 增加一个游戏下的标签
      * @param gameId
      * @param labelName
-     * @return
+     * @return 返回新增标签的id
      */
     public ResultMsg addLabelInGame(long gameId, String labelName){
         Label label1=labelDao.findLabelByLableName(labelName);

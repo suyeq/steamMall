@@ -29,6 +29,18 @@ public class UserGameService {
     ApplicationContext applicationContext;
 
     /**
+     * 该用户下增加一个游戏
+     * @param userGame
+     * @return
+     */
+    public int addGameToUser(UserGame userGame){
+        List<Long> containsGames=redisService.getList(UserKey.CONTAINS_GAMES,UserKey.CONTAINS_KEY+userGame.getEmail(),Long.class);
+        containsGames.add(userGame.getGameId());
+        redisService.set(UserKey.CONTAINS_GAMES,UserKey.CONTAINS_KEY+userGame.getEmail(),containsGames);
+        return userGameDao.addGameToUser(userGame);
+    }
+
+    /**
      * 找到用户下拥有的游戏id
      * @param email
      * @return

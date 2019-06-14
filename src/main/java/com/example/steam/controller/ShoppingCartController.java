@@ -1,6 +1,9 @@
 package com.example.steam.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.example.steam.mq.Event;
+import com.example.steam.mq.EventType;
+import com.example.steam.mq.MQProducer;
 import com.example.steam.service.ShoppingCartService;
 import com.example.steam.utils.ResultMsg;
 import org.slf4j.Logger;
@@ -26,6 +29,8 @@ public class ShoppingCartController {
 
     @Autowired
     ShoppingCartService shoppingCartService;
+    @Autowired
+    MQProducer mqProducer;
 
     @RequestMapping("/cart/add")
     @ResponseBody
@@ -52,6 +57,14 @@ public class ShoppingCartController {
     @ResponseBody
     public String deleteAllGameIncartByUserId(@PathVariable("userId")long userId){
         return JSON.toJSONString(ResultMsg.SUCCESS(shoppingCartService.deleteAllGameInCartByUserId(userId)));
+    }
+
+    @ResponseBody
+    @RequestMapping("/buygame")
+    public String finalBuyGame(@RequestParam("userId")long userId,
+                               @RequestParam("email")String email){
+        mqProducer.productEvent(new Event(EventType.BUY_GAME).setEtrMsg(Event.EMAIL,email).setEtrMsg(Event.USER_ID,userId+""));
+        return JSON.toJSONString(ResultMsg.SUCCESS);
     }
 
 

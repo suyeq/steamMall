@@ -14,7 +14,9 @@ public enum  EventType {
      */
     SEND_EMAIL_VERIFICATION_CODE("发送验证码"),
 
-    SPIKE_GAME("秒杀游戏");
+    SPIKE_GAME("秒杀游戏"),
+
+    BUY_GAME("买游戏");
 
     private String value;
 

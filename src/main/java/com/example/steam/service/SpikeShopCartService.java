@@ -25,4 +25,12 @@ public class SpikeShopCartService {
     public SpikeShopCart findSpikeShopCart(long userId,long spikeGameId){
         return spikeShopCartDao.findSpikeShopCart(userId,spikeGameId);
     }
+
+    public SpikeShopCart findSpikeShopCartByUserId(long userId){
+        return spikeShopCartDao.findSpikeShopCartByUserId(userId);
+    }
+
+    public int deleteSpikeShopCartByUserId(long userId){
+        return spikeShopCartDao.deleteSpikeShopCart(userId);
+    }
 }

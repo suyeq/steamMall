@@ -849,18 +849,28 @@ var steam=
                         gameDeveloper+='<b>发行日期:</b> '+(Y+M+D)+'<br>';
                         $('#gameDeveloper').empty();
                         $('#gameDeveloper').append(gameDeveloper);
-                        $('#gameBuyName')[0].innerHTML='购买 '+data.msg.gameName;
-                        var price='';
-                        if (data.msg.discount>0){
-                            price+='<div class="discount_pct">-'+(100-data.msg.discount)+'%</div>';
-                            price+='<div class="discount_prices"><div class="discount_original_price">¥ '+data.msg.gamePrice+'</div>';
-                            price+='<div class="discount_final_price">¥ '+Math.ceil(data.msg.gamePrice*(data.msg.discount/100))+'</div></div>';
+                        if (data.msg.issuedStatu==1){
+                            $('#gameBuyName')[0].innerHTML='购买 '+data.msg.gameName;
                         }else {
-                            price+='<div class="game_purchase_price price">¥ '+data.msg.gamePrice+'</div>'
-                            //price+='<div class="discount_final_price">¥ '+data.msg.gamePrice+'</div>';
+                            $('#gameBuyName')[0].innerHTML='等待 '+data.msg.gameName+'的发售';
                         }
-                        $('#gamePrice').empty();
-                        $('#gamePrice').append(price);
+                        // $('#gameBuyName')[0].innerHTML='购买 '+data.msg.gameName;
+                        if (data.msg.issuedStatu==1){
+                            var price='';
+                            if (data.msg.discount>0){
+                                price+='<div class="discount_pct">-'+(100-data.msg.discount)+'%</div>';
+                                price+='<div class="discount_prices"><div class="discount_original_price">¥ '+data.msg.gamePrice+'</div>';
+                                price+='<div class="discount_final_price">¥ '+Math.ceil(data.msg.gamePrice*(data.msg.discount/100))+'</div></div>';
+                            }else {
+                                price+='<div class="game_purchase_price price">¥ '+data.msg.gamePrice+'</div>'
+                                //price+='<div class="discount_final_price">¥ '+data.msg.gamePrice+'</div>';
+                            }
+                            $('#gamePrice').empty();
+                            $('#gamePrice').append(price);
+                        }else {
+                            $('#game_price').empty();
+                        }
+
                         var gameAbout='';
                         gameAbout+='<h2>关于这款游戏</h2>';
                         var finalGameAbout=data.msg.gameAbout.replace('/n/r','<br>');
@@ -946,24 +956,25 @@ var steam=
                         parent=$(parent);
                         var tab_item_cap='<div class="tab_item_cap"><img class="tab_item_cap_img" style="width: 184px;height: 69px;" src="'+data.msg[i].posterImage+'"></div>';
                         tab_item_cap=$(tab_item_cap);
-                        var discount='<div class="discount_block tab_item_discount">';
-                        if (data.msg[i].discount>0){
-                            discount+='<div class="discount_pct">-'+data.msg[i].discount+'%</div>';
-                        }
-                        discount+='<div class="discount_prices">';
-                        if (data.msg[i].discount>0){
-                            discount+='<div class="discount_original_price">¥ '+data.msg[i].gamePrice+'</div>'
-                            discount+='<div class="discount_final_price">¥ '+Math.ceil(data.msg[i].gamePrice*(data.msg[i].discount/100))+'</div>';
-                        }else {
-                            discount+='<div class="discount_final_price">¥ '+data.msg[i].gamePrice+'</div>';
-                        }
-                        discount+='</div></div>';
-                        discount=$(discount);
+                        // var discount='<div class="discount_block tab_item_discount">';
+                        // if (data.msg[i].discount>0){
+                        //     discount+='<div class="discount_pct">-'+data.msg[i].discount+'%</div>';
+                        // }
+                        // discount+='<div class="discount_prices">';
+                        // if (data.msg[i].discount>0){
+                        //     discount+='<div class="discount_original_price">¥ '+data.msg[i].gamePrice+'</div>'
+                        //     discount+='<div class="discount_final_price">¥ '+Math.ceil(data.msg[i].gamePrice*(data.msg[i].discount/100))+'</div>';
+                        // }else {
+                        //     discount+='<div class="discount_final_price">¥ '+data.msg[i].gamePrice+'</div>';
+                        // }
+                        // discount+='</div></div>';
+                        // discount=$(discount);
                         var tab_item_content='<div class="tab_item_content">';
                         tab_item_content+='<div class="tab_item_name">'+data.msg[i].gameName+'</div>';
                         tab_item_content+='<div class="tab_item_details"><span class="platform_img win"></span>';
                         tab_item_content+='<div class="tab_item_top_tags">';
-                        for (var j=0;j<data.msg[i].label.length;j++){
+                        var length=data.msg[i].label.length>6?6:data.msg[i].label.length;
+                        for (var j=0;j<length;j++){
                             if (j==0){
                                 tab_item_content+='<span class="top_tag">'+data.msg[i].label[j]+'</span>';
                             } else {
@@ -973,7 +984,7 @@ var steam=
                         tab_item_content+='</div></div></div>';
                         tab_item_content=$(tab_item_content);
                         var lastItem=$('<div style="clear: both;"></div>');
-                        parent.append(tab_item_cap,discount,tab_item_content,lastItem);
+                        parent.append(tab_item_cap,tab_item_content,lastItem);
                         $('#ComingSoonRows').append(parent);
                     }
                     that.mouseClassUpComingListPause(that);
@@ -1014,7 +1025,8 @@ var steam=
                         tab_item_content+='<div class="tab_item_name">'+data.msg[i].gameName+'</div>';
                         tab_item_content+='<div class="tab_item_details"><span class="platform_img win"></span>';
                         tab_item_content+='<div class="tab_item_top_tags">';
-                        for (var j=0;j<data.msg[i].label.length;j++){
+                        var length=data.msg[i].label.length>6?6:data.msg[i].label.length;
+                        for (var j=0;j<length;j++){
                             if (j==0){
                                 tab_item_content+='<span class="top_tag">'+data.msg[i].label[j]+'</span>';
                             } else {
@@ -1067,7 +1079,8 @@ var steam=
                         tab_item_content+='<div class="tab_item_name">'+data.msg[i].gameName+'</div>';
                         tab_item_content+='<div class="tab_item_details"><span class="platform_img win"></span>';
                         tab_item_content+='<div class="tab_item_top_tags">';
-                        for (var j=0;j<data.msg[i].label.length;j++){
+                        var length=data.msg[i].label.length>6?6:data.msg[i].label.length;
+                        for (var j=0;j<length;j++){
                             if (j==0){
                                 tab_item_content+='<span class="top_tag">'+data.msg[i].label[j]+'</span>';
                             } else {
@@ -1246,7 +1259,8 @@ var steam=
                         var child3='<div class="tab_item_content"><div class="tab_item_name">';
                         child3+=data.msg[i].gameName;
                         child3+='</div><div class="tab_item_details"><span class="platform_img win"></span><span class="platform_img mac"></span><span class="platform_img linux"></span><div class="tab_item_top_tags">';
-                        for (var j=0;j<data.msg[i].label.length;j++){
+                        var length=data.msg[i].label.length>6?6:data.msg[i].label.length;
+                        for (var j=0;j<length;j++){
                             if (j==0){
                                 child3+='<span class="top_tag">'+data.msg[i].label[j]+'</span>';
                             }else {
@@ -1317,7 +1331,8 @@ var steam=
                         var child3='<div class="tab_item_content"><div class="tab_item_name">';
                         child3+=data.msg[i].gameName;
                         child3+='</div><div class="tab_item_details"><span class="platform_img win"></span><span class="platform_img mac"></span><span class="platform_img linux"></span><div class="tab_item_top_tags">';
-                        for (var j=0;j<data.msg[i].label.length;j++){
+                        var length=data.msg[i].label.length>6?6:data.msg[i].label.length;
+                        for (var j=0;j<length;j++){
                             if (j==0){
                                 child3+='<span class="top_tag">'+data.msg[i].label[j]+'</span>';
                             }else {
@@ -1363,30 +1378,36 @@ var steam=
                         var child1='<div class="tab_item_cap"><img class="tab_item_cap_img" style="width: 184px;height: 69px;" src="';
                         child1+=data.msg[i].posterImage;
                         child1+='"></div>';
-                        var child2='<div class="discount_block tab_item_discount">';
-                        if (data.msg[i].discount>0){
-                            child2+='<div class="discount_pct">';
-                            child2+='-'+(100-data.msg[i].discount)+'%';
-                            child2+='</div>';
-                        }
-                        child2+='<div class="discount_prices">';
-                        if (data.msg[i].discount>0){
-                            child2+='<div class="discount_original_price">';
-                            child2+='¥ '+data.msg[i].gamePrice;
-                            child2+='</div>';
-                        }
-                        if (data.msg[i].discount>0){
-                            child2+='<div class="discount_final_price">';
-                            child2+='¥ '+Math.ceil(data.msg[i].gamePrice*(data.msg[i].discount/100));
-                        }else {
-                            child2+='<div class="discount_final_price">';
-                            child2+='¥ '+data.msg[i].gamePrice;
-                        }
-                        child2+='</div></div></div>';
+                        // var child2='<div class="discount_block tab_item_discount">';
+                        // if (data.msg[i].issuedStatu==1){
+                        //     hotseller+='现已推出';
+                        // }else {
+                        //     child2+='敬请期待';
+                        // }
+                        // if (data.msg[i].discount>0){
+                        //     child2+='<div class="discount_pct">';
+                        //     child2+='-'+(100-data.msg[i].discount)+'%';
+                        //     child2+='</div>';
+                        // }
+                        // child2+='<div class="discount_prices">';
+                        // if (data.msg[i].discount>0){
+                        //     child2+='<div class="discount_original_price">';
+                        //     child2+='¥ '+data.msg[i].gamePrice;
+                        //     child2+='</div>';
+                        // }
+                        // if (data.msg[i].discount>0){
+                        //     child2+='<div class="discount_final_price">';
+                        //     child2+='¥ '+Math.ceil(data.msg[i].gamePrice*(data.msg[i].discount/100));
+                        // }else {
+                        //     child2+='<div class="discount_final_price">';
+                        //     child2+='¥ '+data.msg[i].gamePrice;
+                        // }
+                        // child2+='</div></div></div>';
                         var child3='<div class="tab_item_content"><div class="tab_item_name">';
                         child3+=data.msg[i].gameName;
                         child3+='</div><div class="tab_item_details"><span class="platform_img win"></span><span class="platform_img mac"></span><span class="platform_img linux"></span><div class="tab_item_top_tags">';
-                        for (var j=0;j<data.msg[i].label.length;j++){
+                        var length=data.msg[i].label.length>6?6:data.msg[i].label.length;
+                        for (var j=0;j<length;j++){
                             if (j==0){
                                 child3+='<span class="top_tag">'+data.msg[i].label[j]+'</span>';
                             }else {
@@ -1397,10 +1418,11 @@ var steam=
                         var child4='<div style="clear: both;"></div>';
                         parent=$(parent);
                         child1=$(child1);
-                        child2=$(child2);
+                        //child2=$(child2);
                         child3=$(child3);
                         child4=$(child4);
-                        parent.append(child1,child2,child3,child4);
+                        //parent.append(child1,child2,child3,child4);
+                        parent.append(child1,child3,child4);
                         $('#upComingRow').append(parent);
                     }
                     // var seeMore='<div class="tab_see_more">查看更多： <a href="#" class="btnv6_white_transparent btn_small_tall"><span>即将推出</span></a></div>'
@@ -1534,32 +1556,41 @@ var steam=
                             if (data.msg[i].issuedStatu==1){
                                 hotseller+='现已推出';
                             }else {
-                                hotseller+='立即预购';
+                                hotseller+='敬请期待';
                             }
-                            hotseller+='</div><div class="additional"><div>热销商品</div></div></div>';
-                            //折扣
-                            var discount='<div class="discount_block  discount_block_inline" data-price-final="6500">';
-                            if (data.msg[i].discount>0){
-                                discount+='<div class="discount_pct">';
-                                discount+='-'+(100-data.msg[i].discount)+'%';
-                                discount+='</div>';
-                            }
-                            if (data.msg[i].discount>0){
-                                discount+='<div class="discount_prices"><div class="discount_original_price">';
-                                discount+='¥ '+data.msg[i].gamePrice;
-                                discount+='</div>';
-                            }
-                            if (data.msg[i].discount>0){
-                                discount+='<div class="discount_final_price">';
-                                var finalPrice=Math.ceil(data.msg[i].gamePrice*(data.msg[i].discount/100));
-                                discount+='¥ '+finalPrice;
-                                discount+='</div>';
+                            if (data.msg[i].issuedStatu==1){
+                                hotseller+='</div><div class="additional"><div>热销商品</div></div></div>';
                             }else {
-                                discount+='<div class="discount_final_price">';
-                                discount+='¥ '+data.msg[i].gamePrice;
-                                discount+='</div>';
+                                hotseller+='</div><div class="additional"><div>即将推出</div></div></div>';
                             }
-                            discount+='</div></div>';
+                            //hotseller+='</div><div class="additional"><div>热销商品</div></div></div>';
+                            //折扣
+                            var discount='<div class="discount_block  discount_block_inline">';
+                            if (data.msg[i].issuedStatu==1){
+                                if (data.msg[i].discount>0){
+                                    discount+='<div class="discount_pct">';
+                                    discount+='-'+(100-data.msg[i].discount)+'%';
+                                    discount+='</div>';
+                                }
+                                if (data.msg[i].discount>0){
+                                    discount+='<div class="discount_prices"><div class="discount_original_price">';
+                                    discount+='¥ '+data.msg[i].gamePrice;
+                                    discount+='</div>';
+                                }
+                                if (data.msg[i].discount>0){
+                                    discount+='<div class="discount_final_price">';
+                                    var finalPrice=Math.ceil(data.msg[i].gamePrice*(data.msg[i].discount/100));
+                                    discount+='¥ '+finalPrice;
+                                    discount+='</div>';
+                                }else {
+                                    discount+='<div class="discount_final_price">';
+                                    discount+='¥ '+data.msg[i].gamePrice;
+                                    discount+='</div>';
+                                }
+                                discount+='</div></div>';
+                            }else {
+                                discount='';
+                            }
                             //平台
                             var platform='<div class="platforms"><span class="platform_img win"></span></div>'
                             var parent=$(parent);
@@ -2412,6 +2443,26 @@ var steam=
             },
             error:function () {
                 layer.msg("网络错误")
+            }
+        })
+    }
+
+    //买游戏
+    function finalBuyGame() {
+        var email=$('#account_pulldown')[0].getAttribute("email");
+        var userId=$('#account_pulldown')[0].getAttribute("user-id");
+        $.ajax({
+            url:"/buygame",
+            type:"POST",
+            data:{
+                email:email,
+                userId:userId
+            },
+            success:function () {
+
+            },
+            error:function () {
+
             }
         })
     }

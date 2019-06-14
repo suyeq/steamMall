@@ -610,9 +610,9 @@
                                         <span>&#10004;</span></td>
                                 </tr>
                             </table>
-                            <a class="all_languages"
-                               onclick="$J('table.game_language_options tr').show(); $J(this).hide(); return false">查看所有
-                                13 种已支持语言</a>
+                            <!--<a class="all_languages"-->
+                               <!--onclick="$J('table.game_language_options tr').show(); $J(this).hide(); return false">查看所有-->
+                                <!--13 种已支持语言</a>-->
 
                         </div>
                         <!--开发者-->
@@ -706,7 +706,7 @@
                                     </div>
                                     <h1 id="gameBuyName">购买 Sekiro: Shadows Die Twice</h1>
 
-                                    <div class="game_purchase_action">
+                                    <div class="game_purchase_action" id="game_price">
                                         <div class="game_purchase_action_bg">
                                             <div class="discount_block game_purchase_discount" id="gamePrice">
                                                 <div class="discount_pct">-33%</div>
@@ -965,8 +965,14 @@
 </div>
 <!--脚部-->
 <div th:replace="fragment_foot::#foot"></div>
+<div id="spike_flag" th:if="${spike}"></div>
 <script type="text/javascript">
     steam.initDetail();
+    var isSpike=$('#spike_flag');
+    if (isSpike.length==1){
+        layer.msg("该游戏正在参与秒杀");
+    }
+    console.log(isSpike)
 </script>
 </body>
 </html>

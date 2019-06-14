@@ -2,11 +2,14 @@ package com.example.steam.controller;
 
 import com.example.steam.dao.GameDao;
 import com.example.steam.entity.User;
+import com.example.steam.redis.RedisService;
+import com.example.steam.redis.key.SpikeGameKey;
 import com.example.steam.service.GameService;
 import com.example.steam.service.ImageService;
 import com.example.steam.service.TypeService;
 import com.example.steam.service.UserGameService;
 import com.example.steam.vo.LoginUser;
+import com.example.steam.vo.SpikeGameDetail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,10 +40,13 @@ public class PageController {
     ImageService imageService;
     @Autowired
     UserGameService userGameService;
+    @Autowired
+    RedisService redisService;
 
     @RequestMapping("/")
     public String index(LoginUser loginUser, Model model){
         model.addAttribute("user",loginUser);
+        //log.error(loginUser.getId()+"");
         return "index";
     }
 
@@ -72,6 +78,8 @@ public class PageController {
         if (loginUser!=null){
             contains=userGameService.isContains(loginUser.getEmail(),gameId);
         }
+        SpikeGameDetail spikeGameDetail=redisService.get(SpikeGameKey.SPIKE_ID,gameId+"",SpikeGameDetail.class);
+        model.addAttribute("spike",spikeGameDetail);
         model.addAttribute("gameId",gameId);
         model.addAttribute("user",loginUser);
         model.addAttribute("contains",contains);

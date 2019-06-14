@@ -17,7 +17,7 @@ import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
- *
+ * 秒杀处理器
  * @author: 苍术
  * @date: 2019-06-06
  * @time: 10:16

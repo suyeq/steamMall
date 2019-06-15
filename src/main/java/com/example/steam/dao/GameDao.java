@@ -3,6 +3,7 @@ package com.example.steam.dao;
 import com.example.steam.entity.Game;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.security.PermitAll;
@@ -41,4 +42,8 @@ public interface GameDao {
 
     @Select("select * from game where gamename like concat('%',#{content},'%') or gameintroduction like concat('%',#{content},'%')")
     List<Game> findGamesBySearchContent(@Param("content")String content);
+
+    @Update("update game set gamename=#{gameName},gameabout=#{gameAbout},gameprice=#{gamePrice}," +
+            "posterimage=#{posterImage},sellnum=#{sellNum},discount=#{discount}")
+    int updateGame(Game game);
 }

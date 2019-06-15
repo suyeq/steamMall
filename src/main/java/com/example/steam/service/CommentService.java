@@ -60,6 +60,55 @@ public class CommentService implements InitializingBean{
     ApplicationContext applicationContext;
 
     /**
+     * 点赞
+     * @param commentId
+     * @return
+     */
+    public int addZanComment(long commentId){
+        Comment comment=redisService.get(CommentKey.COMMENT_ID,commentId+"",Comment.class);
+        comment.setZanNum(comment.getZanNum()+1);
+        CommentRank commentRank=new CommentRank(comment.getId(),comment.getGameId());
+        double x=redisService.zincr(CommentKey.COMMENT_RANK_ZANNUM,CommentKey.COMMENT_RANK_ZANNUM_KEY,commentRank);
+        log.error(x+"");
+        int result=((CommentService)applicationContext.getBean("commentService")).updateComment(comment);
+        return result;
+    }
+
+    /**
+     * 踩数增加
+     * @param commentId
+     * @return
+     */
+    public int addCaiComment(long commentId){
+        Comment comment=redisService.get(CommentKey.COMMENT_ID,commentId+"",Comment.class);
+        comment.setCaiNum(comment.getCaiNum()+1);
+        int result=((CommentService)applicationContext.getBean("commentService")).updateComment(comment);
+        return result;
+    }
+
+    /**
+     * 增加happy数
+     * @param commentId
+     * @return
+     */
+    public int addHappyComment(long commentId){
+        Comment comment=redisService.get(CommentKey.COMMENT_ID,commentId+"",Comment.class);
+        comment.setHappy(comment.getHappy()+1);
+        int result=((CommentService)applicationContext.getBean("commentService")).updateComment(comment);
+        return result;
+    }
+
+    /**
+     * 更新评论
+     * @param comment
+     * @return
+     */
+    public int updateComment(Comment comment){
+        redisService.set(CommentKey.COMMENT_ID,comment.getId()+"",comment);
+        return commentDao.updateComment(comment);
+    }
+
+    /**
      * 通过游戏id得到该游戏的评论id集合
      * @param gameId 游戏id
      * @return
@@ -150,6 +199,7 @@ public class CommentService implements InitializingBean{
         commentDetail.setRecommendStatu(comment.getRecommendStatu());
         commentDetail.setId(comment.getId());
         commentDetail.setUserId(user.getId());
+        commentDetail.setHappyNum(comment.getHappy());
         return commentDetail;
     }
 

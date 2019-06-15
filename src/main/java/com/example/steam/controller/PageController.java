@@ -46,7 +46,8 @@ public class PageController {
     @RequestMapping("/")
     public String index(LoginUser loginUser, Model model){
         model.addAttribute("user",loginUser);
-        //log.error(loginUser.getId()+"");
+        //
+        // log.error(loginUser.getId()+"");
         return "index";
     }
 
@@ -76,6 +77,7 @@ public class PageController {
                          Model model){
         Boolean contains=null;
         if (loginUser!=null){
+            log.error(loginUser.toString());
             contains=userGameService.isContains(loginUser.getEmail(),gameId);
         }
         SpikeGameDetail spikeGameDetail=redisService.get(SpikeGameKey.SPIKE_ID,gameId+"",SpikeGameDetail.class);

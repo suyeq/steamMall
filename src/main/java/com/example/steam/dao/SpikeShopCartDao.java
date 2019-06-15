@@ -28,6 +28,6 @@ public interface SpikeShopCartDao {
     SpikeShopCart findSpikeShopCartByUserId(@Param("userId")long userId);
 
 
-    @Delete("delete spikeshopcart where userid=#{userId}")
+    @Delete("delete from spikeshopcart where userid=#{userId}")
     int deleteSpikeShopCart(@Param("userId")long userId);
 }

@@ -42,6 +42,7 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
         HttpServletRequest request=(HttpServletRequest)nativeWebRequest.getNativeRequest();
         HttpServletResponse response=(HttpServletResponse)nativeWebRequest.getNativeResponse();
         String cookieToken=getCookieValue(request, StaticField.COOKIE_KEY);
+        //System.out.println(cookieToken+"  "+"token");
         LoginUser user=userService.getUserByToken(response,cookieToken);
         //request.getSession().setAttribute("email",user.getEmail());
         return user;

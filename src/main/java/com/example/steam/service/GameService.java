@@ -62,6 +62,32 @@ public class GameService implements InitializingBean {
     CommentService commentService;
 
     /**
+     * 更新卖出数目
+     * @param gameId
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public int updateGameSellNum(long gameId){
+        GameDetail gameDetail=redisService.get(GameKey.GAME_ID,gameId+"",GameDetail.class);
+        gameDetail.setSellNum(gameDetail.getSellNum()+1);
+        redisService.set(GameKey.GAME_ID,gameId+"",gameDetail);
+        Game game=((GameService)applicationContext.getBean("gameService")).findOneGameById(gameId,DynamicDataSourceHolder.MASTER);
+        game.setSellNum(game.getSellNum()+1);
+        GameRank gameRank=new GameRank(gameDetail.getId(),gameDetail.getType());
+        redisService.zincr(GameKey.RANK_SELLNUM,GameKey.GAME_RANK_SELLNUM,gameRank);
+        return ((GameService)applicationContext.getBean("gameService")).updateGame(game);
+    }
+
+    /**
+     * 更新游戏
+     * @param game
+     * @return
+     */
+    public int updateGame(Game game){
+        return gameDao.updateGame(game);
+    }
+
+    /**
      * 查找相关游戏
      * @param content
      * @return

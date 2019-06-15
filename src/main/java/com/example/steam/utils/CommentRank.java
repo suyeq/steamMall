@@ -15,6 +15,11 @@ public class CommentRank {
 
     public CommentRank(){}
 
+    public CommentRank(long id,long gameId){
+        this.id=id;
+        this.gameId=gameId;
+    }
+
     public Long getId() {
         return id;
     }

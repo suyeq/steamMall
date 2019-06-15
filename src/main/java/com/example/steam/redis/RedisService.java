@@ -240,6 +240,25 @@ public class RedisService {
     }
 
     /**
+     * 对zset中某一成员分数自增1
+     * @param keyPrefix
+     * @param key
+     * @param member
+     * @param <T>
+     * @return
+     */
+    public <T> Double zincr(RedisPrefixKey keyPrefix,String key,T member){
+        Jedis jedis=null;
+        try{
+            jedis=pool.getResource();
+            String realKey=keyPrefix.getThisPrefix()+key;
+            return jedis.zincrby(realKey,-1d,beanToString(member));
+        }finally {
+            jedis.close();
+        }
+    }
+
+    /**
      * 键自增，使用于string
      * @param keyPrefix
      * @param key

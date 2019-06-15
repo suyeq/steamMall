@@ -79,6 +79,23 @@ public class CommentController{
         return JSON.toJSONString(ResultMsg.SUCCESS(commentService.getCommentStatu(list.get(0),list.get(1))));
     }
 
+    @ResponseBody
+    @RequestMapping("/comment/zan/{commentId}")
+    public String  addZan(@PathVariable("commentId")long commentId){
+        return JSON.toJSONString(ResultMsg.SUCCESS(commentService.addZanComment(commentId)));
+    }
+
+    @ResponseBody
+    @RequestMapping("/comment/cai/{commentId}")
+    public String  addCai(@PathVariable("commentId")long commentId){
+        return JSON.toJSONString(ResultMsg.SUCCESS(commentService.addCaiComment(commentId)));
+    }
+
+    @ResponseBody
+    @RequestMapping("/comment/happy/{commentId}")
+    public String  addHappy(@PathVariable("commentId")long commentId){
+        return JSON.toJSONString(ResultMsg.SUCCESS(commentService.addHappyComment(commentId)));
+    }
 
 
 

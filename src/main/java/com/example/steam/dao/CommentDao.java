@@ -27,4 +27,7 @@ public interface CommentDao {
             "value(#{content},NOW(),#{email},#{gameId},0,0,#{recommendStatu})")
     @Options(useGeneratedKeys = true,keyColumn = "id",keyProperty = "id")
     long addComment(Comment comment);
+
+    @Update("update comment set zannum=#{zanNum},caiNum=#{caiNum},happy=#{happy} where id=#{id}")
+    int updateComment(Comment comment);
 }

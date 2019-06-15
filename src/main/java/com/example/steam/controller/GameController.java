@@ -2,6 +2,7 @@ package com.example.steam.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.example.steam.service.GameService;
+import com.example.steam.service.UserGameService;
 import com.example.steam.utils.ResultMsg;
 import com.example.steam.vo.GameDetail;
 import com.example.steam.vo.SpecialGame;
@@ -35,6 +36,8 @@ public class GameController {
 
     @Autowired
     GameService gameService;
+    @Autowired
+    UserGameService userGameService;
 
     @ResponseBody
     @RequestMapping("/feturedCarousel")
@@ -133,6 +136,13 @@ public class GameController {
     @RequestMapping("/searchresult")
     public String searchResult(@RequestParam("content")String content){
         return JSON.toJSONString(ResultMsg.SUCCESS(gameService.findGamesBySearchContent(content)));
+    }
+
+    @ResponseBody
+    @RequestMapping("/iscontains")
+    public String isContainsGame(@RequestParam("email")String email,
+                                 @RequestParam("gameId")long gameId){
+        return JSON.toJSONString(ResultMsg.SUCCESS(userGameService.isContains(email,gameId)));
     }
 
 

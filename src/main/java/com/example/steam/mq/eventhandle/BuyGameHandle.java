@@ -4,10 +4,12 @@ import com.example.steam.entity.ShoppingCart;
 import com.example.steam.entity.UserGame;
 import com.example.steam.mq.Event;
 import com.example.steam.mq.EventType;
+import com.example.steam.service.GameService;
 import com.example.steam.service.ShoppingCartService;
 import com.example.steam.service.SpikeShopCartService;
 import com.example.steam.service.UserGameService;
 import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,24 +24,24 @@ import java.util.List;
  * @date: 2019-06-14
  * @time: 22:15
  */
+@Component
 public class BuyGameHandle implements EventHandle {
 
     @Override
     public void eventHandle(Event event, ApplicationContext applicationContext) {
-        long userId=(long)event.getEtrMsg().get(Event.USER_ID);
+        long userId=Long.parseLong((String)event.getEtrMsg().get(Event.USER_ID));
         String email=(String) event.getEtrMsg().get(Event.EMAIL);
         List<ShoppingCart> shoppingCartList=((ShoppingCartService)applicationContext.getBean("shoppingCartService")).findShopCartByUserId(userId);
-        //spikeShopCartService
         ((SpikeShopCartService)applicationContext.getBean("spikeShopCartService")).deleteSpikeShopCartByUserId(userId);
         ((ShoppingCartService)applicationContext.getBean("shoppingCartService")).deleteAllGameInCartByUserId(userId);
         for (ShoppingCart shoppingCart:shoppingCartList){
             UserGame userGame=new UserGame(0L,email,shoppingCart.getGameId());
             ((UserGameService)applicationContext.getBean("userGameService")).addGameToUser(userGame);
+            ((GameService)applicationContext.getBean("gameService")).updateGameSellNum(shoppingCart.getGameId());
         }
         /**
          * 支付步骤
          */
-
     }
 
     @Override

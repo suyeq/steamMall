@@ -37,6 +37,8 @@ public class CommentDetail {
 
     private Integer recommendStatu;
 
+    private Integer happyNum;
+
     public CommentDetail(){}
 
     public String getNickName() {
@@ -141,5 +143,13 @@ public class CommentDetail {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public Integer getHappyNum() {
+        return happyNum;
+    }
+
+    public void setHappyNum(Integer happyNum) {
+        this.happyNum = happyNum;
     }
 }

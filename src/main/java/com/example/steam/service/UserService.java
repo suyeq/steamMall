@@ -180,7 +180,12 @@ public class UserService {
     private void addCookie(HttpServletResponse response,String cookieId,User user,LoginUser loginUr){
         Cookie cookie=new Cookie(StaticField.COOKIE_KEY,cookieId);
         cookie.setMaxAge(cookieMaxAge);
-        log.error(cookieMaxAge+"");
+        /**
+         * 不同路径下cookie不同
+         * 要设置相同的路径，否则会出现一样的cookie
+         */
+        cookie.setPath("/");
+        log.info(cookieMaxAge+"");
         response.addCookie(cookie);
         //UserKey.COOKIE_ID.setExpiredTime(cookieMaxAge);
         LoginUser loginUser;
@@ -201,6 +206,9 @@ public class UserService {
 
     private Cookie findCookie(HttpServletRequest request){
         Cookie[] cookies=request.getCookies();
+        if (cookies==null){
+            return null;
+        }
         for (int i=0;i<cookies.length;i++){
             if (cookies[i].getName().equals(StaticField.COOKIE_KEY)){
                 return cookies[i];

@@ -30,6 +30,8 @@ public class Comment {
 
     private Integer recommendStatu;
 
+    private Integer happy;
+
     public Comment(){}
 
     public Comment(String content,String email,long gameId,int recommendStatu){
@@ -40,6 +42,7 @@ public class Comment {
         this.recommendStatu=recommendStatu;
         this.zanNum=0;
         this.caiNum=0;
+        this.happy=0;
     }
 
     public Long getId() {
@@ -105,5 +108,13 @@ public class Comment {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Integer getHappy() {
+        return happy;
+    }
+
+    public void setHappy(Integer happy) {
+        this.happy = happy;
     }
 }

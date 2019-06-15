@@ -706,7 +706,7 @@ var steam=
                                 var vote_info='<div class="vote_info">有 ';
                                 vote_info+=data.msg[i].zanNum;
                                 vote_info+=' 人觉得这篇评测有价值<br>';
-                                vote_info+='有 '+data.msg[i].caiNum+' 人觉得这篇评测很欢乐</div>';
+                                vote_info+='有 '+data.msg[i].happyNum+' 人觉得这篇评测很欢乐</div>';
                                 vote_info=$(vote_info);
                                 var last=$('<div style="clear: left;"></div>');
                                 right.append(recommendStatu,commentDate,content,space,hr,control_block,vote_info);
@@ -2163,15 +2163,40 @@ var steam=
     function clearCookie(name) {
         setCookie(name, "", -1);
     }
+    //判断是否包含此游戏
+    function isContainGame(email,gameId) {
+        var result=null;
+        $.ajax({
+            url:"/iscontains",
+            type:"POST",
+            async:false,
+            data:{
+              email:email,
+              gameId:gameId
+            },
+            success:function (data) {
+                data=eval("("+data+")");
+                result=data.msg;
+            }
+        });
+        return result;
+    }
 
     //添加置购物车
     function addCart() {
+        var email=$('#account_pulldown')[0].getAttribute('email');
+        var userId=$('#account_pulldown')[0].getAttribute('user-id');
+        var gameId=$('#gameDetail')[0].getAttribute('game-id');
+        var result=isContainGame(email,gameId);
+        console.log(result)
+        if (result!=false){
+            layer.msg("该游戏已购买，不能重复购买");
+            return;
+        }
         if ($('#account_pulldown').length<1){
             layer.msg("尚未登录");
             return;
         }
-        var userId=$('#account_pulldown')[0].getAttribute('user-id');
-        var gameId=$('#gameDetail')[0].getAttribute('game-id');
         console.log(userId+" "+gameId)
         $.ajax({
             url:"/cart/add",
@@ -2459,10 +2484,50 @@ var steam=
                 userId:userId
             },
             success:function () {
-
+                $('#cart_row').empty();
+                layer.msg("购买成功")
             },
             error:function () {
 
+            }
+        })
+    }
+    //点赞
+    function commentZan(commentId) {
+        $.ajax({
+            url:"/comment/zan/"+commentId,
+            type:"POST",
+            success:function () {
+                layer.msg("点赞成功");
+            },
+            error:function () {
+                layer.msg("网络错误");
+            }
+        })
+    }
+    //踩
+    function commentCai(commentId) {
+        $.ajax({
+            url:"/comment/cai/"+commentId,
+            type:"POST",
+            success:function () {
+                layer.msg("踩成功");
+            },
+            error:function () {
+                layer.msg("网络错误");
+            }
+        })
+    }
+    //happy
+    function commentHappy(commentId) {
+        $.ajax({
+            url:"/comment/happy/"+commentId,
+            type:"POST",
+            success:function () {
+                layer.msg("欢乐成功");
+            },
+            error:function () {
+                layer.msg("网络错误");
             }
         })
     }

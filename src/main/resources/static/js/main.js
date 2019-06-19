@@ -925,7 +925,8 @@ var steam=
                         '                        </div>';
                     item4=$(item4);
                     var item5='<div class="hover_body">用户标签：<div class="hover_tag_row">';
-                    for (var i=0;i<data.msg.label.length;i++){
+                    var length=data.msg.label.length>7?7:data.msg.label.length;
+                    for (var i=0;i<length;i++){
                         item5+='<div class="app_tag">'+data.msg.label[i]+'</div>';
                     }
                     item5+='</div></div>';
@@ -1183,7 +1184,8 @@ var steam=
                     var review='<div class="tab_review_summary" id="comment_index_description"><div class="title">总体用户评测：</div><span class="game_review_summary positive">特别好评</span><span class="comment_total">&nbsp;(440)</span></div>';
                     review=$(review);
                     var tag='<div class="tags">';
-                    for (var i=0;i<data.msg.label.length;i++){
+                    var length=data.msg.label.length>6?6:data.msg.label.length;
+                    for (var i=0;i<length;i++){
                         tag+='<a>'+data.msg.label[i]+'</a>';
                     }
                     tag+='</div>';
@@ -2199,6 +2201,24 @@ var steam=
         });
         return result;
     }
+    //购物车里是否已有
+    function cartIsContainsGame(userId,gameId) {
+        var result=null;
+        $.ajax({
+            url:"/cart/iscontain",
+            type:"POST",
+            async:false,
+            data:{
+                userId:userId,
+                gameId:gameId
+            },
+            success:function (data) {
+                data=eval("("+data+")");
+                result=data.msg;
+            }
+        });
+        return result;
+    }
 
     //添加置购物车
     function addCart() {
@@ -2209,6 +2229,12 @@ var steam=
         var email=$('#account_pulldown')[0].getAttribute('email');
         var userId=$('#account_pulldown')[0].getAttribute('user-id');
         var gameId=$('#gameDetail')[0].getAttribute('game-id');
+        var cartResult=cartIsContainsGame(userId,gameId);
+        console.log(cartResult)
+        if (cartResult!=false){
+            layer.msg("该游戏已在购物车，不能重复添加");
+            return;
+        }
         var result=isContainGame(email,gameId);
         if (result!=false){
             layer.msg("该游戏已购买，不能重复购买");

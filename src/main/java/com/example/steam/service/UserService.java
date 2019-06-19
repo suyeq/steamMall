@@ -51,6 +51,29 @@ public class UserService {
     ApplicationContext applicationContext;
 
 
+    /**
+     * 更新用户购买游戏的数量
+     * @param email
+     * @return
+     */
+    public int updateBuyGames(String email){
+        User user=redisService.get(UserKey.USER_ID,email,User.class);
+        user.setBuyGames(user.getBuyGames()+1);
+        redisService.set(UserKey.USER_ID,email,user);
+        return ((UserService)applicationContext.getBean("userService")).updateUser(user);
+    }
+
+    /**
+     * 更新用户的评论数量
+     * @param email
+     * @return
+     */
+    public int updateCommnetNum(String email){
+        User user=redisService.get(UserKey.USER_ID,email,User.class);
+        user.setCommentNum(user.getCommentNum()+1);
+        redisService.set(UserKey.USER_ID,email,user);
+        return ((UserService)applicationContext.getBean("userService")).updateUser(user);
+    }
 
     /**
      * 更新一个用户

@@ -6,6 +6,8 @@ import com.example.steam.dao.ShoppingCartDao;
 import com.example.steam.entity.*;
 import com.example.steam.mq.MQProducer;
 import com.example.steam.vo.ShoppingCartDetail;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
@@ -38,6 +40,29 @@ public class ShoppingCartService {
     ApplicationContext applicationContext;
     @Autowired
     UserGameService userGameService;
+
+    Logger log= LoggerFactory.getLogger(ShoppingCartService.class);
+
+    /**
+     * 检测是否已在购物车里面
+     * @param userId
+     * @param gameId
+     * @return
+     */
+    public boolean isContainsShopCart(long userId,long gameId){
+        List<ShoppingCart> shoppingCartList=((ShoppingCartService)applicationContext.getBean("shoppingCartService")).findShopCartByUserId(userId);
+        if (shoppingCartList!=null){
+            log.error(shoppingCartList.size()+"");
+        }
+        for (ShoppingCart shoppingCart:shoppingCartList){
+            if (shoppingCart.getGameId()==gameId){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     /**
      * 事务会以第一个sql执行的数据源为数据源
      * 所以要在第一个语句执行前就指定好数据源
@@ -45,7 +70,7 @@ public class ShoppingCartService {
      * @param gameId
      * @return
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Integer addOneCart(long userId,long gameId,int gamePrice){
         ShoppingCart shoppingCart=new ShoppingCart();
         Game game=gameService.findOneGameById(gameId,DynamicDataSourceHolder.MASTER);
@@ -81,24 +106,24 @@ public class ShoppingCartService {
         return shoppingCartDetailList;
     }
 
-    /**
-     * 最终购买游戏
-     * @param userId
-     * @return
-     */
-    public int addBuyGame(long userId,String email){
-        List<ShoppingCart> shoppingCartList=shoppingCartDao.findCartByUserId(userId);
-        int result=spikeShopCartService.deleteSpikeShopCartByUserId(userId);
-        ((ShoppingCartService)applicationContext.getBean("shoppingCartService")).deleteAllGameInCartByUserId(userId);
-        for (ShoppingCart shoppingCart:shoppingCartList){
-            UserGame userGame=new UserGame(0L,email,shoppingCart.getGameId());
-            userGameService.addGameToUser(userGame);
-        }
-        /**
-         * 支付
-         */
-        return result;
-    }
+//    /**
+//     * 最终购买游戏
+//     * @param userId
+//     * @return
+//     */
+//    public int addBuyGame(long userId,String email){
+//        List<ShoppingCart> shoppingCartList=shoppingCartDao.findCartByUserId(userId);
+//        int result=spikeShopCartService.deleteSpikeShopCartByUserId(userId);
+//        ((ShoppingCartService)applicationContext.getBean("shoppingCartService")).deleteAllGameInCartByUserId(userId);
+//        for (ShoppingCart shoppingCart:shoppingCartList){
+//            UserGame userGame=new UserGame(0L,email,shoppingCart.getGameId());
+//            userGameService.addGameToUser(userGame);
+//        }
+//        /**
+//         * 支付
+//         */
+//        return result;
+//    }
 
     /**
      * 通过userid找到该用户下的购物车简略

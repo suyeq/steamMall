@@ -25,7 +25,7 @@ public interface UserDao {
     int addUser(User user);
 
     @Update("update user set nickname=#{nickName},salt=#{salt},email=#{email},password=#{password}," +
-            "playtime=#{playTime},commentnum=#{commentNum},buggames=#{bugGames},isadmin=#{isAdmin} where " +
+            "playtime=#{playTime},commentnum=#{commentNum},buygames=#{buyGames},isadmin=#{isAdmin} where " +
             "id=#{id}")
     int updateUser(User user);
 

@@ -13,6 +13,8 @@ public class UserKey extends BaseKey {
 
     public static final String CONTAINS_KEY="gamecontains:";
 
+    public static final String CONTAINS_CART_KEY="cartcontains:";
+
     private final static int expireTime=7200;
 
     private UserKey(int expireTime){
@@ -24,5 +26,7 @@ public class UserKey extends BaseKey {
     public static UserKey COOKIE_ID=new UserKey(expireTime);
 
     public static UserKey CONTAINS_GAMES=new UserKey(0);
+
+    public static UserKey CONTAINS_CART=new UserKey(0);
 
 }

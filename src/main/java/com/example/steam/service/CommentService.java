@@ -289,8 +289,10 @@ public class CommentService implements InitializingBean{
      * @param comment
      * @return
      */
+    @Transactional(rollbackFor = Exception.class)
     public long addComment(Comment comment){
         commentDao.addComment(comment);
+        userService.updateCommnetNum(comment.getEmail());
         /**
          * 加入缓存，以及排名
          */

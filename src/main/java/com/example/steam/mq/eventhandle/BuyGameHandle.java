@@ -4,10 +4,7 @@ import com.example.steam.entity.ShoppingCart;
 import com.example.steam.entity.UserGame;
 import com.example.steam.mq.Event;
 import com.example.steam.mq.EventType;
-import com.example.steam.service.GameService;
-import com.example.steam.service.ShoppingCartService;
-import com.example.steam.service.SpikeShopCartService;
-import com.example.steam.service.UserGameService;
+import com.example.steam.service.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
@@ -27,6 +24,12 @@ import java.util.List;
 @Component
 public class BuyGameHandle implements EventHandle {
 
+    /**
+     * 删除秒杀订单，删除订单
+     * 用户下面增加游戏，更新用户相关信息
+     * @param event
+     * @param applicationContext
+     */
     @Override
     public void eventHandle(Event event, ApplicationContext applicationContext) {
         long userId=Long.parseLong((String)event.getEtrMsg().get(Event.USER_ID));
@@ -38,6 +41,7 @@ public class BuyGameHandle implements EventHandle {
             UserGame userGame=new UserGame(0L,email,shoppingCart.getGameId());
             ((UserGameService)applicationContext.getBean("userGameService")).addGameToUser(userGame);
             ((GameService)applicationContext.getBean("gameService")).updateGameSellNum(shoppingCart.getGameId());
+            ((UserService)applicationContext.getBean("userService")).updateBuyGames(email);
         }
         /**
          * 支付步骤

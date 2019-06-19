@@ -67,5 +67,12 @@ public class ShoppingCartController {
         return JSON.toJSONString(ResultMsg.SUCCESS);
     }
 
+    @ResponseBody
+    @RequestMapping("/cart/iscontain")
+    public String isContainsCart(@RequestParam("userId")long userId,
+                                 @RequestParam("gameId")long gameId){
+        return JSON.toJSONString(ResultMsg.SUCCESS(shoppingCartService.isContainsShopCart(userId,gameId)));
+    }
+
 
 }

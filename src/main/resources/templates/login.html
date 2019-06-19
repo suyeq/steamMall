@@ -112,7 +112,7 @@
             <br>
 
 
-            <a target="_top" href="#" id="link_forgot_password">
+            <a target="_top" href="javascript:void(0);" id="link_forgot_password" onclick="findPasswordShow()">
                 忘记您的密码？		</a>
             <br><br>
 
@@ -139,7 +139,7 @@
                 </div>
                 <div class="responsive_hidden" style="background: #1b2838">
                     <br>
-                    <a target="_top" href="https://store.steampowered.com/about">了解更多 Steam 的相关信息</a>
+                    <a target="_top" href="https://store.steampowered.com/">了解更多 Steam 的相关信息</a>
                 </div>
             </div>
         </div>
@@ -153,5 +153,40 @@
 
 <!--脚部-->
 <div th:replace="fragment_foot::#foot"></div>
+<div class="newmodal_background" style="opacity: 0.8; display: none;" id="model_bg"></div>
+<div class="newmodal" style="position: fixed; z-index: 1000; max-width: 1269px; left: 424px; top: 67px;display: none;" id="model">
+    <div class="modal_top_bar"></div>
+    <div class="newmodal_header_border">
+        <div class="newmodal_header">
+            <!--关闭图标-->
+            <div class="newmodal_close" onclick="closeModel()"></div>
+            <div class="title_text" id="model_name">找回密码</div>
+        </div>
+    </div>
+    <div class="newmodal_content_border" style="width: 300px;height: 170px;">
+        <div class="newmodal_content" style="max-height: 200px;">
+            <div>
+                <div class="app_tag_modal " style="display:block;">
+                    <div class="app_tag_modal_content">
+                        <div class="app_tag_modal_left">
+                            <div class="app_tag_modal_right">
+                                <p>‎输入你的邮箱：</p>
+                                <p class="small">用来发送你的新密码到你的邮箱。</p>
+                                <!--<form id="app_tag_form" name="app_tag_form">-->
+                                <div class="app_tag_form_ctn" style="margin-bottom: 18px;">
+                                    <div class="gray_bevel for_text_input fullwidth" style="height: 35px;width: 50%">
+                                        <input type="text" id="input_email" name="input_email" value="" autocomplete="off" placeholder="输入你的邮箱" style="height: 25px;width: 200px;">
+                                    </div>
+                                    <button class="btnv6_blue_hoverfade btn_medium btn"  onclick="findPassword()"><span>发送</span></button>
+                                </div>
+                            </div>
+                            <div style="clear: both;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

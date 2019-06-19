@@ -2,14 +2,14 @@ package com.example.steam.service;
 
 import com.example.steam.dao.UserDao;
 import com.example.steam.entity.User;
+import com.example.steam.mq.Event;
+import com.example.steam.mq.EventType;
+import com.example.steam.mq.MQProducer;
 import com.example.steam.redis.RedisService;
 import com.example.steam.redis.key.CookieKey;
 import com.example.steam.redis.key.EmailKey;
 import com.example.steam.redis.key.UserKey;
-import com.example.steam.utils.Md5PassUtil;
-import com.example.steam.utils.ResultMsg;
-import com.example.steam.utils.StaticField;
-import com.example.steam.utils.UUIDUntil;
+import com.example.steam.utils.*;
 import com.example.steam.vo.LoginUser;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -49,6 +49,28 @@ public class UserService {
 
     @Autowired
     ApplicationContext applicationContext;
+
+    @Autowired
+    MQProducer mqProducer;
+
+    /**
+     * 找回密码，加入消息队列发送邮件
+     * @param email
+     * @return
+     */
+    public ResultMsg updateFindPassword(String email){
+        User user=redisService.get(UserKey.USER_ID,email,User.class);
+        if (user==null){
+            return ResultMsg.USER_NO;
+        }
+        String newPassword=UUIDUntil.randomUUID().substring(0,7);
+        String finalPassword=Md5PassUtil.md5Conver(newPassword,user.getSalt());
+        user.setPassword(finalPassword);
+        redisService.set(UserKey.USER_ID,email,user);
+        ((UserService)applicationContext.getBean("userService")).updateUser(user);
+        mqProducer.productEvent(new Event(EventType.FIND_PASSWORD).setEtrMsg(Event.EMAIL,email).setEtrMsg(Event.NEW_PASSWORD,newPassword));
+        return ResultMsg.SUCCESS;
+    }
 
 
     /**

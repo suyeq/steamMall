@@ -84,13 +84,19 @@ public class LoginController {
         log.info(email);
         mqProducer.productEvent(new Event(EventType.SEND_EMAIL_VERIFICATION_CODE).
                 setEtrMsg(Event.EMAIL,email));
-        return JSON.toJSONString(ResultMsg.SUCCESS("ok"));
+        return JSON.toJSONString(ResultMsg.SUCCESS);
     }
 
     @ResponseBody
     @RequestMapping("/logout")
     public String logout(@RequestParam("email")String email){
         return JSON.toJSONString(ResultMsg.SUCCESS(userService.handleLogout(email)));
+    }
+
+    @ResponseBody
+    @RequestMapping("/findpassword")
+    public String findPassword(@RequestParam("email")String email){
+        return JSON.toJSONString(userService.updateFindPassword(email));
     }
 
 //    @ResponseBody

@@ -47,6 +47,8 @@ public class ResultMsg {
 
     public static ResultMsg SPIKE_NO_START=new ResultMsg("514","秒杀尚未开始");
 
+    public static ResultMsg USER_NO=new ResultMsg("515","用户不存在");
+
     private String code;
 
     private Object msg;

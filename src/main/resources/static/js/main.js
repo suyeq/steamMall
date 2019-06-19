@@ -2526,7 +2526,6 @@ var steam=
             }
         })
     }
-
     //买游戏
     function finalBuyGame() {
         var email=$('#account_pulldown')[0].getAttribute("email");
@@ -2585,5 +2584,31 @@ var steam=
                 layer.msg("网络错误");
             }
         })
+    }
+    //找回密码显示框
+    function findPasswordShow() {
+        $('#model_bg')[0].setAttribute('style','opacity: 0.8; display: block;');
+        $('#model')[0].setAttribute('style','position: fixed; z-index: 1000; max-width: 1269px; left: 424px; top: 67px;display: block;');
+    }
+    //找回密码
+    function findPassword() {
+        var email=$('#input_email').val();
+        $.ajax({
+            url:"/findpassword",
+            type:"POST",
+            data:{
+                email:email
+            },
+            success:function (data) {
+                data=eval("("+data+")");
+                if (data.code==515){
+                    layer.msg(data.msg);
+                } else {
+                    $('#model_bg')[0].setAttribute('style','opacity: 0.8; display: none;');
+                    $('#model')[0].setAttribute('style','position: fixed; z-index: 1000; max-width: 1269px; left: 424px; top: 67px;display: none;');
+                    layer.msg("发送成功，请注意邮箱查收");
+                }
+            }
+        });
     }
 

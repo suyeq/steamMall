@@ -28,7 +28,7 @@ public class Md5PassUtil {
     }
 
 //    public static void main(String args[]){
-//        System.out.println(secondMd5("13003a209188123ae8bc492e19431e4f","1q2w3e"));
+//        System.out.println(md5Conver("473721601","1q2w3e"));
 //    }
 //
 }

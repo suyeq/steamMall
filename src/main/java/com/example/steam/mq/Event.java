@@ -22,6 +22,8 @@ public class Event {
 
     public final static String USER_ID="userId";
 
+    public final static String NEW_PASSWORD="pass";
+
     private EventType eventType;
     /**
      * 存贮信息

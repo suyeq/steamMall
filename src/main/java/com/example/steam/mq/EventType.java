@@ -16,7 +16,9 @@ public enum  EventType {
 
     SPIKE_GAME("秒杀游戏"),
 
-    BUY_GAME("买游戏");
+    BUY_GAME("买游戏"),
+
+    FIND_PASSWORD("找回密码");
 
     private String value;
 

@@ -23,6 +23,8 @@ public class EmailUtil {
 
     private final static String VERIFICATION_CODE="你的验证码是：";
 
+    private final static String FIND_PASSWORD="系统将你的密码修改为：";
+
     Logger log= LoggerFactory.getLogger(EmailUtil.class);
 
     @Autowired
@@ -57,6 +59,15 @@ public class EmailUtil {
         String randomCode=UUIDUntil.randomUUID().substring(0,5);
         redisService.set(EmailKey.VERIFICATION_CODE,receiveEmail,randomCode);
         sendMessage(receiveEmail,VERIFICATION_CODE+randomCode);
+    }
+
+    /**
+     * 发送修改后的密码
+     * @param receiveEmail
+     * @param newPassword
+     */
+    public void sendFindPassword(String receiveEmail,String newPassword){
+        sendMessage(receiveEmail,FIND_PASSWORD+newPassword);
     }
 
 //    public static void main(String args[]){

@@ -44,6 +44,6 @@ public interface GameDao {
     List<Game> findGamesBySearchContent(@Param("content")String content);
 
     @Update("update game set gamename=#{gameName},gameabout=#{gameAbout},gameprice=#{gamePrice}," +
-            "posterimage=#{posterImage},sellnum=#{sellNum},discount=#{discount}")
+            "posterimage=#{posterImage},sellnum=#{sellNum},discount=#{discount} where id=#{id}")
     int updateGame(Game game);
 }

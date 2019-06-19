@@ -50,6 +50,22 @@ public class UserService {
     @Autowired
     ApplicationContext applicationContext;
 
+
+
+    /**
+     * 更新一个用户
+     * @param user
+     * @return
+     */
+    public int updateUser(User user){
+        return userDao.updateUser(user);
+    }
+
+    /**
+     * 通过邮件找到用户
+     * @param email
+     * @return
+     */
     public User findByEmail(String email){
         User user=redisService.get(UserKey.USER_ID,email,User.class);
         if (user!=null){

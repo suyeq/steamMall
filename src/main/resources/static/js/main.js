@@ -254,7 +254,7 @@ var steam=
         loadSearchResult:function(){
             var content=$('#search')[0].getAttribute('content');
             $.ajax({
-                url:"searchresult",
+                url:"/searchresult",
                 type:"POST",
                 async:false,
                 data:{
@@ -378,6 +378,8 @@ var steam=
                     $('#spike_price div div.discount_original_price')[0].innerHTML='¥ '+data.msg.gamePrice;
                     $('#spike_price div div.discount_final_price')[0].innerHTML='¥ '+data.msg.spikePrice;
                     $('#dailydeal_timer')[0].setAttribute('date-time',data.msg.endTime);
+                    $('#dailydeal_timer')[0].setAttribute('spike-start-time',data.msg.startTime);
+                    $('#dailydeal_timer')[0].setAttribute('spike-end-time',data.msg.endTime);
                 },
                 error:function () {
 
@@ -1967,30 +1969,46 @@ var steam=
     }
 
     //倒计时
-    function countDown(endTime,id){
+    function countDown(startTime,endTime,id){
         // console.log()
-        var start = new Date();  //开始时间
-        var end = new Date(endTime);//结束时间，可以设置时间
+        var now = new Date();  //现在时间
+        var spikeEndTime = new Date(endTime);//秒杀结束时间，可以设置时间
+        var spikeStartTime = new Date(startTime);//秒杀结束时间，可以设置时间
         //parseInt()取整
-        var result = parseInt((end.getTime()-start.getTime())/1000);//计算秒
+        var endResult = parseInt((spikeEndTime.getTime()-now.getTime())/1000);//计算秒
+        var startResult = parseInt((spikeStartTime.getTime()-now.getTime())/1000);//计算秒
+        console.log("startTime="+spikeStartTime);
+        console.log("endTime="+spikeEndTime);
+        console.log("now="+now);
         //var d = parseInt(result/(24*60*60));//用总共的秒数除以1天的秒数
-        var h = parseInt(result/(60*60));//精确小时，用去余
-        var m = parseInt(result/60%60);//剩余分钟就是用1小时等于60分钟进行趣余
-        var s = parseInt(result%60);
-        var times=h+':'+m+':'+s;
-       if (id=='captchaRefreshLink'){
-           $('#captchaRefreshLink')[0].setAttribute('value',times);
-       }
-       if (id=='dailydeal_timer') {
-           //console.log($('#dailydeal_timer_b9523fb88ff59a2dd944e424'))
-            $('#dailydeal_timer')[0].innerHTML = times;
-           //document.getElementById('dailydeal_timer_b9523fb88ff59a2dd944e424').innerHTML(times);
-       }
-        //当倒计时结束时，改变内容
-        if(result<=0){
-            $('#dailydeal_timer')[0].innerHTML="秒杀结束";
+        if (startResult>=0){
+            $('#spike_statu').text("秒杀倒计时！")
+            var sh = parseInt(startResult/(60*60));//精确小时，用去余
+            var sm = parseInt(startResult/60%60);//剩余分钟就是用1小时等于60分钟进行趣余
+            var ss = parseInt(startResult%60);
+            var startTimes=sh+':'+sm+':'+ss;
+            if (id=='dailydeal_timer') {
+                $('#dailydeal_timer')[0].innerHTML = startTimes;
+            }
+        }else if (endResult>0){
+            $('#spike_statu').text("秒杀中！")
+            var eh = parseInt(endResult/(60*60));//精确小时，用去余
+            var em = parseInt(endResult/60%60);//剩余分钟就是用1小时等于60分钟进行趣余
+            var es = parseInt(endResult%60);
+            var endTimes=eh+':'+em+':'+es;
+            if (id=='dailydeal_timer') {
+                //console.log($('#dailydeal_timer_b9523fb88ff59a2dd944e424'))
+                $('#dailydeal_timer')[0].innerHTML = endTimes;
+                //document.getElementById('dailydeal_timer_b9523fb88ff59a2dd944e424').innerHTML(times);
+            }
         }
-        setTimeout(countDown,500,endTime,id);
+        //当倒计时结束时，改变内容
+        if(endResult<=0){
+            $('#spike_statu').text("秒杀结束！")
+            $('#dailydeal_timer')[0].innerHTML="00:00:00";
+            return;
+        }
+        setTimeout(countDown,500,startTime,endTime,id);
     }
 
     function classTabSelect(selects) {
@@ -2159,7 +2177,7 @@ var steam=
             return null;
     }
 
-//清除cookie
+    //清除cookie
     function clearCookie(name) {
         setCookie(name, "", -1);
     }
@@ -2184,17 +2202,16 @@ var steam=
 
     //添加置购物车
     function addCart() {
+        if ($('#account_pulldown').length<1){
+            layer.msg("尚未登录");
+            return;
+        }
         var email=$('#account_pulldown')[0].getAttribute('email');
         var userId=$('#account_pulldown')[0].getAttribute('user-id');
         var gameId=$('#gameDetail')[0].getAttribute('game-id');
         var result=isContainGame(email,gameId);
-        console.log(result)
         if (result!=false){
             layer.msg("该游戏已购买，不能重复购买");
-            return;
-        }
-        if ($('#account_pulldown').length<1){
-            layer.msg("尚未登录");
             return;
         }
         console.log(userId+" "+gameId)
@@ -2366,6 +2383,18 @@ var steam=
         var loadId=layer.load(1, {
             shade: [0.1,'#fff'] //0.1透明度的白色背景
         });
+        var spikeStatu=$('#spike_statu').text();
+        console.log(spikeStatu);
+        if (spikeStatu=='秒杀结束！'){
+            layer.close(loadId);
+            layer.msg('秒杀结束');
+            return;
+        }
+        if (spikeStatu=='秒杀倒计时！'){
+            layer.close(loadId);
+            layer.msg('秒杀尚未开始');
+            return;
+        }
         $.ajax({
             url:"/spike/"+spikeId,
             type:"POST",

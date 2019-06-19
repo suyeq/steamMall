@@ -142,14 +142,23 @@
 <script type="text/javascript">
     steam.initCart();
     var date=new Date(parseInt($('#dailydeal_timer')[0].getAttribute('date-time')));
-    Y = date.getFullYear() + '/';
-    M = date.getMonth()+1+'/';
-    D = date.getDate()+',';
-    h = date.getHours()+':';
-    m = date.getMinutes()+':';
-    s = date.getSeconds();
-    date=Y+M+D+h+m+s;
-    countDown(date,'dailydeal_timer');
+    var startTime=new Date(parseInt($('#dailydeal_timer')[0].getAttribute('spike-start-time')));
+    var endTime=new Date(parseInt($('#dailydeal_timer')[0].getAttribute('spike-end-time')));
+    SY = startTime.getFullYear() + '/';
+    SM = startTime.getMonth()+1+'/';
+    SD = startTime.getDate()+',';
+    Sh = startTime.getHours()+':';
+    Sm = startTime.getMinutes()+':';
+    Ss = startTime.getSeconds();
+    EY = endTime.getFullYear() + '/';
+    EM = endTime.getMonth()+1+'/';
+    ED = endTime.getDate()+',';
+    Eh = endTime.getHours()+':';
+    Em = endTime.getMinutes()+':';
+    Es = endTime.getSeconds();
+    spikeStartTime=SY+SM+SD+Sh+Sm+Ss;
+    spikeEndTime=EY+EM+ED+Eh+Em+Es;
+    countDown(spikeStartTime,spikeEndTime,'dailydeal_timer');
 </script>
 </body>
 </html>

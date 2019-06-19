@@ -43,6 +43,10 @@ public class ResultMsg {
 
     public static ResultMsg LABEL_PRESENCE=new ResultMsg("512","标签已存在");
 
+    public static ResultMsg SPIKE_END=new ResultMsg("513","秒杀结束");
+
+    public static ResultMsg SPIKE_NO_START=new ResultMsg("514","秒杀尚未开始");
+
     private String code;
 
     private Object msg;

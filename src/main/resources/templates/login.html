@@ -26,9 +26,6 @@
 
         <!-- Center Column -->
 
-        <div id="error_display" class="checkout_error" style="display: none; color: #cc3300">
-        </div>
-
         <div class="leftcol">
 
 
@@ -48,31 +45,9 @@
                                     <div class="input_title">密码</div>
                                     <input class="text_input" type="password" name="password" id="input_password" autocomplete="off">
                                 </div>
-                                <div class="login_row">
-                                    <div class="input_title" title="如果您选中此选项，我们会在今后 30 天内自动为您登录，除非您在帐户菜单中选中“注销”。此功能只适用于启用 Steam 令牌的帐户。">
-                                        <input type="checkbox" name="remember_login" id="remember_login">
-                                        <label for="remember_login">在这台电脑上记住我</label>
-                                    </div>
-                                </div>
-                                <div class="login_row" id="captcha_entry" style="display: none;">
-                                    <div id="captcha_image_row">
-                                        <img style="float: left;" id="captchaImg" src="https://store.st.dl.bscstorage.net/public/images/blank.gif" border="0" width="206" height="40">
-                                        <div id="captchaRefresh">
-                                            <span class="linkspan" id="captchaRefreshLink">刷新</span>
-                                        </div>
-                                        <div style="clear: left;"></div>
-                                    </div>
-                                    <br>
-                                    <div class="input_title">输入上述字符</div>
-                                    <input class="text_input" id="input_captcha" type="text" name="captcha_text">
-                                </div>
                                 <div style="display: none;"><input type="submit"></div>
                             </form>
 
-                            <noscript><p>使用此站点必须先启用 Javascript</p></noscript>
-                            <script>
-                                document.getElementById('login_form').style.display = 'block';
-                            </script>
                         </div>
 
                         <div class="btn_ctn">

@@ -222,6 +222,57 @@ var steam=
             this.loadSearchResult();
         },
 
+        initPersonalCenter:function(){
+            this.loadPersonalCenterPersonalInfo();
+            this.loadPersonalCenterRecentGame();
+        },
+
+        loadPersonalCenterRecentGame:function(){
+            var email=$('#account_pulldown')[0].getAttribute('email');
+            $.ajax({
+                url:"/recentplaygame/"+email,
+                type:"POST",
+                async:false,
+                success:function (data) {
+                    data=eval("("+data+")");
+                    console.log(data);
+                    $('#recent_games').empty();
+                    for (var i=0;i<data.msg.length;i++){
+                        var element='<div class="recent_game"><div class="recent_game_content">';
+                        element+='<div class="game_info"><div class="game_info_cap"><a href="'+'/detail/'+data.msg[i].id+'">';
+                        element+='<img style="width: 184px;height: 69px;" src="'+data.msg[i].posterImage+'"></a></div>';
+                        element+='<div class="game_info_details">总时数 '+data.msg[i].playTime+' 小时<br>'+'最后运行日期：';
+                        var date=new Date(data.msg[i].lastPlay);
+                        var month=date.getMonth();
+                        var day=date.getDay();
+                        element+=month+'月'+day+'日';
+                        element+='<div class="game_name"><a class="whiteLink" href="'+'/detail/'+data.msg[i].id+'">'+data.msg[i].gameName+'</a></div>';
+                        element+='</div></div></div>';
+                        $('#recent_games').append(element);
+                    }
+                }
+            });
+        },
+
+        loadPersonalCenterPersonalInfo:function(){
+            var email=$('#account_pulldown')[0].getAttribute('email');
+            $.ajax({
+                url:"/user/"+email,
+                type:"POST",
+                async:false,
+                success:function (data) {
+                    data=eval("("+data+")");
+                    console.log(data);
+                    $('#personal_name').text(data.msg.nickName);
+                    $('#personal_address').empty();
+                    $('#personal_address').append('&nbsp;<img class="profile_flag" src="https://steamcommunity-a.akamaihd.net/public/images/countryflags/cn.gif">'+data.msg.country+','+data.msg.province);
+                    $('#personal_avatar')[0].setAttribute('src',data.msg.avatarImage);
+                    $('#personal_lv').text(data.msg.lv);
+                    $('#personal_introduction').text(data.msg.introduction);
+                }
+            })
+        },
+
         loadCommentDecriptionByGameId:function(gameId){
             var result;
             $.ajax({

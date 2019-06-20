@@ -11,6 +11,7 @@ import com.example.steam.redis.key.EmailKey;
 import com.example.steam.redis.key.UserKey;
 import com.example.steam.utils.*;
 import com.example.steam.vo.LoginUser;
+import com.example.steam.vo.UserVo;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -123,6 +124,23 @@ public class UserService {
         return user;
     }
 
+    /**
+     * 返回一个uservo
+     * @param email
+     * @return
+     */
+    public UserVo findUserVoByEmail(String email){
+        User user=findByEmail(email);
+        UserVo userVo=new UserVo();
+        userVo.setId(user.getId());
+        userVo.setAvatarImage(imageService.findImageUrlById(user.getAvatar()));
+        userVo.setLv(user.getLv());
+        userVo.setCountry(user.getCountry());
+        userVo.setProvince(user.getProvince());
+        userVo.setNickName(user.getNickName());
+        userVo.setIntroduction(user.getIntroduction());
+        return userVo;
+    }
 
 
     /**

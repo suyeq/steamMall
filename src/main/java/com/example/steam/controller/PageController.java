@@ -103,4 +103,10 @@ public class PageController {
         model.addAttribute("user",loginUser);
         return "searchresult";
     }
+
+    @RequestMapping("/personalcenter")
+    public String personalCenter(LoginUser loginUser,Model model){
+        model.addAttribute("user",loginUser);
+        return "personalcenter";
+    }
 }

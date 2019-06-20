@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>个人中心</title>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <th:block th:replace="fragment_header::#head"></th:block>
+    <link href="/css/global2.css" th:href="@{/css/global2.css}" rel="stylesheet">
+    <link href="/css/profive2.css" th:href="@{/css/profive2.css}" rel="stylesheet">
+</head>
+
+<body class="flat_page profile_page  responsive_page">
+
+<div class="responsive_page_frame with_header">
+
+    <div class="responsive_page_content">
+        <!--头部-->
+        <div th:replace="fragment_top::#top"></div>
+
+        <div class="responsive_page_template_content">
+
+
+            <div class="no_header profile_page  " style="">
+
+
+                <div class="profile_header_bg">
+
+
+                    <div class="profile_header_bg_texture">
+
+                        <div class="profile_header">
+
+                            <div class="profile_header_content">
+
+                                <div class="profile_header_centered_persona">
+                                    <div class="persona_name" style="font-size: 24px;">
+                                        <span class="actual_persona_name" id="personal_name">溯夜</span>
+                                    </div>
+
+                                    <div class="header_real_name ellipsis" id="personal_address">
+                                        &nbsp;<img class="profile_flag" src="https://steamcommunity-a.akamaihd.net/public/images/countryflags/cn.gif">
+                                        Hunan, China
+                                    </div>
+                                </div>
+
+                                <div class="playerAvatar profile_header_size offline">
+                                    <div class="playerAvatarAutoSizeInner"><img id="personal_avatar" src="https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/95/959986934ff7a3782a0746a96d5f5df8524d9c2b_full.jpg"></div>
+                                </div>
+                                <div class="profile_header_badgeinfo">
+                                    <div class="profile_header_badgeinfo_badge_area">
+                                        <a href="javascript:void(0)">
+                                            <div class="persona_name persona_level"><div class="friendPlayerLevel lvl_0"><span class="friendPlayerLevelNum" id="personal_lv">2</span></div> 级</div>
+                                        </a>
+                                        <div class="profile_header_badge">
+                                            <div class="profile_header_badge_instructions">
+                                                您可以在这里展示您徽章中的其中之一。请从<a class="whiteLink" href="#">编辑个人资料</a>页面中选择。										</div>
+                                        </div>
+                                    </div>
+                                    <div class="profile_header_actions">
+                                        <a class="btn_profile_action btn_medium" href="#">
+                                            <span>编辑个人资料</span>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="profile_header_summary">
+                                    <div class="persona_name persona_name_spacer" style="font-size: 24px;">
+                                        <span class="actual_persona_name">&nbsp;</span>
+                                    </div>
+                                    <div class="header_real_name_spacer">&nbsp;</div>
+                                    <div class="profile_summary" id="personal_introduction">
+                                        未提供信息。
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="profile_content ">
+                    <div class="profile_content_inner">
+
+                        <div class="profile_rightcol">
+
+                            <div class="responsive_count_link_area">
+
+                                <div class="profile_item_links">
+                                    <div class="profile_count_link ellipsis">
+                                        <a href="#">
+                                            <span class="count_link_label">游戏</span>&nbsp;
+                                            <span class="profile_count_link_total">
+																	9															</span>
+                                        </a>
+                                    </div>
+                                    <div class="profile_count_link ellipsis">
+                                        <a href="#">
+                                            <span class="count_link_label">评测</span>&nbsp;
+                                            <span class="profile_count_link_total">
+																	&nbsp; <!-- so the line spaces like the rest -->
+															</span>
+                                        </a>
+                                    </div>
+                                    <div style="clear: left;"></div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="profile_leftcol">
+
+
+                            <div class="profile_recentgame_header profile_leftcol_header">
+                                <h2>最近游戏</h2>
+                                <div style="clear: both;"></div>
+                            </div>
+
+                            <div class="recent_games" id="recent_games">
+                                <div class="recent_game">
+                                    <div class="recent_game_content">
+                                        <div class="game_info">
+                                            <div class="game_info_cap"><a href="https://steamcommunity.com/app/431960"><img src="https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/431960/74bcecbde31f489e396f656910c2f70872dcb0f3.jpg"></a></div>
+                                            <div class="game_info_details">
+                                                总时数 2.0 小时<br>
+                                                最后运行日期：5月25日																																	</div>
+                                            <div class="game_name"><a class="whiteLink" href="https://steamcommunity.com/app/431960">Wallpaper Engine</a></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="recent_game">
+                                    <div class="recent_game_content">
+                                        <div class="game_info">
+                                            <div class="game_info_cap"><a href="https://steamcommunity.com/app/578080"><img src="https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/578080/2d2732a33511b58c69aff6b098a22687a3bb8533.jpg"></a></div>
+                                            <div class="game_info_details">
+                                                总时数 596 小时<br>
+                                                最后运行日期：5月14日																																	</div>
+                                            <div class="game_name"><a class="whiteLink" href="https://steamcommunity.com/app/578080">PLAYERUNKNOWN'S BATTLEGROUNDS</a></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="recent_game">
+                                    <div class="recent_game_content">
+                                        <div class="game_info">
+                                            <div class="game_info_cap">
+                                                <a href="https://steamcommunity.com/app/570">
+                                                    <img src="https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/570/d4f836839254be08d8e9dd333ecc9a01782c26d2.jpg">
+                                                </a>
+                                            </div>
+                                            <div class="game_info_details">
+                                                总时数 30 小时<br>
+                                                最后运行日期：5月6日																																	</div>
+                                            <div class="game_name">
+                                                <a class="whiteLink" href="https://steamcommunity.com/app/570">Dota 2</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="clear: both;"></div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!--<div id="reportAbuseModal" style="display: none;">-->
+                <!--<div id="reportAbuseModalClose"><a href="javascript:hideModal('reportAbuseModal')"><img src="https://steamcommunity-a.akamaihd.net/public/images/skin_1/modalClose2.gif" width="11" height="11" border="0" /></a></div>-->
+                <!--<h1>举报违规行为</h1>-->
+                <!--<div class="reportAbuseModalRule"></div>-->
+                <!--<div id="reportAbuseModalContents">-->
+                    <!--<form method="post" onSubmit="return checkAbuseSub( this );" action="https://steamcommunity.com/actions/ReportAbuse/" id="abuseForm">-->
+                        <!--<input type="hidden" name="abuseID" value="76561198399564591">-->
+                        <!--<input type="hidden" name="sessionid" value="bbb5bbb73cf6bc6c20045689">-->
+                        <!--<input type="hidden" name="ingameAppID" value="" />-->
+                        <!--<div class="abuseOptions">-->
+                            <!--<div class="abuseOption">-->
+                                <!--<input class="abuseRadio" type="radio" name="abuseType" id="AbuseRadio_Harassment" value="Harassment">-->
+                                <!--<label for="AbuseRadio_Harassment">言语骚扰</label>-->
+                            <!--</div>-->
+                            <!--<div class="abuseOption">-->
+                                <!--<input class="abuseRadio" type="radio" name="abuseType" id="AbuseRadio_Spoofing" value="Spoofing">-->
+                                <!--<label for="AbuseRadio_Spoofing">冒充其他用户</label>-->
+                            <!--</div>-->
+                            <!--<div class="abuseOption">-->
+                                <!--<input class="abuseRadio" type="radio" name="abuseType" id="AbuseRadio_Offensive_Profile" value="Offensive Profile">-->
+                                <!--<label for="AbuseRadio_Offensive_Profile">冒犯性个人资料或头像</label>-->
+                            <!--</div>-->
+                            <!--<div class="abuseOption">-->
+                                <!--<input class="abuseRadio" type="radio" name="abuseType" id="AbuseRadio_Offensive_UGC" value="Offensive UGC">-->
+                                <!--<label for="AbuseRadio_Offensive_UGC">冒犯性截图或艺术作品</label>-->
+                            <!--</div>-->
+                            <!--<div class="abuseOption">-->
+                                <!--<input class="abuseRadio" type="radio" name="abuseType" id="AbuseRadio_Spamming" value="Spamming">-->
+                                <!--<label for="AbuseRadio_Spamming">滥发邀请</label>-->
+                            <!--</div>-->
+                            <!--<div class="abuseOption">-->
+                                <!--<input class="abuseRadio" type="radio" name="abuseType" id="AbuseRadio_Advertisement" value="Advertisement">-->
+                                <!--<label for="AbuseRadio_Advertisement">滥发广告/链接</label>-->
+                            <!--</div>-->
+                            <!--<div class="abuseOption">-->
+                                <!--<input class="abuseRadio" type="radio" name="abuseType" id="AbuseRadio_Suspected_Hijacker" value="Suspected Hijacker">-->
+                                <!--<label for="AbuseRadio_Suspected_Hijacker">涉嫌网络劫持或钓鱼</label>-->
+                            <!--</div>-->
+                            <!--<div class="abuseOption">-->
+                                <!--<input class="abuseRadio" type="radio" name="abuseType" id="AbuseRadio_Trade_Scam" value="Trade Scam">-->
+                                <!--<label for="AbuseRadio_Trade_Scam">试图交易欺诈</label>-->
+                            <!--</div>-->
+                            <!--<div class="abuseOption">-->
+                                <!--<input class="abuseRadio" type="radio" name="abuseType" id="AbuseRadio_Cheating" value="Cheating">-->
+                                <!--<label for="AbuseRadio_Cheating">疑似作弊者</label>-->
+                            <!--</div>-->
+                            <!--<div style="clear: left;"></div>-->
+                        <!--</div>-->
+                        <!--<div class="abuseDescriptionCtn gray_bevel fullwidth">-->
+                            <!--<textarea name="abuseDescription" id="abuseDescriptionArea" rows="3" cols="26" placeholder="请提供违规描述（必填）" ></textarea>-->
+                        <!--</div>-->
+                        <!--<div class="reportAbuseButtons">-->
+                            <!--<button type="submit" class="btn_green_white_innerfade btn_medium">-->
+                                <!--<span>提交举报</span>-->
+                            <!--</button>-->
+                        <!--</div>-->
+                    <!--</form>-->
+
+                <!--</div>-->
+
+            <!--</div>-->
+
+        </div>	<!-- responsive_page_legacy_content -->
+
+
+        <div id="footer">
+            <div class="footer_content">
+                <span id="footerLogo"><img src="https://steamcommunity-a.akamaihd.net/public/images/skin_1/footerLogo_valve.png?v=1" width="96" height="26" border="0" alt="Valve 徽标" /></span>
+                <span id="footerText">
+				© Valve Corporation。保留所有权利。<br>
+									<span class="valve_links">
+						<a href="http://store.steampowered.com/privacy_agreement/" target="_blank">隐私政策</a>
+						&nbsp; | &nbsp;<a href="https://store.steampowered.com/legal/" target="_blank">法律信息</a>
+						&nbsp;| &nbsp;<a href="http://store.steampowered.com/subscriber_agreement/" target="_blank">Steam 订户协议</a>
+					</span>
+							</span>
+            </div>
+        </div>
+
+    </div>	<!-- responsive_page_content -->
+
+</div>	<!-- responsive_page_frame -->
+<script src="https://cdn.bootcss.com/jquery/3.4.0/jquery.js" type="text/javascript"></script>
+<script src="js/md5.min.js" th:src="@{/js/md5.min.js}" type="text/javascript"></script>
+<script src="layer/layer.js" th:src="@{/layer/layer.js}" type="text/javascript"></script>
+<script src="js/main.js" th:src="@{/js/main.js}" type="text/javascript"></script>
+<script type="text/javascript">
+    steam.initPersonalCenter();
+</script>
+</body>
+</html>

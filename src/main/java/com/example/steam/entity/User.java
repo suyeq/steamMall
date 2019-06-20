@@ -32,6 +32,14 @@ public class User {
 
     private int isAdmin;
 
+    private int lv;
+
+    private String country;
+
+    private String province;
+
+    private String introduction;
+
     public User(){}
 
     public User(String nickName,String email,String salt,String password){
@@ -44,6 +52,29 @@ public class User {
         this.buyGames=0;
         this.commentNum=0;
         this.isAdmin=0;
+        this.lv=0;
+        this.country="China";
+        this.province="Hunan";
+        this.introduction="这个人很懒，什么都没写~";
+    }
+
+    public User(long id,String nickName,String salt,String email,String password,
+                long avatar,int playTime,int buyGames,int commentNum,int isAdmin,
+                int lv,String country,String province,String introduction){
+        this.id=id;
+        this.nickName=nickName;
+        this.email=email;
+        this.salt=salt;
+        this.password=password;
+        this.avatar=avatar;
+        this.playTime=playTime;
+        this.buyGames=buyGames;
+        this.commentNum=commentNum;
+        this.isAdmin=isAdmin;
+        this.lv=lv;
+        this.country=country;
+        this.province=province;
+        this.introduction=introduction;
     }
 
     public Long getId() {
@@ -124,5 +155,37 @@ public class User {
 
     public void setCommentNum(int commentNum) {
         this.commentNum = commentNum;
+    }
+
+    public int getLv() {
+        return lv;
+    }
+
+    public void setLv(int lv) {
+        this.lv = lv;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getIntroduction() {
+        return introduction;
+    }
+
+    public void setIntroduction(String introduction) {
+        this.introduction = introduction;
     }
 }

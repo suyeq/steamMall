@@ -64,7 +64,7 @@ public class UserService {
         if (user==null){
             return ResultMsg.USER_NO;
         }
-        String newPassword=UUIDUntil.randomUUID().substring(0,7);
+        String newPassword= UUIDUtil.randomUUID().substring(0,7);
         String finalPassword=Md5PassUtil.md5Conver(newPassword,user.getSalt());
         user.setPassword(finalPassword);
         redisService.set(UserKey.USER_ID,email,user);
@@ -73,6 +73,36 @@ public class UserService {
         return ResultMsg.SUCCESS;
     }
 
+    /**
+     * 修改基本信息
+     * @param email
+     * @param nickName
+     * @param country
+     * @param province
+     * @param avatar
+     * @param avatarAddress
+     * @param introduction
+     * @return
+     */
+    public int updateNickNameAndCountryAndProvinceAndAvatarAndIntroduction(String email,String nickName,String country,String province
+            ,long avatar,String avatarAddress,String introduction){
+        User user=redisService.get(UserKey.USER_ID,email,User.class);
+        String cookieId=redisService.get(CookieKey.EMAIL,email,String.class);
+        LoginUser loginUser=redisService.get(UserKey.COOKIE_ID,cookieId,LoginUser.class);
+        user.setNickName(nickName);
+        user.setProvince(province);
+        user.setCountry(country);
+        user.setAvatar(avatar);
+        user.setIntroduction(introduction);
+        loginUser.setNickName(nickName);
+        loginUser.setIntroduction(introduction);
+        loginUser.setProvince(province);
+        loginUser.setCountry(country);
+        loginUser.setAvatar(avatarAddress);
+        redisService.set(UserKey.USER_ID,email,user);
+        redisService.set(UserKey.COOKIE_ID,cookieId,loginUser);
+        return ((UserService)applicationContext.getBean("userService")).updateUser(user);
+    }
 
     /**
      * 更新用户购买游戏的数量
@@ -224,8 +254,8 @@ public class UserService {
         /**
          * 随机昵称，salt值，两次MD5密码加密
          */
-        String nickName=UUIDUntil.randomUUID().substring(0,5);
-        String salt=UUIDUntil.randomUUID().substring(0,6);
+        String nickName= UUIDUtil.randomUUID().substring(0,5);
+        String salt= UUIDUtil.randomUUID().substring(0,6);
         String finalPass=Md5PassUtil.md5Conver(password,salt);
         User newUser=new User(nickName,email,salt,finalPass);
         ((UserService) applicationContext.getBean("userService")).addUser(newUser);
@@ -249,7 +279,7 @@ public class UserService {
         Cookie cookie=findCookie(request);
         String cookieId;
         if (cookie == null || StringUtils.isEmpty(cookie.getValue())){
-            cookieId=UUIDUntil.randomUUID();
+            cookieId= UUIDUtil.randomUUID();
         }else {
             cookieId=cookie.getValue();
         }
@@ -277,6 +307,9 @@ public class UserService {
             loginUser.setIsAdmin(user.getIsAdmin());
             loginUser.setNickName(user.getNickName());
             loginUser.setAvatar(imageService.findImageUrlById(user.getAvatar()));
+            loginUser.setCountry(user.getCountry());
+            loginUser.setProvince(user.getProvince());
+            loginUser.setIntroduction(user.getIntroduction());
         }
         redisService.set(UserKey.COOKIE_ID,cookieId,loginUser);
         //CookieKey.EMAIL.setExpiredTime(cookieMaxAge);

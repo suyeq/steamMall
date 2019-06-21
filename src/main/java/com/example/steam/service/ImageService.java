@@ -24,6 +24,11 @@ public class ImageService {
     @Autowired
     ImageDao imageDao;
 
+    public Long addImage(Image image){
+        imageDao.addImage(image);
+        return image.getId();
+    }
+
     public Image findImageById(long id){
         return imageDao.findImageById(id);
     }

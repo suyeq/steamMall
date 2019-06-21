@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.cache.CacheProperties;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
@@ -56,7 +55,7 @@ public class EmailUtil {
      * @param receiveEmail
      */
     public void sendVerificationCode(String receiveEmail){
-        String randomCode=UUIDUntil.randomUUID().substring(0,5);
+        String randomCode= UUIDUtil.randomUUID().substring(0,5);
         redisService.set(EmailKey.VERIFICATION_CODE,receiveEmail,randomCode);
         sendMessage(receiveEmail,VERIFICATION_CODE+randomCode);
     }
@@ -71,7 +70,7 @@ public class EmailUtil {
     }
 
 //    public static void main(String args[]){
-//        System.out.println(UUIDUntil.randomUUID().replaceAll("-","").substring(0,5));
+//        System.out.println(UUIDUtil.randomUUID().replaceAll("-","").substring(0,5));
 //    }
 
 

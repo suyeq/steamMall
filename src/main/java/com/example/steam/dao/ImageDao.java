@@ -2,6 +2,8 @@ package com.example.steam.dao;
 
 import com.example.steam.entity.GameImage;
 import com.example.steam.entity.Image;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
@@ -24,4 +26,8 @@ public interface ImageDao {
 
     @Select("select url from image where id=#{id}")
     String findImageUrlById(@Param("id") long id);
+
+    @Insert("insert into image(url,gamename,type) value(#{url},#{gameName},#{type})")
+    @Options(useGeneratedKeys = true,keyColumn = "id",keyProperty = "id")
+    long addImage(Image image);
 }

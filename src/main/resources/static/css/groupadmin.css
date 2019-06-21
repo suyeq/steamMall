@@ -1,0 +1,734 @@
+
+.group_admin_header {
+    position: relative;
+    border-bottom: 3px solid #364862;
+    height: 86px;
+    padding-bottom: 10px;
+
+    padding-left: 76px;
+}
+
+.group_admin_header .admin_avatar_dropshadow {
+    position: absolute;
+    left: -4px;
+    top: 6px;
+    width: 64px;
+    height: 64px;
+    padding: 4px;
+
+    background-image: url( 'https://steamcommunity-a.akamaihd.net/public/images/groups/admin_avatar_dropshadow.png' );
+}
+
+.group_admin_header .admin_avatar_dropshadow img {
+    width: 64px;
+    height: 64px;
+}
+
+.group_admin_header.ogg {
+    padding-left: 202px;
+}
+
+.group_admin_header.ogg .admin_avatar_dropshadow, .group_admin_header.ogg .admin_avatar_dropshadow img {
+    width: 184px;
+    height: 69px;
+}
+
+.group_admin_header.ogg .admin_avatar_dropshadow {
+    left: 0px;
+    padding: 4px;
+    background: rgba( 0, 0, 0, 0.5 );
+}
+
+.groupadmin_header_content {
+    padding-top: 20px;
+}
+
+.groupadmin_header_label {
+    height: 15px;
+    line-height: 15px;
+
+    color: #949491;
+    font-size: 11px;
+}
+
+.group_admin_header .groupadmin_header_name {
+    text-align: left;
+
+    line-height: 32px;
+
+    color: #ffffff;
+    font-size: 26px;
+}
+
+.groupadmin_header_chevron {
+    color: #939393;
+    font-size: 18px;
+}
+
+.groupadmin_header_location {
+    color: #e1e1e1;
+    font-size: 18px;
+}
+
+.form_save_status_message {
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+#errorText {
+    color: #ff0000;
+}
+
+#successText {
+    color: #529CDE;
+}
+
+.groupadmin_content .group_content {
+    padding-bottom: 6px;
+    padding-right: 2%;
+}
+
+.formRow {
+    position: relative;
+    min-height: 34px;
+    margin-bottom: 7px;
+    padding-left: 146px;
+}
+
+.formRow .formRowTitle {
+    position: absolute;
+    display: block;
+    text-align: right;
+    /* width: 110px; */
+    width: 156px;
+    height: 34px;
+    line-height: 34px;
+    left: -20px;
+    top: 0px;
+
+    font-size: 14px;
+    color: #8F98A0;
+
+    overflow: hidden;
+}
+
+.formRow .formRowHint {
+    color: #66C0F4;
+    cursor: default;
+}
+
+.formRow .formRowGroupings {
+    background-color: rgba(255,255,255,0.1);
+    padding: 12px;
+    font-size: 13px;
+}
+.formRowGroupings input[type="checkbox"] {
+    margin-left: 0px;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+.formRow .formRowGroupings .formRowMultiLineText.disabled {
+    color: #636c74;
+}
+
+.formRowGroupings .select2-container {
+    margin-left: 26px;
+}
+
+.formRowHR {
+    border-color: #364862;
+}
+
+.formRowMultiLineText {
+    line-height: 20px;
+    display: inline-flex;
+}
+
+.formRowInlineHint {
+    color: #6a7177;
+}
+html.responsive .formRow {
+    padding-left: 0;
+}
+
+html.responsive .formRow .formRowTitle {
+    position: static;
+    float: left;
+    margin-right: 10px;
+    max-width: 20%;
+}
+
+html.responsive .formRow .formRowFields {
+    overflow: hidden;
+}
+
+.formRowDesc {
+    display: none;
+}
+
+.formRow .formRowFields {
+    line-height: 28px;
+    padding-top: 3px;
+}
+
+.formRow .formRowFields .gray_bevel.for_text_input {
+    line-height: 19px;
+}
+
+.formRowFields .gray_bevel {
+    vertical-align: middle;
+    max-width: 475px;
+}
+
+html.responsive .formRowFields .gray_bevel {
+    max-width: 97%;
+}
+
+.formRowFields .avatar_edit_block {
+    display: inline-block;
+    vertical-align: bottom;
+    font-size: 9px;
+    line-height: 11px;
+    margin-right: 2%;
+}
+.formRowFields .avatar_edit_block:last-child {
+    margin-right: 0;
+}
+
+.avatar_edit_block.medium {
+}
+
+.avatar_edit_block.icon {
+}
+
+.formRow.websiteLink {
+    margin-bottom: 19px;
+}
+
+
+/* Group history styles */
+
+
+.historyItem,.historyItemb {
+    font-size:11px;
+    color:#959595;
+    height:20px;
+    margin:0;
+    padding:0;
+    padding-top:7px;
+}
+.historyItem {
+    background-color: rgba( 0, 0, 0, 0.1 );
+}
+.historyShort {
+    font-size:11px;
+    color:#c1c1c1;
+    font-weight:bold;
+}
+.historyIcon {
+    float:left;
+    text-align:center;
+    width:35px;
+}
+.historyDate {
+}
+
+.linkBlue {
+    font-size:10px;
+}
+.historyDash {
+    color:#545454;
+}
+
+#bottomLinks {
+    position:relative;
+    width:894px;
+    margin:0;
+    padding:0;
+    margin-left:23px;
+    margin-bottom:6px;
+    border:solid #252525 4px;
+}
+
+.pageLinks {
+    float:right;
+    margin-right:8px;
+    padding-top:2px;
+    font-size:10px;
+    color:#959595;
+}
+
+.pageLinks>a,.pageLinks>a:hover,.pageLinks>a:visisted,.pageLinks>a:active {
+    font-size:10px;
+}
+
+.infoBar {
+    position:relative;
+    height:17px;
+    background-color:#000000;
+    margin:0;
+    padding:0;
+    margin-left:23px;
+    border:solid #252525 4px;
+}
+
+.infoBar p {
+    margin:0;
+    padding:0;
+    margin-left:8px;
+    padding-top:2px;
+    font-size:10px;
+    color:#959595;
+}
+
+.blotterBlock,.blotterBlock1 {
+    margin:0;
+    padding:0;
+    padding-top:8px;
+    clear:left;
+}
+
+.blotterBlock1 {
+    padding-top:0px;
+}
+
+.blotterDate {
+    color:#8c8c8c;
+    font-size:11px;
+    font-weight:bold;
+    text-align:right;
+    width:142px;
+    float:left;
+    margin-top:4px;
+    padding-right:10px;
+
+}
+
+.blotterIcon {
+    width:24px;
+    float:left;
+    padding-right:10px;
+}
+
+.blotterDesc {
+    color:#939393;
+    font-size:11px;
+    padding-top:2px;
+    line-height:16px;
+    width:483px;
+    float:left;
+
+}
+
+.blotterItem,.blotterItemb {
+    font-size:10px;
+    color:#959595;
+    height:20px;
+    margin:0;
+    padding:0;
+    padding-top:0px;
+    margin-left:26px;
+}
+
+
+#datePick {
+    position:absolute;
+}
+
+.groupadmin_forumlist_header {
+    color: #8F98A0;
+    font-size: 11px;
+
+    padding: 14px 9px 0px 9px;
+    margin-bottom: 6px;
+}
+
+.groupadmin_subarea, .modify_forumlist {
+    padding: 8px;
+    background-color: rgba( 0, 0, 0, 0.2 );
+}
+
+.groupadmin_forumlist_body {
+
+    padding: 2px 8px 7px 8px;
+
+    margin-bottom: 9px;
+}
+
+.groupadmin_forumlist_body.modify_forumlist {
+
+    background-color: #222223;
+}
+
+.forumlist_col_permission {
+    width: 148px;
+    float: right;
+    margin-left: 13px;
+}
+
+.forumlist_col_name {
+    width: 264px;
+}
+
+.forumlist_col_name input {
+    width: 100%;
+}
+
+.forumlist_col_permission select {
+    width: 100%;
+
+    border: 1px solid #707070;
+    color: #8c8c8c;
+    font-size: 14px;
+}
+
+.groupadmin_forumlist_body .forumlist_row {
+    padding-bottom: 7px;
+}
+
+.groupadmin_announcement_controls {
+    position: sticky;
+    top: 0px;
+    background-color: rgba( 0, 0, 0, 1 );
+    padding-top: 10px;
+    padding-bottom: 10px;
+    z-index: 1;
+}
+
+#preview_back_to_top_btn {
+    display: none;
+}
+#preview_back_to_top_btn.visible {
+    display: inline-block;
+}
+
+.forum_manage_actions {
+    float: right;
+}
+
+.forum_manage_actions .btn_medium {
+    margin-left: 12px;
+}
+
+.forum_manage_create_area {
+    background-color: #2e2e2f;
+    border: 1px solid #38383a;
+    padding-bottom: 15px;
+}
+
+.forum_manage_create_area .forum_manage_actions {
+    padding-right: 8px;
+}
+
+.forum_manage_create_area .groupadmin_forumlist_body {
+    padding-top: 2px;
+}
+
+.forum_manage_title_area {
+    margin-bottom: 12px;
+}
+
+.forum_manage_header_area {
+    margin-bottom: 21px;
+}
+
+.forum_dragdrop {
+    border: 1px solid transparent;
+    margin-bottom: 6px;
+}
+.forum_dragdrop:hover {
+    border: 1px solid rgba( 65, 123, 156, 0.5 );
+}
+
+.forum_dragdrop_titlebar {
+    background-color: #417b9c;
+    height: 27px;
+    line-height: 27px;
+    border-bottom: 1px solid #2f2f31;
+
+    padding: 0px 6px;
+}
+
+.forum_dragdrop_titlebar .forum_delete_link {
+    float: right;
+    height: 27px;
+    line-height: 27px;
+    padding: 0px 10px;
+    background-color: #417b9c;
+
+    font-size: 11px;
+}
+
+.forum_delete_link a {
+    color: #cccccc;
+}
+
+.forum_dragdrop_titlebar .forum_grabber {
+    background-image: url( 'https://steamcommunity-a.akamaihd.net/public/images/groups/forum_manage_grabber.png?v=1');
+    background-repeat: repeat-x;
+    background-position: center;
+    height: 27px;
+    cursor: move;
+    cursor: grab;
+    cursor: -moz-grab;
+}
+
+.forum_dragdrop_body {
+    padding: 8px 8px;
+    background-color: rgba( 0, 0, 0, 0.2);
+}
+
+.forum_dragdrop_row {
+    clear: both;
+    padding: 8px 0;
+}
+
+.forum_dragdrop_row.flexrow {
+    display: flex;
+    flex-direction: row;
+    line-height:18px;
+}
+
+.forum_flex_checkbox {
+    margin: 0;
+    vertical-align: middle;
+}
+
+/* group permissions page */
+
+#permissionsBlock {
+    padding-top: 5px;
+}
+
+.permissionRow {
+    margin: 7px 0px;
+}
+
+.disablePrivateSettingRow {
+    opacity: .4;
+}
+
+.permissionRow .permissionCol {
+    float: right;
+    width: 58px;
+    margin-left: 10px;
+
+    text-align: center;
+}
+
+.permissionRow .permissionText {
+    padding-left: 108px;
+    font-size: 13px;
+}
+
+.permissionRow.permissionHeaderRow .permissionCol {
+    font-size: 10px;
+    line-height: 12px;
+}
+
+.permissionRow.permissionHeaderRow .permissionText {
+    font-size: 16px;
+    color: #C6D4DF;
+    font-family: "Motiva Sans", Sans-serif;
+    font-weight: 300; /* light */
+
+}
+
+.sectionHeader {
+    border-bottom: 1px solid #61686D;
+    color: #C6D4DF;
+    font-size: 15px;
+    font-family: "Motiva Sans", Sans-serif;
+    font-weight: 300; /* light */
+
+}
+
+#memberManageList .member_block_content, #memberManageList .member_block_content a {
+    color: #E1E1E1;
+}
+
+#memberManageList .member_block_content a.profilelink {
+    text-decoration: underline;
+}
+
+.manageMemberAction {
+    cursor: pointer;
+}
+
+.member_block.chat_banned_member {
+    margin-left: 0;
+    margin-right: 0;
+    color:#898989;
+}
+
+.member_block.chat_banned_member:nth-child(even) {
+    margin-left: 4px;
+}
+
+a.chat_ban_admin {
+}
+
+#group_associated_games_edit .group_associated_game {
+    float: left;
+    padding-right: 8px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    margin-right: 8px;
+    white-space: nowrap;
+
+    background-color: rgba( 102, 192, 244, 0.5);
+}
+
+.group_associated_game_name
+{
+    display: inline-block;
+    vertical-align: middle;
+    max-width: 380px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.group_associated_game_remove {
+    vertical-align: middle;
+    margin-left: 8px;
+
+    cursor: pointer;
+    opacity: 0.5;
+    background: #444;
+    border-radius: 10px;
+}
+.group_associated_game_remove:hover {
+    opacity: 1.0;
+}
+
+#game_select_suggestions_ctn {
+    position: absolute;
+
+    margin-left: -5px;
+}
+
+#game_select_suggestions {
+
+    width: 296px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.forum_modal_text#forum_bandetails_text {
+    margin-top: 0px;
+}
+
+.forum_bandetails .forum_banuser_data {
+    line-height: 24px;
+}
+.textarea.gray_bevel, .gray_bevel textarea {
+    resize: vertical;
+}
+
+.avatar_upload_ctn {
+    max-width: 302px;
+}
+
+.avatar_upload_ctn .avatar_upload_throbber {
+    display: none;
+    text-align: center;
+}
+
+.avatar_upload_ctn.uploading .avatar_upload_throbber {
+    display: block;
+}
+
+.avatar_upload_ctn.uploading .upload_controls {
+    display: none;
+}
+
+.avatar_upload_throbber > img {
+    height: 16px;
+}
+
+.upload_controls .upload_btn {
+    float: right;
+    margin-top: 2px;
+}
+
+.avatar_upload_input_ctn {
+    overflow: hidden;
+}
+
+.avatar_upload_ctn input[type="file"] {
+    width: 95%;
+}
+
+.avatarDisabledError {
+    color:#ff3333;
+    text-align: center;
+}
+
+.avatarBanTimeEnd {
+    margin: 10px 0;
+}
+
+@media screen and (max-width: 500px)
+{
+    html.responsive .formRow .formRowTitle {
+        text-align: left;
+        width: auto;
+        max-width: none;
+        float: none;
+    }
+
+    html.responsive .formRow .formRowTitle::after {
+        content: ':';
+    }
+
+    html.responsive .formRow .formRowFields {
+        padding-left: 4%;
+    }
+
+}
+
+
+@media screen and (max-width: 400px)
+{
+    html.responsive .formRowFields .avatar_edit_block:not(:last-child) {
+        margin-right: 1%;
+    }
+}
+
+.has_localization {
+    color: #799905 ;
+}
+
+.joinRequestBulkTools {
+    background: #c9c9c9;
+    padding: 10px 25px 10px 10px;
+}
+
+.joinRequestBulkTools a {
+    margin-right: 10px;
+}
+
+.joinRequestBulkTools div {
+    margin-bottom: 10px;
+    color: black;
+}
+
+.joinRequestsBulkManage {
+    margin-bottom: 15px;
+}
+
+.joinRequestBanner {
+    background: rgba( 255, 255, 255, .1 );
+    padding: 5px 10px 5px 10px;
+}
+
+.joinRequestManageButtons {
+    float: right;
+    margin-top: 13px;
+}
+
+.joinRequestManageCount {
+    color: #66C0F4;
+    font-size: 42px;
+    font-weight: bold;
+}

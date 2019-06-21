@@ -22,6 +22,12 @@ public class Image {
 
     public Image(){}
 
+    public Image(String url,String gameName,String type){
+        this.url=url;
+        this.gameName=gameName;
+        this.type=type;
+    }
+
     public Long getId() {
         return id;
     }

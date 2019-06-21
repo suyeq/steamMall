@@ -1,10 +1,201 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>编辑个人资料</title>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <th:block th:replace="fragment_header::#head"></th:block>
+    <link href="/css/global2.css" th:href="@{/css/global2.css}" rel="stylesheet">
+    <link href="css/profive2.css" th:href="@{/css/profive2.css}" rel="stylesheet">
+    <link href="/css/groupadmin.css" th:href="@{/css/groupadmin.css}" rel="stylesheet">
 </head>
-<body>
+<body class="flat_page responsive_page">
 
+<div class="responsive_page_frame with_header">
+
+    <div class="responsive_page_content">
+
+        <div th:replace="fragment_top::#top"></div>
+
+        <div class="responsive_page_template_content">
+
+            <div class="pagecontent ">
+                <div class="profile_small_header_bg">
+                    <div class="profile_small_header_texture">
+
+                        <div class="profile_small_header_text">
+                            <span class="profile_small_header_name"><a class="whiteLink" href="/personalcenter" th:text="${user.nickName}">溯夜</a></span>
+                            <span class="profile_small_header_arrow">&raquo;</span>
+                            <a class="whiteLink"  href="javascript:void(0);"><span class="profile_small_header_location">编辑个人资料</span></a>
+
+                        </div>
+                        <a href="javascript:void(0);">
+                            <div class="profile_small_header_avatar">
+                                <div class="playerAvatar medium offline">
+                                    <img th:src="${user.avatar}" src="https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/95/959986934ff7a3782a0746a96d5f5df8524d9c2b_medium.jpg">
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="grouppage_content_area groupadmin_content">
+                    <div class="maincontent">
+
+
+                        <div class="leftcol hasContentBoxes">
+
+
+                            <!--<form class="smallForm" id="editForm" name="editForm" method="POST" action="/">-->
+                                <!--<input type="hidden" name="sessionID" value="260e3eb1002e3545e9dde83f" />-->
+                                <!--<input type="hidden" name="type" value="profileSave">-->
+
+                                <!--<input type="hidden" name="weblink_1_title" value="">-->
+                                <!--<input type="hidden" name="weblink_1_url" value="">-->
+                                <!--<input type="hidden" name="weblink_2_title" value="">-->
+                                <!--<input type="hidden" name="weblink_2_url" value="">-->
+                                <!--<input type="hidden" name="weblink_3_title" value="">-->
+                                <!--<input type="hidden" name="weblink_3_url" value="">-->
+
+                                <div class="group_content group_summary">
+
+                                    <div class="formRow">
+                                        <div class="formRowTitle" >
+                                            昵称
+                                        </div>
+                                        <div class="formRowFields">
+                                            <div class="gray_bevel for_text_input">
+                                                <input th:value="${user.nickName}" class="dynInput" type="text" name="personaName" id="personaName" size="30" value="溯夜">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="formRow">
+                                        <div class="formRowTitle" >
+                                            国家/地区
+                                        </div>
+                                        <div class="formRowFields">
+                                            <input th:value="${user.country}" type="text" name="country" id="country" class="gray_bevel dynInput">
+                                        </div>
+                                    </div>
+                                    <div class="formRow" id="stateContainer">
+                                        <div class="formRowTitle">州/省</div>
+                                        <div class="formRowFields">
+                                            <input th:value="${user.province}" type="text" name="state" id="state" class="gray_bevel dynInput">
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="group_content group_summary">
+                                    <div class="formRow">
+                                        <div class="formRowTitle noPadding">头像</div>
+                                        <div class="formRowDesc">&nbsp;</div>
+                                        <div class="formRowFields">
+                                            <div class="avatar_previews">
+                                                <div id="avatarBlockFull" class="avatar_edit_block full">
+                                                    <img th:src="${user.avatar}" src="https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/95/959986934ff7a3782a0746a96d5f5df8524d9c2b_full.jpg" id="avatar_full_img" width="184" height="184" border="0">
+                                                </div>
+                                            </div>
+
+                                            <div class="avatar_upload_ctn" id="avatar_upload_ctn">
+                                                <div class="gray_bevel">
+                                                    <div class="upload_controls">
+
+                                                        <button onclick="uploadFile()" id="avatar_upload_button" type="button" class="upload_btn btnv6_blue_hoverfade btn_small">
+                                                            <span>上传</span>
+                                                        </button>
+                                                        <div class="avatar_upload_input_ctn">
+                                                            <input type="file" id="avatar" name="avatar" size="16">
+                                                        </div>
+
+                                                    </div>
+                                                    <!--<div class="avatar_upload_throbber">-->
+                                                        <!--<img src="https://steamcommunity-a.akamaihd.net/public/images/login/throbber.gif">-->
+                                                    <!--</div>-->
+                                                </div>
+                                            </div>
+                                            </div>
+                                    </div>
+                                    <div class="formRow">
+                                        <div class="formRowFields">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="group_content group_summary">
+                                    <div class="formRow">
+                                        <div class="formRowTitle">
+                                            介绍
+                                        </div>
+                                        <div class="formRowFields">
+                                            <div class="gray_bevel fullwidth">
+                                                <textarea th:text="${user.introduction}" class="dynInput" rows="8" name="summary" id="summary">用一句话介绍自己。</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="image-id" value="">
+                                <input type="hidden" id="image-url" value="">
+
+                                <div class="group_content_bodytext">
+                                    <div class="forum_manage_actions">
+                                        <a href="/personalcenter" class="btn_grey_white_innerfade btn_medium" >
+                                            <span>取消</span>
+                                        </a>
+                                        <button  class="btn_green_white_innerfade btn_medium" onclick="updateUserInfo()">
+                                            <span>保存更改</span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                            <!--</form>-->
+                        </div>
+
+
+                        <div style="clear: both;"></div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!--<iframe name="avatar_upload_iframe" id="avatar_upload_iframe" style="display: block;"></iframe>-->
+            <form enctype="multipart/form-data" method="POST" id="avatar_upload_form" action="https://steamcommunity.com/actions/FileUploader" target="avatar_upload_iframe">
+                <input type="hidden" name="MAX_FILE_SIZE" value="1048576">
+                <input type="hidden" name="type" value="player_avatar_image">
+                <input type="hidden" name="sId" value="76561198399564591">
+                <input type="hidden" name="sessionid" value="260e3eb1002e3545e9dde83f">
+                <input type="hidden" name="doSub" value="1">
+                <input type="hidden" name="json" value="1">
+            </form>
+
+        </div>	<!-- responsive_page_legacy_content -->
+
+        <div id="footer_spacer"></div>
+        <div id="footer_responsive_optin_spacer"></div>
+        <div id="footer">
+            <div class="footer_content">
+                <span id="footerLogo"><img src="https://steamcommunity-a.akamaihd.net/public/images/skin_1/footerLogo_valve.png?v=1" width="96" height="26" border="0" alt="Valve 徽标" /></span>
+                <span id="footerText">
+				© Valve Corporation。保留所有权利。所有商标均为其在美国及其它国家/地区的各自持有者所有。 本网站上部分地理空间数据由 <a href="https://steamcommunity.com/linkfilter/?url=http://www.geonames.org" target="_blank" rel="noreferrer">geonames.org</a> 提供。				<br>
+									<span class="valve_links">
+						<a href="http://store.steampowered.com/privacy_agreement/" target="_blank">隐私政策</a>
+						&nbsp; | &nbsp;<a href="https://store.steampowered.com/legal/" target="_blank">法律信息</a>
+						&nbsp;| &nbsp;<a href="http://store.steampowered.com/subscriber_agreement/" target="_blank">Steam 订户协议</a>
+					</span>
+							</span>
+            </div>
+            <div class="responsive_optin_link">
+                <div class="btn_medium btnv6_grey_black" onclick="Responsive_RequestMobileView()">
+                    <span>查看移动版网站</span>
+                </div>
+            </div>
+        </div>
+
+    </div>	<!-- responsive_page_content -->
+
+</div>	<!-- responsive_page_frame -->
+<script src="https://cdn.bootcss.com/jquery/3.4.0/jquery.js" type="text/javascript"></script>
+<script src="js/md5.min.js" th:src="@{/js/md5.min.js}" type="text/javascript"></script>
+<script src="layer/layer.js" th:src="@{/layer/layer.js}" type="text/javascript"></script>
+<script src="js/main.js" th:src="@{/js/main.js}" type="text/javascript"></script>
 </body>
 </html>

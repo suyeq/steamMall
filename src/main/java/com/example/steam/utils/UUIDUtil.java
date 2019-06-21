@@ -13,7 +13,7 @@ import java.util.UUID;
  * @date: 2019-04-26
  * @time: 8:15
  */
-public class UUIDUntil {
+public class UUIDUtil {
 
     public static String randomUUID(){
         return UUID.randomUUID().toString().replaceAll("-","");

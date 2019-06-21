@@ -109,4 +109,10 @@ public class PageController {
         model.addAttribute("user",loginUser);
         return "personalcenter";
     }
+
+    @RequestMapping("/editpersonal")
+    public String editPersonal(LoginUser loginUser,Model model){
+        model.addAttribute("user",loginUser);
+        return "editpersonal";
+    }
 }

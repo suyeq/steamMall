@@ -24,6 +24,12 @@ public class LoginUser {
 
     private int isAdmin;
 
+    private String country;
+
+    private String province;
+
+    private String introduction;
+
     public LoginUser(){}
 
     public LoginUser(User user, Image image){
@@ -78,5 +84,29 @@ public class LoginUser {
     @Override
     public String toString(){
         return "[id="+id+",email="+email+"]";
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getIntroduction() {
+        return introduction;
+    }
+
+    public void setIntroduction(String introduction) {
+        this.introduction = introduction;
     }
 }

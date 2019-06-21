@@ -25,8 +25,8 @@ public interface UserDao {
     int addUser(User user);
 
     @Update("update user set nickname=#{nickName},salt=#{salt},email=#{email},password=#{password}," +
-            "playtime=#{playTime},commentnum=#{commentNum},buygames=#{buyGames},isadmin=#{isAdmin} where " +
-            "id=#{id}")
+            "playtime=#{playTime},commentnum=#{commentNum},buygames=#{buyGames},isadmin=#{isAdmin}, " +
+            "avatar=#{avatar},country=#{country},province=#{province},introduction=#{introduction} where id=#{id}")
     int updateUser(User user);
 
 //    @Select("select * from user where id=#{id}")

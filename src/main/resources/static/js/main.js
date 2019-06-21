@@ -2663,3 +2663,58 @@ var steam=
         });
     }
 
+    //上传文件
+    function uploadFile() {
+        var loadId=layer.load(1, {
+            shade: [0.1,'#fff'] //0.1透明度的白色背景
+        });
+        var data = new FormData();
+        data.append('avatar', $("#avatar")[0].files[0]);
+        console.log(data);
+        $.ajax({
+            url: '/file/upload',
+            type: 'POST',
+            data: data,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success:function (data) {
+                data=eval("("+data+")");
+                console.log(data.msg);
+                $('#image-id')[0].setAttribute("value",data.msg.id);
+                $('#image-url')[0].setAttribute("value",data.msg.url);
+                $('#avatarBlockFull>img')[0].setAttribute('src',data.msg.url);
+                layer.close(loadId);
+                layer.msg("上传成功");
+            }
+        });
+    }
+
+    //更新用户数据
+    function updateUserInfo() {
+        var email=$('#account_pulldown')[0].getAttribute("email");
+        var nickName=$('#personaName').val();
+        var avatar=$('#image-id').val();
+        var avatarAddress=$('#image-url').val();
+        var country=$('#country').val();
+        var province=$('#state').val();
+        var introduction=$('#summary').val();
+        $.ajax({
+            url:"/user/edit",
+            type:"POST",
+            data:{
+                email:email,
+                nickName:nickName,
+                avatar:avatar,
+                avatarAddress:avatarAddress,
+                country:country,
+                province:province,
+                introduction:introduction
+            },
+            success:function () {
+                layer.msg("修改成功");
+                window.location.href="/personalcenter";
+            }
+        })
+    }
+

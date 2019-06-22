@@ -1,5 +1,17 @@
 # 项目介绍
-这个项目是主要设计缓存的一个练手项目，所以后台没有实现，但是前台流程是通了的，从登陆到购买以及秒杀。目前主要模块有五个：用户模块，游戏模块，评论模块、购物车模块以及秒杀模块。你们可以接着把这个项目写下去，里面注释写了很多，相信大家也能看懂，嘿嘿嘿。。。。
+这个项目是主要设计缓存的一个练手项目，目前后台还没有实现，还在开发，但是前台流程是通了的，从登陆到购买以及秒杀。目前主要模块有五个：用户模块，游戏模块，评论模块、购物车模块以及秒杀模块。你们可以接着把这个项目写下去，里面注释写了很多，相信大家也能看懂，页面是直接在steam趴下来修改了的，嘿嘿嘿。。。。
+
+# 项目展示
+<div style="float:left">
+<img src="https://github.com/suyeq/steamMall/blob/master/1.png" width=350px height=200px>
+<img src="https://github.com/suyeq/steamMall/blob/master/2.png" width=350px height=200px>
+<img src="https://github.com/suyeq/steamMall/blob/master/3.png" width=350px height=200px>
+<img src="https://github.com/suyeq/steamMall/blob/master/4.png" width=350px height=200px>
+<img src="https://github.com/suyeq/steamMall/blob/master/5.png" width=350px height=200px>
+<img src="https://github.com/suyeq/steamMall/blob/master/6.png" width=350px height=200px>
+<img src="https://github.com/suyeq/steamMall/blob/master/7.png" width=350px height=200px>
+<img src="https://github.com/suyeq/steamMall/blob/master/8.png" width=350px height=200px>
+</div>
 
 # 项目的运行
 在数据库中创建steam库，然后导入sql文件，修改相应的的配置，关于主从配置请自行百度啦，运行起项目，然后需要把`GameService`类以及`CommentService`类里面的`afterPropertiesSet`方法里面的代码注释掉，这是第一次启动加载缓存的代码。

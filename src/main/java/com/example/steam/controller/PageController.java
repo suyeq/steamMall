@@ -115,4 +115,16 @@ public class PageController {
         model.addAttribute("user",loginUser);
         return "editpersonal";
     }
+
+    @RequestMapping("/showallgame")
+    public String showAllGame(LoginUser loginUser,Model model){
+        model.addAttribute("user",loginUser);
+        return "showallgame";
+    }
+
+    @RequestMapping("/showallcomment")
+    public String showAllComment(LoginUser loginUser,Model model){
+        model.addAttribute("user",loginUser);
+        return "showallcomment";
+    }
 }

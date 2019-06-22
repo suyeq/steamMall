@@ -49,6 +49,10 @@ public class ResultMsg {
 
     public static ResultMsg USER_NO=new ResultMsg("515","用户不存在");
 
+    public static ResultMsg IMAGE_OVERSIZE=new ResultMsg("516","图片大小超过10M");
+
+    public static ResultMsg IMAGE_TYPE_ERROR=new ResultMsg("517","图片类型错误");
+
     private String code;
 
     private Object msg;

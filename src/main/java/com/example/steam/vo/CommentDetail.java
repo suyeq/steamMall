@@ -39,6 +39,8 @@ public class CommentDetail {
 
     private Integer happyNum;
 
+    private long gameId;
+
     public CommentDetail(){}
 
     public String getNickName() {
@@ -151,5 +153,13 @@ public class CommentDetail {
 
     public void setHappyNum(Integer happyNum) {
         this.happyNum = happyNum;
+    }
+
+    public long getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(long gameId) {
+        this.gameId = gameId;
     }
 }

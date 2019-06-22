@@ -3,6 +3,7 @@ var specialValue=12000;
 var classRecommendValue=12000;
 var detailValue=12000;
 var salt="1q2w3e";
+var MAX_IMAGE_SIZE=10*1024*1024;
 var steam=
     {
         //精选
@@ -227,6 +228,82 @@ var steam=
             this.loadPersonalCenterRecentGame();
         },
 
+        loadAllCommentInUser:function(){
+            var email=$('#account_pulldown')[0].getAttribute("email");
+            var page=$('#leftContents')[0].getAttribute("page");
+            var text=$('#comment_statu').text();
+            if (text=='无更多评测'){
+                return;
+            }
+            $.ajax({
+                url:"/comment/showallcomment",
+                type:"POST",
+                async:false,
+                data:{
+                    page:page,
+                    email:email
+                },
+                success:function (data) {
+                    data=eval("("+data+")");
+                    if (data.msg.length==0){
+                        $('#comment_statu').text('无更多评测');
+                        return;
+                    }
+                    console.log(data);
+                    page=parseInt(page);
+                    $('#leftContents')[0].setAttribute('page',page+1);
+                    // $('#showcomment').empty();
+                    for (var i=0;i<data.msg.length;i++){
+                        var element='<div class="review_box"><div class="header">有'+data.msg[i].zanNum+'人觉得这篇评测有价值';
+                        element+='</div><div style="clear: left;"></div><div class="review_box_content"><div class="leftcol">';
+                        element+='<a href="'+'/detail/'+data.msg[i].gameId+'"><img src="'+data.msg[i].avatar+'"></a></div>';
+                        element+='<div class="rightcol"><div class="vote_header"><div class="thumb"><a href="javascript:void(0);">';
+                        if (data.msg[i].recommendStatu==1){
+                            element+='<img src="https://steamcommunity-a.akamaihd.net/public/shared/images/userreviews/icon_thumbsUp.png" width="44" height="44">';
+                        } else {
+                            element+='<img src="https://steamcommunity-a.akamaihd.net/public/shared/images/userreviews/icon_thumbsDown.png" width="44" height="44">';
+                        }
+                        element+='</a></div><div class="title"><a href="javascript:void(0);">';
+                        if (data.msg[i].recommendStatu==1){
+                            element+='推荐';
+                        }else {
+                            element+='不推荐';
+                        }
+                        element+='</a></div><div class="hours">总时数 '+parseInt(Math.ceil(data.msg[i].playTime))+' 小时</div></div>';
+                        element+='<div class="content">'+data.msg[i].content+'</div><div class="posted">';
+                        var date=new Date(data.msg[i].commentDate);
+                        var month=date.getMonth()+1;
+                        var day=date.getDate();
+                        element+='发布于'+month+'月'+day+'日'+'</div><div class="hr"></div></div><div style="clear: left;"></div></div></div>';
+                        $('#showcomment').append(element);
+                    }
+                }
+            })
+        },
+
+        loadAllGameInUser:function(){
+          var email=$('#account_pulldown')[0].getAttribute("email");
+          $.ajax({
+              url:"/game/user/all/"+email,
+              type:"POST",
+              async:false,
+              success:function (data) {
+                  data=eval("("+data+")");
+                  console.log(data);
+                  $('#games_list_rows').empty();
+                  for (var i=0;i<data.msg.length;i++){
+                      var element='<div class="gameListRow"><div class="gameListRowLogo"><a href="'+'/detail/'+data.msg[i].gameId+'">';
+                      element+='<img style="width:184px;height:69px;" src="'+data.msg[i].posterImage+'">'+'</a></div>';
+                      element+='<div class="gameListRowItem"><div class="gameListRowItemName ellipsis ">'+data.msg[i].gameName+'</div>';
+                      element+='<h5 class="ellipsis hours_played">总时数 '+data.msg[i].playTime+' 小时</h5>';
+                      element+='<div class="bottom_controls"><a class="pullup_item" href="'+'/detail/'+data.msg[i].gameId+'"><div class="menu_ico"><img src="https://steamcommunity-a.akamaihd.net/public/images/skin_1/icon_rate.png" width="16" height="16" border="0"></div>';
+                      element+='进入该游戏评测...</a></div></div></div>';
+                      $('#games_list_rows').append(element);
+                  }
+              }
+          })
+        },
+
         loadPersonalCenterRecentGame:function(){
             var email=$('#account_pulldown')[0].getAttribute('email');
             $.ajax({
@@ -239,14 +316,14 @@ var steam=
                     $('#recent_games').empty();
                     for (var i=0;i<data.msg.length;i++){
                         var element='<div class="recent_game"><div class="recent_game_content">';
-                        element+='<div class="game_info"><div class="game_info_cap"><a href="'+'/detail/'+data.msg[i].id+'">';
+                        element+='<div class="game_info"><div class="game_info_cap"><a href="'+'/detail/'+data.msg[i].gameId+'">';
                         element+='<img style="width: 184px;height: 69px;" src="'+data.msg[i].posterImage+'"></a></div>';
                         element+='<div class="game_info_details">总时数 '+data.msg[i].playTime+' 小时<br>'+'最后运行日期：';
                         var date=new Date(data.msg[i].lastPlay);
-                        var month=date.getMonth();
-                        var day=date.getDay();
+                        var month=date.getMonth()+1;
+                        var day=date.getDate();
                         element+=month+'月'+day+'日';
-                        element+='<div class="game_name"><a class="whiteLink" href="'+'/detail/'+data.msg[i].id+'">'+data.msg[i].gameName+'</a></div>';
+                        element+='<div class="game_name"><a class="whiteLink" href="'+'/detail/'+data.msg[i].gameId+'">'+data.msg[i].gameName+'</a></div>';
                         element+='</div></div></div>';
                         $('#recent_games').append(element);
                     }
@@ -2663,14 +2740,24 @@ var steam=
         });
     }
 
-    //上传文件
+    //上传图片文件
     function uploadFile() {
         var loadId=layer.load(1, {
             shade: [0.1,'#fff'] //0.1透明度的白色背景
         });
         var data = new FormData();
-        data.append('avatar', $("#avatar")[0].files[0]);
-        console.log(data);
+        var image=$("#avatar")[0].files[0];
+        data.append('avatar', image);
+        if (image.size>MAX_IMAGE_SIZE){
+            layer.close(loadId);
+            layer.msg("图片超过10M");
+            return;
+        } 
+        if (image.type.substring(0,5)!='image'){
+            layer.close(loadId);
+            layer.msg("不能上传非图片");
+            return;
+        }
         $.ajax({
             url: '/file/upload',
             type: 'POST',
@@ -2680,12 +2767,15 @@ var steam=
             contentType: false,
             success:function (data) {
                 data=eval("("+data+")");
-                console.log(data.msg);
-                $('#image-id')[0].setAttribute("value",data.msg.id);
-                $('#image-url')[0].setAttribute("value",data.msg.url);
-                $('#avatarBlockFull>img')[0].setAttribute('src',data.msg.url);
                 layer.close(loadId);
-                layer.msg("上传成功");
+                if (data.code==200){
+                    $('#image-id')[0].setAttribute("value",data.msg.id);
+                    $('#image-url')[0].setAttribute("value",data.msg.url);
+                    $('#avatarBlockFull>img')[0].setAttribute('src',data.msg.url);
+                    layer.msg("上传成功");
+                }else {
+                    layer.msg(data.msg);
+                }
             }
         });
     }
@@ -2716,5 +2806,10 @@ var steam=
                 window.location.href="/personalcenter";
             }
         })
+    }
+
+    //点击加载更多
+    function loadMoreCommentOnPersonal() {
+        steam.loadAllCommentInUser();
     }
 

@@ -34,8 +34,11 @@ public class UserController {
                                  @RequestParam("introduction")String introduction,
                                  @RequestParam("country")String country,
                                  @RequestParam("province")String province,
-                                 @RequestParam("avatar")long avatar,
+                                 @RequestParam("avatar")String avatar,
                                  @RequestParam("avatarAddress")String avatarAddress){
-        return JSON.toJSONString(ResultMsg.SUCCESS(userService.updateNickNameAndCountryAndProvinceAndAvatarAndIntroduction(email, nickName, country, province, avatar, avatarAddress, introduction)));
+        if (avatar.equals("")){
+            return JSON.toJSONString(ResultMsg.SUCCESS(userService.updateNickNameAndCountryAndProvinceAndAvatarAndIntroduction(email, nickName, country, province, 0, null, introduction)));
+        }
+        return JSON.toJSONString(ResultMsg.SUCCESS(userService.updateNickNameAndCountryAndProvinceAndAvatarAndIntroduction(email, nickName, country, province, Long.parseLong(avatar), avatarAddress, introduction)));
     }
 }

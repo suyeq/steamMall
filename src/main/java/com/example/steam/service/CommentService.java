@@ -11,8 +11,6 @@ import com.example.steam.utils.CommentRank;
 import com.example.steam.utils.RankScoreValue;
 import com.example.steam.utils.ResultMsg;
 import com.example.steam.vo.CommentDetail;
-import com.sun.org.apache.regexp.internal.RE;
-import com.sun.org.apache.xerces.internal.xs.LSInputList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -57,7 +55,37 @@ public class CommentService implements InitializingBean{
     @Autowired
     ImageService imageService;
     @Autowired
+    UserGameService userGameService;
+    @Autowired
+    GameService gameService;
+    @Autowired
     ApplicationContext applicationContext;
+
+    /**
+     * 找到某个用户下按时间逆序的评论，
+     * 每页5条评论
+     * @param email
+     * @param page
+     * @return
+     */
+    public List<CommentDetail> findAllCommentByUserEmailOrderByTimeDesc(String email,long page){
+        long start=page*POPULAR_COMMENT_SIZE;
+        long end=(page+1)*POPULAR_COMMENT_SIZE;
+        List<CommentDetail> commentDetailList=new LinkedList<>();
+        List<Comment> commentList=commentDao.findComentsByEmailOrderByTimeDesc(start,end,email);
+        for (Comment comment:commentList){
+            CommentDetail commentDetail=new CommentDetail();
+            commentDetail.setGameId(comment.getGameId());
+            commentDetail.setPlayTime(userGameService.findOneUserGameByEmailAndGameId(email,comment.getGameId()).getPlayTime());
+            commentDetail.setRecommendStatu(comment.getRecommendStatu());
+            commentDetail.setContent(comment.getContent());
+            commentDetail.setAvatar(gameService.findGameById(comment.getGameId()).getPosterImage());
+            commentDetail.setCommentDate(comment.getCommentDate());
+            commentDetail.setZanNum(comment.getZanNum());
+            commentDetailList.add(commentDetail);
+        }
+        return commentDetailList;
+    }
 
     /**
      * 点赞

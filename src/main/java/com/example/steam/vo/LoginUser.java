@@ -30,6 +30,10 @@ public class LoginUser {
 
     private String introduction;
 
+    private int commentNum;
+
+    private int buyGames;
+
     public LoginUser(){}
 
     public LoginUser(User user, Image image){
@@ -108,5 +112,21 @@ public class LoginUser {
 
     public void setIntroduction(String introduction) {
         this.introduction = introduction;
+    }
+
+    public int getCommentNum() {
+        return commentNum;
+    }
+
+    public void setCommentNum(int commentNum) {
+        this.commentNum = commentNum;
+    }
+
+    public int getBuyGames() {
+        return buyGames;
+    }
+
+    public void setBuyGames(int buyGames) {
+        this.buyGames = buyGames;
     }
 }

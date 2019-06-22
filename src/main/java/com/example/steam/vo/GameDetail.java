@@ -98,7 +98,6 @@ public class GameDetail extends SpecialGame {
         this.lowestSystem = lowestSystem;
     }
 
-
     public Long getRecommendSystem() {
         return recommendSystem;
     }
@@ -106,8 +105,5 @@ public class GameDetail extends SpecialGame {
     public void setRecommendSystem(Long recommendSystem) {
         this.recommendSystem = recommendSystem;
     }
-
-
-
 
 }

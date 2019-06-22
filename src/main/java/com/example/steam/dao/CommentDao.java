@@ -4,6 +4,8 @@ import com.example.steam.entity.Comment;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  *
@@ -30,4 +32,7 @@ public interface CommentDao {
 
     @Update("update comment set zannum=#{zanNum},caiNum=#{caiNum},happy=#{happy} where id=#{id}")
     int updateComment(Comment comment);
+
+    @Select("select * from comment where email=#{email} order by commentdate desc limit #{start},#{end}")
+    List<Comment> findComentsByEmailOrderByTimeDesc(@Param("start")long start,@Param("end")long end,@Param("email") String email);
 }

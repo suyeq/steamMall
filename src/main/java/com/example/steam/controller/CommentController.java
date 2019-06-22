@@ -97,6 +97,13 @@ public class CommentController{
         return JSON.toJSONString(ResultMsg.SUCCESS(commentService.addHappyComment(commentId)));
     }
 
+    @ResponseBody
+    @RequestMapping("/comment/showallcomment")
+    public String showRecentCommentByEmail(@RequestParam("page")long page,
+                                           @RequestParam("email")String email){
+        return JSON.toJSONString(ResultMsg.SUCCESS(commentService.findAllCommentByUserEmailOrderByTimeDesc(email, page)));
+    }
+
 
 
 }

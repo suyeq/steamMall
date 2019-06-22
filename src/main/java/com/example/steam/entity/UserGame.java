@@ -2,6 +2,8 @@ package com.example.steam.entity;
 
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
+
 /**
  * Created with IntelliJ IDEA.
  *
@@ -18,12 +20,18 @@ public class UserGame {
 
     private Long gameId;
 
+    private int playTime;
+
+    private Date lastPlay;
+
     public UserGame(){}
 
     public UserGame(Long id,String email,Long gameId){
         this.id=id;
         this.email=email;
         this.gameId=gameId;
+        this.playTime=0;
+        this.lastPlay=new Date();
     }
 
     public Long getId() {
@@ -48,5 +56,21 @@ public class UserGame {
 
     public void setGameId(Long gameId) {
         this.gameId = gameId;
+    }
+
+    public int getPlayTime() {
+        return playTime;
+    }
+
+    public void setPlayTime(int playTime) {
+        this.playTime = playTime;
+    }
+
+    public Date getLastPlay() {
+        return lastPlay;
+    }
+
+    public void setLastPlay(Date lastPlay) {
+        this.lastPlay = lastPlay;
     }
 }

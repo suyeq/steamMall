@@ -14,6 +14,7 @@ import com.example.steam.utils.GameRank;
 import com.example.steam.utils.RankScoreValue;
 import com.example.steam.utils.TimeComparator;
 import com.example.steam.vo.GameDetail;
+import com.example.steam.vo.SimpleGameShowVo;
 import com.example.steam.vo.SpecialGame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,6 +61,35 @@ public class GameService implements InitializingBean {
 
     @Autowired
     CommentService commentService;
+
+    @Autowired
+    UserGameService userGameService;
+
+    /**
+     * 找到某个用户下的所有游戏
+     * @param email
+     * @return
+     */
+    public List<SimpleGameShowVo> findAllGameByEmail(String email){
+        List<UserGame> userGameList=userGameService.findUserGameListByEmail(email);
+        List<Long> gameIdList=userGameService.findGamesIdByEmail(email);
+        List<SimpleGameShowVo> simpleGameShowVoList=new LinkedList<>();
+        List<String> newGameIdList=new LinkedList<>();
+        for (Long id:gameIdList){
+            newGameIdList.add(id+"");
+        }
+        List<GameDetail> gameDetailList=redisService.getPipelineBatch(GameKey.GAME_ID,newGameIdList,GameDetail.class);
+        Map<Long,UserGame> map=new HashMap<>();
+        for (UserGame userGame:userGameList){
+            map.put(userGame.getGameId(),userGame);
+        }
+        for (int i=0;i<gameDetailList.size();i++){
+            GameDetail gameDetail=gameDetailList.get(i);
+            SimpleGameShowVo simpleGameShowVo=new SimpleGameShowVo(gameDetail.getId(),gameDetail.getGameName(),gameDetail.getPosterImage(),map.get(gameDetail.getId()).getPlayTime());
+            simpleGameShowVoList.add(simpleGameShowVo);
+        }
+        return simpleGameShowVoList;
+    }
 
     /**
      * 更新卖出数目

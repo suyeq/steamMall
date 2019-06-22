@@ -85,16 +85,17 @@
 
                                 <div class="profile_item_links">
                                     <div class="profile_count_link ellipsis">
-                                        <a href="#">
+                                        <a href="/showallgame">
                                             <span class="count_link_label">游戏</span>&nbsp;
-                                            <span class="profile_count_link_total">
-																	9															</span>
+                                            <span class="profile_count_link_total" th:text="${user.buyGames}">
+																	9
+                                            </span>
                                         </a>
                                     </div>
                                     <div class="profile_count_link ellipsis">
-                                        <a href="#">
+                                        <a href="/showallcomment">
                                             <span class="count_link_label">评测</span>&nbsp;
-                                            <span class="profile_count_link_total">
+                                            <span class="profile_count_link_total" th:text="${user.commentNum}">
 																	&nbsp; <!-- so the line spaces like the rest -->
 															</span>
                                         </a>
@@ -114,46 +115,7 @@
                             </div>
 
                             <div class="recent_games" id="recent_games">
-                                <div class="recent_game">
-                                    <div class="recent_game_content">
-                                        <div class="game_info">
-                                            <div class="game_info_cap"><a href="https://steamcommunity.com/app/431960"><img src="https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/431960/74bcecbde31f489e396f656910c2f70872dcb0f3.jpg"></a></div>
-                                            <div class="game_info_details">
-                                                总时数 2.0 小时<br>
-                                                最后运行日期：5月25日																																	</div>
-                                            <div class="game_name"><a class="whiteLink" href="https://steamcommunity.com/app/431960">Wallpaper Engine</a></div>
-                                        </div>
-                                    </div>
-                                </div>
 
-                                <div class="recent_game">
-                                    <div class="recent_game_content">
-                                        <div class="game_info">
-                                            <div class="game_info_cap"><a href="https://steamcommunity.com/app/578080"><img src="https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/578080/2d2732a33511b58c69aff6b098a22687a3bb8533.jpg"></a></div>
-                                            <div class="game_info_details">
-                                                总时数 596 小时<br>
-                                                最后运行日期：5月14日																																	</div>
-                                            <div class="game_name"><a class="whiteLink" href="https://steamcommunity.com/app/578080">PLAYERUNKNOWN'S BATTLEGROUNDS</a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="recent_game">
-                                    <div class="recent_game_content">
-                                        <div class="game_info">
-                                            <div class="game_info_cap">
-                                                <a href="https://steamcommunity.com/app/570">
-                                                    <img src="https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/570/d4f836839254be08d8e9dd333ecc9a01782c26d2.jpg">
-                                                </a>
-                                            </div>
-                                            <div class="game_info_details">
-                                                总时数 30 小时<br>
-                                                最后运行日期：5月6日																																	</div>
-                                            <div class="game_name">
-                                                <a class="whiteLink" href="https://steamcommunity.com/app/570">Dota 2</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
 

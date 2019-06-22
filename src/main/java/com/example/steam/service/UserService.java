@@ -92,13 +92,15 @@ public class UserService {
         user.setNickName(nickName);
         user.setProvince(province);
         user.setCountry(country);
-        user.setAvatar(avatar);
         user.setIntroduction(introduction);
         loginUser.setNickName(nickName);
         loginUser.setIntroduction(introduction);
         loginUser.setProvince(province);
         loginUser.setCountry(country);
-        loginUser.setAvatar(avatarAddress);
+        if (avatar!=0 && avatarAddress!=null){
+            user.setAvatar(avatar);
+            loginUser.setAvatar(avatarAddress);
+        }
         redisService.set(UserKey.USER_ID,email,user);
         redisService.set(UserKey.COOKIE_ID,cookieId,loginUser);
         return ((UserService)applicationContext.getBean("userService")).updateUser(user);
@@ -310,6 +312,8 @@ public class UserService {
             loginUser.setCountry(user.getCountry());
             loginUser.setProvince(user.getProvince());
             loginUser.setIntroduction(user.getIntroduction());
+            loginUser.setCommentNum(user.getCommentNum());
+            loginUser.setBuyGames(user.getBuyGames());
         }
         redisService.set(UserKey.COOKIE_ID,cookieId,loginUser);
         //CookieKey.EMAIL.setExpiredTime(cookieMaxAge);

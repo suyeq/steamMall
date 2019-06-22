@@ -4,12 +4,10 @@ import com.example.steam.dao.GameDao;
 import com.example.steam.entity.User;
 import com.example.steam.redis.RedisService;
 import com.example.steam.redis.key.SpikeGameKey;
-import com.example.steam.service.GameService;
-import com.example.steam.service.ImageService;
-import com.example.steam.service.TypeService;
-import com.example.steam.service.UserGameService;
+import com.example.steam.service.*;
 import com.example.steam.vo.LoginUser;
 import com.example.steam.vo.SpikeGameDetail;
+import com.example.steam.vo.UserVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +40,8 @@ public class PageController {
     UserGameService userGameService;
     @Autowired
     RedisService redisService;
+    @Autowired
+    UserService userService;
 
     @RequestMapping("/")
     public String index(LoginUser loginUser, Model model){
@@ -105,13 +105,15 @@ public class PageController {
     }
 
     @RequestMapping("/personalcenter")
-    public String personalCenter(LoginUser loginUser,Model model){
+    public String personalCenter(LoginUser loginUser,
+                                 Model model){
         model.addAttribute("user",loginUser);
         return "personalcenter";
     }
 
     @RequestMapping("/editpersonal")
-    public String editPersonal(LoginUser loginUser,Model model){
+    public String editPersonal(LoginUser loginUser,
+                               Model model){
         model.addAttribute("user",loginUser);
         return "editpersonal";
     }

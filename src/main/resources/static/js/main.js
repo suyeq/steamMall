@@ -306,6 +306,7 @@ var steam=
 
         loadPersonalCenterRecentGame:function(){
             var email=$('#account_pulldown')[0].getAttribute('email');
+            //var email=$('#personalInfo')[0].getAttribute('other-email');
             $.ajax({
                 url:"/recentplaygame/"+email,
                 type:"POST",
@@ -332,7 +333,9 @@ var steam=
         },
 
         loadPersonalCenterPersonalInfo:function(){
+            //personalInfo
             var email=$('#account_pulldown')[0].getAttribute('email');
+            //var email=$('#personalInfo')[0].getAttribute('other-email');
             $.ajax({
                 url:"/user/"+email,
                 type:"POST",

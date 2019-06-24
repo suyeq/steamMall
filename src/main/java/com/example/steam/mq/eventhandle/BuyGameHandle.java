@@ -34,9 +34,10 @@ public class BuyGameHandle implements EventHandle {
     public void eventHandle(Event event, ApplicationContext applicationContext) {
         long userId=Long.parseLong((String)event.getEtrMsg().get(Event.USER_ID));
         String email=(String) event.getEtrMsg().get(Event.EMAIL);
-        List<ShoppingCart> shoppingCartList=((ShoppingCartService)applicationContext.getBean("shoppingCartService")).findShopCartByUserId(userId);
-        ((SpikeShopCartService)applicationContext.getBean("spikeShopCartService")).deleteSpikeShopCartByUserId(userId);
-        ((ShoppingCartService)applicationContext.getBean("shoppingCartService")).deleteAllGameInCartByUserId(userId);
+        System.out.println(email+"         lllllllllllll");
+        List<ShoppingCart> shoppingCartList=((ShoppingCartService)applicationContext.getBean("shoppingCartService")).findShopCartByEmail(email);
+        ((SpikeShopCartService)applicationContext.getBean("spikeShopCartService")).deleteSpikeShopCartByUserEmail(email);
+        ((ShoppingCartService)applicationContext.getBean("shoppingCartService")).deleteAllGameInCartByUserEmail(email);
         for (ShoppingCart shoppingCart:shoppingCartList){
             UserGame userGame=new UserGame(0L,email,shoppingCart.getGameId());
             ((UserGameService)applicationContext.getBean("userGameService")).addGameToUser(userGame);

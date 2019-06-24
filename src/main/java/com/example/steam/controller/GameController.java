@@ -157,7 +157,13 @@ public class GameController {
     @ResponseBody
     @RequestMapping("/game/user/all/{email}")
     public String showAllGamesByUserEmail(@PathVariable("email")String email){
-        return JSON.toJSONString(ResultMsg.SUCCESS(gameService.findAllGameByEmail(email)));
+        return JSON.toJSONString(ResultMsg.SUCCESS(gameService.findAllGameShowByEmail(email)));
+    }
+
+    @ResponseBody
+    @RequestMapping("/game/count/{email}")
+    public String gameCountByEmail(@PathVariable("email") String email){
+        return JSON.toJSONString(ResultMsg.SUCCESS(gameService.findContainGamesNum(email)));
     }
 
 

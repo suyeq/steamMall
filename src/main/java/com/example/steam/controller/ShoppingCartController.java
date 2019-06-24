@@ -34,17 +34,17 @@ public class ShoppingCartController {
 
     @RequestMapping("/cart/add")
     @ResponseBody
-    public String addCart(@RequestParam("userId")long userId,
+    public String addCart(@RequestParam("email")String email,
                           @RequestParam("gameId")long gameId){
-        logger.info(userId+" "+gameId);
-        return JSON.toJSONString(ResultMsg.SUCCESS(shoppingCartService.addOneCart(userId,gameId,Integer.MAX_VALUE)));
+        logger.info(email+" "+gameId);
+        return JSON.toJSONString(ResultMsg.SUCCESS(shoppingCartService.addOneCart(email,gameId,Integer.MAX_VALUE)));
        // return "success";
     }
 
-    @RequestMapping("/cart/{userId}")
+    @RequestMapping("/cart/{email}")
     @ResponseBody
-    public String findCartByUserId(@PathVariable("userId")long userId){
-        return JSON.toJSONString(ResultMsg.SUCCESS(shoppingCartService.findCartByUserId(userId)));
+    public String findCartByUserId(@PathVariable("email")String email){
+        return JSON.toJSONString(ResultMsg.SUCCESS(shoppingCartService.findCartByUserEmail(email)));
     }
 
     @RequestMapping("/cart/remove/{id}")
@@ -53,10 +53,10 @@ public class ShoppingCartController {
         return JSON.toJSONString(ResultMsg.SUCCESS(shoppingCartService.deleteOneGameInCartById(id)));
     }
 
-    @RequestMapping("/cart/removeall/{userId}")
+    @RequestMapping("/cart/removeall/{email}")
     @ResponseBody
-    public String deleteAllGameIncartByUserId(@PathVariable("userId")long userId){
-        return JSON.toJSONString(ResultMsg.SUCCESS(shoppingCartService.deleteAllGameInCartByUserId(userId)));
+    public String deleteAllGameIncartByUserId(@PathVariable("email")String email){
+        return JSON.toJSONString(ResultMsg.SUCCESS(shoppingCartService.deleteAllGameInCartByUserEmail(email)));
     }
 
     @ResponseBody
@@ -69,9 +69,9 @@ public class ShoppingCartController {
 
     @ResponseBody
     @RequestMapping("/cart/iscontain")
-    public String isContainsCart(@RequestParam("userId")long userId,
+    public String isContainsCart(@RequestParam("email")String email,
                                  @RequestParam("gameId")long gameId){
-        return JSON.toJSONString(ResultMsg.SUCCESS(shoppingCartService.isContainsShopCart(userId,gameId)));
+        return JSON.toJSONString(ResultMsg.SUCCESS(shoppingCartService.isContainsShopCart(email,gameId)));
     }
 
 

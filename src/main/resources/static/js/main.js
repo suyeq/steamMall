@@ -306,6 +306,10 @@ var steam=
 
         loadPersonalCenterRecentGame:function(){
             var email=$('#account_pulldown')[0].getAttribute('email');
+            var otherEmail=$('#personalInfo')[0].getAttribute('email');
+            if (email!=otherEmail){
+                email=otherEmail;
+            }
             //var email=$('#personalInfo')[0].getAttribute('other-email');
             $.ajax({
                 url:"/recentplaygame/"+email,
@@ -335,6 +339,15 @@ var steam=
         loadPersonalCenterPersonalInfo:function(){
             //personalInfo
             var email=$('#account_pulldown')[0].getAttribute('email');
+            var otherEmail=$('#personalInfo')[0].getAttribute('email');
+            if (email!=otherEmail){
+                email=otherEmail;
+                //不显示编辑页面
+                $('#editinfo_show')[0].setAttribute("style","display:none;");
+                $('#editinfo_edit')[0].setAttribute("style","display:none;");
+                $('#game_href')[0].setAttribute('href','javascript:void(0);');
+                $('#comment_href')[0].setAttribute('href','javascript:void(0);');
+            }
             //var email=$('#personalInfo')[0].getAttribute('other-email');
             $.ajax({
                 url:"/user/"+email,
@@ -349,6 +362,10 @@ var steam=
                     $('#personal_avatar')[0].setAttribute('src',data.msg.avatarImage);
                     $('#personal_lv').text(data.msg.lv);
                     $('#personal_introduction').text(data.msg.introduction);
+                    var gameTotal=getGameSumByEmail(email);
+                    var commentTotal=getCommentSumByEmail(email);
+                    $('#game_sum').text(gameTotal);
+                    $('#comment_sum').text(commentTotal);
                 }
             })
         },
@@ -428,9 +445,9 @@ var steam=
         },
 
         loadShoppingCart:function(){
-          var userId=$('#account_pulldown')[0].getAttribute('user-id');
+          var email=$('#account_pulldown')[0].getAttribute('email');
           $.ajax({
-             url:"cart/"+userId,
+             url:"cart/"+email,
              type:"POST",
              async:false,
              success:function (data) {
@@ -786,7 +803,7 @@ var steam=
                                 var element=$('<div id="commentInfo" commentId="1"></div>');
                                 var left=$('<div class="leftcol"></div>');
                                 var avatar='<div class="avatar"><a href="';
-                                avatar+='/userDetails/'+data.msg[i].userId;
+                                avatar+='/personalcenter/'+data.msg[i].email;
                                 avatar+='"><div class="playerAvatar online"><img src="';
                                 avatar+=data.msg[i].avatar;
                                 avatar+='"></div></a></div>';
@@ -2110,9 +2127,9 @@ var steam=
         //parseInt()取整
         var endResult = parseInt((spikeEndTime.getTime()-now.getTime())/1000);//计算秒
         var startResult = parseInt((spikeStartTime.getTime()-now.getTime())/1000);//计算秒
-        console.log("startTime="+spikeStartTime);
-        console.log("endTime="+spikeEndTime);
-        console.log("now="+now);
+        // console.log("startTime="+spikeStartTime);
+        // console.log("endTime="+spikeEndTime);
+        // console.log("now="+now);
         //var d = parseInt(result/(24*60*60));//用总共的秒数除以1天的秒数
         if (startResult>=0){
             $('#spike_statu').text("秒杀倒计时！")
@@ -2333,14 +2350,14 @@ var steam=
         return result;
     }
     //购物车里是否已有
-    function cartIsContainsGame(userId,gameId) {
+    function cartIsContainsGame(email,gameId) {
         var result=null;
         $.ajax({
             url:"/cart/iscontain",
             type:"POST",
             async:false,
             data:{
-                userId:userId,
+                email:email,
                 gameId:gameId
             },
             success:function (data) {
@@ -2360,7 +2377,7 @@ var steam=
         var email=$('#account_pulldown')[0].getAttribute('email');
         var userId=$('#account_pulldown')[0].getAttribute('user-id');
         var gameId=$('#gameDetail')[0].getAttribute('game-id');
-        var cartResult=cartIsContainsGame(userId,gameId);
+        var cartResult=cartIsContainsGame(email,gameId);
         console.log(cartResult)
         if (cartResult!=false){
             layer.msg("该游戏已在购物车，不能重复添加");
@@ -2377,12 +2394,13 @@ var steam=
             type:"POST",
             async:false,
             data:{
-                userId:userId,
+                email:email,
                 gameId:gameId
             },
             success:function (data) {
                 //data=eval("("+data+")");
                 layer.msg("添加成功")
+                window.location.href="/cart";
             },
             error:function () {
 
@@ -2408,9 +2426,9 @@ var steam=
     
     //移除某用户的所有购物车里的游戏
     function removeAllGameOnCart() {
-    var userId=$('#account_pulldown')[0].getAttribute('user-id');
+    var email=$('#account_pulldown')[0].getAttribute('email');
         $.ajax({
-            url:"/cart/removeall/"+userId,
+            url:"/cart/removeall/"+email,
             type:"POST",
             async:true,
             success:function () {
@@ -2535,11 +2553,31 @@ var steam=
         }
     }
 
-    //秒杀功能
+    //获取秒杀路径功能
     function spike(spikeId) {
         var loadId=layer.load(1, {
             shade: [0.1,'#fff'] //0.1透明度的白色背景
         });
+        $.ajax({
+            url:"/spike/"+spikeId,
+            type:"POST",
+            async:false,
+            success:function (data) {
+                data=eval("("+data+")");
+                //console.log(data)
+                if (data.code>500) {
+                    layer.close(loadId);
+                    layer.msg(data.msg)
+                }
+                if (data.code==200){
+                    console.log(data.msg);
+                    doSpike(loadId,data.msg,spikeId);
+                }
+            }
+        });
+    }
+    //做秒杀功能
+    function doSpike(loadId,path,spikeId) {
         var spikeStatu=$('#spike_statu').text();
         console.log(spikeStatu);
         if (spikeStatu=='秒杀结束！'){
@@ -2553,12 +2591,12 @@ var steam=
             return;
         }
         $.ajax({
-            url:"/spike/"+spikeId,
+            url:"/dospike/"+path+'/'+spikeId,
             type:"POST",
             async:false,
             success:function (data) {
                 data=eval("("+data+")");
-                //console.log(data)
+                console.log(data)
                 if (data.code>500) {
                     layer.close(loadId);
                     layer.msg(data.msg)
@@ -2569,6 +2607,12 @@ var steam=
             }
         })
     }
+
+    // function sleep(ms) {
+    //         return new Promise(resolve =>
+    //             setTimeout(resolve, ms)
+    //     )
+    // }
 
     //秒杀结果轮询操作
     function spikeResult(userId,spikeId,loadId) {
@@ -2582,8 +2626,11 @@ var steam=
             },
             success:function (data) {
                 data=eval("("+data+")");
+                console.log("result")
+                console.log(data);
                 if (data.code==510){
-                    spikeResult(userId,spikeId);
+                    //sleep(500);
+                    spikeResult(userId,spikeId,loadId);
                 }
                 if (data.code==203) {
                     layer.close(loadId);
@@ -2806,13 +2853,38 @@ var steam=
             },
             success:function () {
                 layer.msg("修改成功");
-                window.location.href="/personalcenter";
+                window.location.href="/personalcenter/"+email;
             }
         })
     }
 
-    //点击加载更多
+    //点击加载更多的评论
     function loadMoreCommentOnPersonal() {
         steam.loadAllCommentInUser();
     }
-
+    //得到该用户下的评测总数
+    function getCommentSumByEmail(email){
+        var total=null;
+        $.ajax({
+            url:"/comment/sum/"+email,
+            async:false,
+            success:function (data) {
+                data=eval("("+data+")");
+                total=data.msg;
+            }
+        });
+        return total;
+    }
+    //得到该用户下的游戏总数
+    function getGameSumByEmail(email){
+        var total=null;
+        $.ajax({
+            url:"/game/count/"+email,
+            async:false,
+            success:function (data) {
+                data=eval("("+data+")");
+                total=data.msg;
+            }
+        });
+        return total;
+    }

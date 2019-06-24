@@ -61,6 +61,16 @@ public class CommentService implements InitializingBean{
     @Autowired
     ApplicationContext applicationContext;
 
+
+    /**
+     * 找到该用户下的所有评论的数目
+     * @param email
+     * @return
+     */
+    public int findCommentSumByEmail(String email){
+        return userService.findByEmail(email).getCommentNum();
+    }
+
     /**
      * 找到某个用户下按时间逆序的评论，
      * 每页5条评论
@@ -359,23 +369,23 @@ public class CommentService implements InitializingBean{
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        int sum=((CommentService)applicationContext.getBean("commentService")).findCommentSum();
-        log.error(sum+"");
-        for (int i=0;i<sum;i++){
-            Comment comment=((CommentService)applicationContext.getBean("commentService")).findOneCommentById(i+1);
-            CommentRank commentRank=new CommentRank();
-            commentRank.setId(comment.getId());
-            commentRank.setGameId(comment.getGameId());
-
-            RankScoreValue zanRank=new RankScoreValue();
-            zanRank.setScore(comment.getZanNum());
-            zanRank.setValue(commentRank);
-
-            RankScoreValue timeRank=new RankScoreValue();
-            timeRank.setScore(comment.getCommentDate().getTime());
-            timeRank.setValue(commentRank);
-            redisService.zadd(CommentKey.COMMENT_RANK_ZANNUM,CommentKey.COMMENT_RANK_ZANNUM_KEY,zanRank);
-            redisService.zadd(CommentKey.COMMENT_RANK_TIME,CommentKey.COMMENT_RANK_TIME_KEY,timeRank);
-        }
+//        int sum=((CommentService)applicationContext.getBean("commentService")).findCommentSum();
+//        log.error(sum+"");
+//        for (int i=0;i<sum;i++){
+//            Comment comment=((CommentService)applicationContext.getBean("commentService")).findOneCommentById(i+1);
+//            CommentRank commentRank=new CommentRank();
+//            commentRank.setId(comment.getId());
+//            commentRank.setGameId(comment.getGameId());
+//
+//            RankScoreValue zanRank=new RankScoreValue();
+//            zanRank.setScore(comment.getZanNum());
+//            zanRank.setValue(commentRank);
+//
+//            RankScoreValue timeRank=new RankScoreValue();
+//            timeRank.setScore(comment.getCommentDate().getTime());
+//            timeRank.setValue(commentRank);
+//            redisService.zadd(CommentKey.COMMENT_RANK_ZANNUM,CommentKey.COMMENT_RANK_ZANNUM_KEY,zanRank);
+//            redisService.zadd(CommentKey.COMMENT_RANK_TIME,CommentKey.COMMENT_RANK_TIME_KEY,timeRank);
+//        }
     }
 }

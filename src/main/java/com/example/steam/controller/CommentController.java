@@ -33,6 +33,12 @@ public class CommentController{
     CommentService commentService;
 
     @ResponseBody
+    @RequestMapping("/comment/sum/{email}")
+    public String findCommentSumByEmail(@PathVariable("email") String email){
+        return JSON.toJSONString(ResultMsg.SUCCESS(commentService.findCommentSumByEmail(email)));
+    }
+
+    @ResponseBody
     @RequestMapping("/comment/{id}")
     public String findOneCommentById(@PathVariable("id")long id){
         return JSON.toJSONString(ResultMsg.SUCCESS(commentService.findOneCommentById(id)));

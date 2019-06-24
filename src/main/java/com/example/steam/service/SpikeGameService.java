@@ -1,15 +1,29 @@
 package com.example.steam.service;
 
+import com.alibaba.fastjson.JSON;
 import com.example.steam.config.DynamicDataSourceHolder;
 import com.example.steam.dao.SpikeGameDao;
 import com.example.steam.entity.SpikeGame;
+import com.example.steam.entity.SpikeShopCart;
+import com.example.steam.mq.Event;
+import com.example.steam.mq.EventType;
+import com.example.steam.mq.MQProducer;
 import com.example.steam.redis.RedisService;
+import com.example.steam.redis.key.GameKey;
 import com.example.steam.redis.key.SpikeGameKey;
+import com.example.steam.utils.ResultMsg;
+import com.example.steam.utils.UUIDUtil;
+import com.example.steam.vo.GameDetail;
+import com.example.steam.vo.LoginUser;
 import com.example.steam.vo.SpikeGameDetail;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,6 +35,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class SpikeGameService {
 
+    //最大每分钟秒杀次数
+    private final static int MAX_SPIKETIMES_EVERY_MINUTE=10;
+
+    Logger log= LoggerFactory.getLogger(SpikeGameService.class);
+
     @Autowired
     SpikeGameDao spikeGameDao;
 
@@ -29,6 +48,15 @@ public class SpikeGameService {
 
     @Autowired
     RedisService redisService;
+
+    @Autowired
+    MQProducer mqProducer;
+
+    @Autowired
+    SpikeGameService spikeGameService;
+
+    @Autowired
+    SpikeShopCartService spikeShopCartService;
 
     @Autowired
     ApplicationContext applicationContext;
@@ -96,5 +124,71 @@ public class SpikeGameService {
     public SpikeGame findOneGameBySpikeId(long spikeId,String dataSource){
         DynamicDataSourceHolder.putDataSource(dataSource);
         return spikeGameDao.findOneById(spikeId);
+    }
+
+    /**
+     * 处理秒杀
+     *  * 第一步 预减库存
+     *  * 第二步 查询是否已秒杀过
+     *  * 第三步 加入消息队列（异步处理），消息处理者修改数据库
+     *  * 第四步 不断轮询数据库，根据数据库判断秒杀是否完成
+     * @param spikeId
+     * @param loginUser
+     * @return
+     */
+    public ResultMsg handleSpike(long spikeId, LoginUser loginUser,String path) {
+        if (loginUser==null){
+            return ResultMsg.NO_LOGIN;
+        }
+        String spikePath=redisService.get(SpikeGameKey.RANDM_PATH,SpikeGameKey.RANDM_PATH_KEY+loginUser.getEmail(),String.class);
+        if (!spikePath.equals(path)){
+            return ResultMsg.SPIKE_PATH_ERROR;
+        }
+        long stock=redisService.decKey(SpikeGameKey.SPIKE_STOCK,SpikeGameKey.SPIKE_STOCK_KEY+spikeId);
+        if (stock<0){
+            return ResultMsg.STOCK_IS_NULL;
+        }
+        SpikeShopCart spikeShopCart=spikeShopCartService.findSpikeShopCart(loginUser.getEmail(),spikeId);
+        if (spikeShopCart!=null){
+            return ResultMsg.SPIKE_REPEAT;
+        }
+        spikeShopCart=new SpikeShopCart(loginUser.getEmail(),spikeId);
+        mqProducer.productEvent(new Event(EventType.SPIKE_GAME).setEtrMsg(Event.SPIKE,RedisService.beanToString(spikeShopCart)));
+        return ResultMsg.SUCCESS(spikeShopCart);
+    }
+
+    /**
+     * 处理轮询操作
+     * @param loginUser
+     * @param userId
+     * @param spikeId
+     * @return
+     */
+    public ResultMsg handlePollSpike(LoginUser loginUser, long userId, long spikeId) {
+        if (loginUser==null){
+            return ResultMsg.NO_LOGIN;
+        }
+
+        SpikeShopCart spikeShopCart=spikeShopCartService.findSpikeShopCart(loginUser.getEmail(),spikeId);
+        if (spikeShopCart==null){
+            return ResultMsg.SPIKE_ING;
+        }
+        return ResultMsg.SPIKE_SUCCESS;
+    }
+
+    /**
+     * 随机秒杀路径，且限流
+     * @param loginUser
+     * @return
+     */
+    public ResultMsg handleRandomPathAndLimitSpike(LoginUser loginUser) {
+        Integer spikeTimes=redisService.get(SpikeGameKey.SPIKE_TIMES,SpikeGameKey.SPIKE_TIMES_KEY+loginUser.getEmail(),Integer.class);
+        spikeTimes=spikeTimes==null?0:spikeTimes;
+        if (spikeTimes>MAX_SPIKETIMES_EVERY_MINUTE){
+            return ResultMsg.SPIKE_LIMIT_ERROR;
+        }
+        String uuId= UUIDUtil.randomUUID();
+        redisService.set(SpikeGameKey.RANDM_PATH,SpikeGameKey.RANDM_PATH_KEY+loginUser.getEmail(),uuId);
+        return ResultMsg.SUCCESS(uuId);
     }
 }

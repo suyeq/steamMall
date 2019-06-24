@@ -14,7 +14,7 @@ public class ShoppingCart {
 
     private Long id;
 
-    private Long userId;
+    private String email;
 
     private Long gameId;
 
@@ -32,14 +32,6 @@ public class ShoppingCart {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     public Long getGameId() {
@@ -72,5 +64,13 @@ public class ShoppingCart {
 
     public void setGameName(String gameName) {
         this.gameName = gameName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

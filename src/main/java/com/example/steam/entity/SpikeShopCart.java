@@ -14,14 +14,14 @@ public class SpikeShopCart {
 
     private Long id;
 
-    private Long userId;
+    private String email;
 
     private Long spikeGameId;
 
     public SpikeShopCart(){}
 
-    public SpikeShopCart(Long userId,Long spikeGameId){
-        this.userId=userId;
+    public SpikeShopCart(String email,Long spikeGameId){
+        this.email=email;
         this.spikeGameId=spikeGameId;
     }
 
@@ -33,20 +33,19 @@ public class SpikeShopCart {
         this.id = id;
     }
 
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-
     public Long getSpikeGameId() {
         return spikeGameId;
     }
 
     public void setSpikeGameId(Long spikeGameId) {
         this.spikeGameId = spikeGameId;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

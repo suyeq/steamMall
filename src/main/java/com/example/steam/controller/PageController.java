@@ -91,6 +91,9 @@ public class PageController {
     @RequestMapping("/cart")
     public String cart(LoginUser loginUser,
                        Model model){
+        if (loginUser==null){
+            return "login";
+        }
         model.addAttribute("user",loginUser);
         return "shoppingcart";
     }
@@ -104,28 +107,41 @@ public class PageController {
         return "searchresult";
     }
 
-    @RequestMapping("/personalcenter")
+    @RequestMapping("/personalcenter/{email}")
     public String personalCenter(LoginUser loginUser,
+                                 @PathVariable("email")String email,
                                  Model model){
         model.addAttribute("user",loginUser);
+        model.addAttribute("email",email);
         return "personalcenter";
     }
+
+
 
     @RequestMapping("/editpersonal")
     public String editPersonal(LoginUser loginUser,
                                Model model){
+        if (loginUser==null){
+            return "login";
+        }
         model.addAttribute("user",loginUser);
         return "editpersonal";
     }
 
     @RequestMapping("/showallgame")
     public String showAllGame(LoginUser loginUser,Model model){
+        if (loginUser==null){
+            return "login";
+        }
         model.addAttribute("user",loginUser);
         return "showallgame";
     }
 
     @RequestMapping("/showallcomment")
     public String showAllComment(LoginUser loginUser,Model model){
+        if (loginUser==null){
+            return "login";
+        }
         model.addAttribute("user",loginUser);
         return "showallcomment";
     }

@@ -22,6 +22,9 @@ public interface CommentDao {
     @Select("select count(*) from comment")
     int commentSum();
 
+    @Select("select count(*) from comment where email=#{email}")
+    int commentSumByEmail(@Param("email") String email);
+
     @Select("select max(id) from comment")
     long findLastCommentId();
 

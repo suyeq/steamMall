@@ -22,15 +22,15 @@ public class SpikeShopCartService {
         return spikeShopCartDao.addSpikeShopCart(spikeShopCart);
     }
 
-    public SpikeShopCart findSpikeShopCart(long userId,long spikeGameId){
-        return spikeShopCartDao.findSpikeShopCart(userId,spikeGameId);
+    public SpikeShopCart findSpikeShopCart(String email,long spikeGameId){
+        return spikeShopCartDao.findSpikeShopCart(email,spikeGameId);
     }
 
-    public SpikeShopCart findSpikeShopCartByUserId(long userId){
-        return spikeShopCartDao.findSpikeShopCartByUserId(userId);
+    public SpikeShopCart findSpikeShopCartByUserEmail(String email){
+        return spikeShopCartDao.findSpikeShopCartByUserEmail(email);
     }
 
-    public int deleteSpikeShopCartByUserId(long userId){
-        return spikeShopCartDao.deleteSpikeShopCart(userId);
+    public int deleteSpikeShopCartByUserEmail(String email){
+        return spikeShopCartDao.deleteSpikeShopCart(email);
     }
 }

@@ -53,6 +53,12 @@ public class ResultMsg {
 
     public static ResultMsg IMAGE_TYPE_ERROR=new ResultMsg("517","图片类型错误");
 
+    public static ResultMsg SPIKE_LIMIT_ERROR=new ResultMsg("518","秒杀次数过多，请稍后再试");
+
+    public static ResultMsg SPIKE_PATH_ERROR=new ResultMsg("519","秒杀路径错误");
+
+    public static ResultMsg GAME_HAD=new ResultMsg("520","游戏购买，不能参与秒杀");
+
     private String code;
 
     private Object msg;

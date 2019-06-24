@@ -45,12 +45,12 @@ public class ShoppingCartService {
 
     /**
      * 检测是否已在购物车里面
-     * @param userId
+     * @param email
      * @param gameId
      * @return
      */
-    public boolean isContainsShopCart(long userId,long gameId){
-        List<ShoppingCart> shoppingCartList=((ShoppingCartService)applicationContext.getBean("shoppingCartService")).findShopCartByUserId(userId);
+    public boolean isContainsShopCart(String email,long gameId){
+        List<ShoppingCart> shoppingCartList=((ShoppingCartService)applicationContext.getBean("shoppingCartService")).findShopCartByEmail(email);
         if (shoppingCartList!=null){
             log.error(shoppingCartList.size()+"");
         }
@@ -66,12 +66,12 @@ public class ShoppingCartService {
     /**
      * 事务会以第一个sql执行的数据源为数据源
      * 所以要在第一个语句执行前就指定好数据源
-     * @param userId
+     * @param email
      * @param gameId
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public Integer addOneCart(long userId,long gameId,int gamePrice){
+    public Integer addOneCart(String email,long gameId,int gamePrice){
         ShoppingCart shoppingCart=new ShoppingCart();
         Game game=gameService.findOneGameById(gameId,DynamicDataSourceHolder.MASTER);
         shoppingCart.setGameId(gameId);
@@ -80,23 +80,23 @@ public class ShoppingCartService {
         finalPrice=finalPrice>gamePrice?gamePrice:finalPrice;
         shoppingCart.setGamePrice(finalPrice);
         shoppingCart.setPosterImage(game.getPosterImage());
-        shoppingCart.setUserId(userId);
+        shoppingCart.setEmail(email);
         return shoppingCartDao.addOneCart(shoppingCart);
     }
 
     /**
-     * 通过用户id得到购物车
-     * @param userId
+     * 通过用户邮箱得到购物车
+     * @param email
      * @return
      */
-    public List<ShoppingCartDetail> findCartByUserId(long userId){
-        List<ShoppingCart> cartList=shoppingCartDao.findCartByUserId(userId);
+    public List<ShoppingCartDetail> findCartByUserEmail(String email){
+        List<ShoppingCart> cartList=shoppingCartDao.findCartByUserEmail(email);
         List<ShoppingCartDetail> shoppingCartDetailList=new LinkedList<>();
         for (int i=0;i<cartList.size();i++){
             ShoppingCartDetail shoppingCartDetail=new ShoppingCartDetail();
             ShoppingCart shoppingCart=cartList.get(i);
             shoppingCartDetail.setId(shoppingCart.getId());
-            shoppingCartDetail.setUserId(shoppingCart.getUserId());
+            shoppingCartDetail.setEmail(shoppingCart.getEmail());
             shoppingCartDetail.setGamePoster(imageService.findImageUrlById(shoppingCart.getPosterImage()));
             shoppingCartDetail.setGameId(shoppingCart.getGameId());
             shoppingCartDetail.setGameName(shoppingCart.getGameName());
@@ -126,12 +126,12 @@ public class ShoppingCartService {
 //    }
 
     /**
-     * 通过userid找到该用户下的购物车简略
-     * @param userId
+     * 通过邮箱找到该用户下的购物车简略
+     * @param email
      * @return
      */
-    public List<ShoppingCart> findShopCartByUserId(long userId){
-        return shoppingCartDao.findCartByUserId(userId);
+    public List<ShoppingCart> findShopCartByEmail(String email){
+        return shoppingCartDao.findCartByUserEmail(email);
     }
 
     /**
@@ -144,12 +144,12 @@ public class ShoppingCartService {
     }
 
     /**
-     * 通过用户id全部删除
-     * @param userId
+     * 通过邮箱全部删除
+     * @param email
      * @return
      */
-    public int deleteAllGameInCartByUserId(long userId){
-        return shoppingCartDao.deleteAllGameByUserId(userId);
+    public int deleteAllGameInCartByUserEmail(String email){
+        return shoppingCartDao.deleteAllGameByUserEmail(email);
     }
 
 

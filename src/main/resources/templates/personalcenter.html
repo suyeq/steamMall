@@ -8,7 +8,7 @@
     <link href="/css/profive2.css" th:href="@{/css/profive2.css}" rel="stylesheet">
 </head>
 
-<body class="flat_page profile_page  responsive_page" >
+<body class="flat_page profile_page  responsive_page" id="personalInfo" email="" th:attr="email=${email}">
 
 <div class="responsive_page_frame with_header">
 
@@ -50,12 +50,12 @@
                                         <a href="javascript:void(0)">
                                             <div class="persona_name persona_level"><div class="friendPlayerLevel lvl_0"><span class="friendPlayerLevelNum" id="personal_lv">2</span></div> 级</div>
                                         </a>
-                                        <div class="profile_header_badge">
+                                        <div class="profile_header_badge" id="editinfo_show">
                                             <div class="profile_header_badge_instructions">
                                              请从<a class="whiteLink" href="/editpersonal">编辑个人资料</a>页面中修改个人信息。										</div>
                                         </div>
                                     </div>
-                                    <div class="profile_header_actions">
+                                    <div class="profile_header_actions" id="editinfo_edit">
                                         <a class="btn_profile_action btn_medium" href="/editpersonal">
                                             <span>编辑个人资料</span>
                                         </a>
@@ -85,17 +85,17 @@
 
                                 <div class="profile_item_links">
                                     <div class="profile_count_link ellipsis">
-                                        <a href="/showallgame">
+                                        <a href="/showallgame" id="game_href">
                                             <span class="count_link_label">游戏</span>&nbsp;
-                                            <span class="profile_count_link_total" th:text="${user.buyGames}">
+                                            <span class="profile_count_link_total" id="game_sum">
 																	9
                                             </span>
                                         </a>
                                     </div>
                                     <div class="profile_count_link ellipsis">
-                                        <a href="/showallcomment">
+                                        <a href="/showallcomment" id="comment_href">
                                             <span class="count_link_label">评测</span>&nbsp;
-                                            <span class="profile_count_link_total" th:text="${user.commentNum}">
+                                            <span class="profile_count_link_total" id="comment_sum">
 																	&nbsp; <!-- so the line spaces like the rest -->
 															</span>
                                         </a>

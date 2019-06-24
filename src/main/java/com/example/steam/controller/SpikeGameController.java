@@ -12,6 +12,8 @@ import com.example.steam.service.SpikeShopCartService;
 import com.example.steam.utils.ResultMsg;
 import com.example.steam.vo.LoginUser;
 import com.example.steam.vo.SpikeGameDetail;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,6 +31,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 public class SpikeGameController implements InitializingBean {
+
+    Logger log= LoggerFactory.getLogger(SpikeGameController.class);
 
     @Autowired
     MQProducer mqProducer;
@@ -49,32 +53,32 @@ public class SpikeGameController implements InitializingBean {
     }
 
     /**
-     * 第一步 预减库存
-     * 第二步 查询是否已秒杀过
-     * 第三步 加入消息队列（异步处理），消息处理者修改数据库
-     * 第四步 不断轮询数据库，根据数据库判断秒杀是否完成
+     * 处理秒杀
+     * @param spikeId
+     * @param path
+     * @param loginUser
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/dospike/{path}/{spikeId}")
+    public String spike(@PathVariable("spikeId")long spikeId,
+                        @PathVariable("path")String path,
+                        LoginUser loginUser){
+        log.error("path:"+path+"spikeid:"+spikeId);
+        return JSON.toJSONString(spikeGameService.handleSpike(spikeId,loginUser,path));
+    }
+
+    /**
+     * 隐藏秒杀接口
      * @param spikeId
      * @param loginUser
      * @return
      */
     @ResponseBody
     @RequestMapping("/spike/{spikeId}")
-    public String spike(@PathVariable("spikeId")long spikeId,
+    public String spikePath(@PathVariable("spikeId")long spikeId,
                         LoginUser loginUser){
-        if (loginUser==null){
-            return JSON.toJSONString(ResultMsg.NO_LOGIN);
-        }
-        long stock=redisService.decKey(SpikeGameKey.SPIKE_STOCK,SpikeGameKey.SPIKE_STOCK_KEY+spikeId);
-        if (stock<0){
-            return JSON.toJSONString(ResultMsg.STOCK_IS_NULL);
-        }
-        SpikeShopCart spikeShopCart=spikeShopCartService.findSpikeShopCart(loginUser.getId(),spikeId);
-        if (spikeShopCart!=null){
-            return JSON.toJSONString(ResultMsg.SPIKE_REPEAT);
-        }
-        spikeShopCart=new SpikeShopCart(loginUser.getId(),spikeId);
-        mqProducer.productEvent(new Event(EventType.SPIKE_GAME).setEtrMsg(Event.SPIKE,RedisService.beanToString(spikeShopCart)));
-        return JSON.toJSONString(ResultMsg.SUCCESS(spikeShopCart));
+        return JSON.toJSONString(spikeGameService.handleRandomPathAndLimitSpike(loginUser));
     }
 
     /**
@@ -89,14 +93,8 @@ public class SpikeGameController implements InitializingBean {
     public String pollingSpikeStatu(LoginUser loginUser,
                                     @RequestParam("spikeId")long spikeId,
                                     @RequestParam("userId")long userId){
-        if (loginUser==null){
-            return JSON.toJSONString(ResultMsg.NO_LOGIN);
-        }
-        SpikeShopCart spikeShopCart=spikeShopCartService.findSpikeShopCart(userId,spikeId);
-        if (spikeShopCart==null){
-            return JSON.toJSONString(ResultMsg.SPIKE_ING);
-        }
-        return JSON.toJSONString(ResultMsg.SPIKE_SUCCESS);
+
+        return JSON.toJSONString(spikeGameService.handlePollSpike(loginUser,userId,spikeId));
     }
 
 

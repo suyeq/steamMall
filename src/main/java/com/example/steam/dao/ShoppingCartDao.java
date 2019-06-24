@@ -20,15 +20,15 @@ import java.util.List;
 @Repository
 public interface ShoppingCartDao {
 
-    @Select("select * from shoppingcart where userid=#{userId}")
-    List<ShoppingCart> findCartByUserId(@Param("userId")long userId);
+    @Select("select * from shoppingcart where email=#{email}")
+    List<ShoppingCart> findCartByUserEmail(@Param("email")String email);
 
-    @Insert("insert into shoppingcart(userid,posterimage,gameprice,gamename,gameid) value(#{userId},#{posterImage},#{gamePrice},#{gameName},#{gameId})")
+    @Insert("insert into shoppingcart(email,posterimage,gameprice,gamename,gameid) value(#{email},#{posterImage},#{gamePrice},#{gameName},#{gameId})")
     int addOneCart(ShoppingCart shoppingCart);
 
     @Delete("delete from shoppingcart where id=#{id}")
     int deleteOneGameById(@Param("id") long id);
 
-    @Delete("delete from shoppingcart where userid=#{userId}")
-    int deleteAllGameByUserId(@Param("userId")long userId);
+    @Delete("delete from shoppingcart where email=#{email}")
+    int deleteAllGameByUserEmail(@Param("email")String email);
 }

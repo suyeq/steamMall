@@ -17,17 +17,17 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SpikeShopCartDao {
 
-    @Insert("insert into spikeshopcart(userid,spikegameid) value(#{userId},#{spikeGameId})")
+    @Insert("insert into spikeshopcart(email,spikegameid) value(#{email},#{spikeGameId})")
     int addSpikeShopCart(SpikeShopCart spikeShopCart);
 
-    @Select("select * from spikeshopcart where userid=#{userId} and spikegameid=#{spikeGameId}")
-    SpikeShopCart findSpikeShopCart(@Param("userId")long userId,
+    @Select("select * from spikeshopcart where email=#{email} and spikegameid=#{spikeGameId}")
+    SpikeShopCart findSpikeShopCart(@Param("email")String email,
                                     @Param("spikeGameId")long spikeGameId);
 
-    @Select("select * from spikeshopcart where userid=#{userId}")
-    SpikeShopCart findSpikeShopCartByUserId(@Param("userId")long userId);
+    @Select("select * from spikeshopcart where email=#{email}")
+    SpikeShopCart findSpikeShopCartByUserEmail(@Param("email")String email);
 
 
-    @Delete("delete from spikeshopcart where userid=#{userId}")
-    int deleteSpikeShopCart(@Param("userId")long userId);
+    @Delete("delete from spikeshopcart where email=#{email}")
+    int deleteSpikeShopCart(@Param("email")String email);
 }

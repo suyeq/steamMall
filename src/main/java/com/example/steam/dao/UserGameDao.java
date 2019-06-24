@@ -22,7 +22,7 @@ public interface UserGameDao {
     @Select("select * from user_game where email=#{email}")
     List<UserGame> findGamesByEmail(@Param("email")String email);
 
-    @Insert("insert into user_game(email,gameid,playtime) value(#{email},#{gameId},0)")
+    @Insert("insert into user_game(email,gameid,playtime,lastplay) value(#{email},#{gameId},0,NOW())")
     int addGameToUser(UserGame userGame);
 
     @Select("select * from user_game where email=#{email} order by lastplay desc")

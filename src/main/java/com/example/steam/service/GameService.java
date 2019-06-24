@@ -9,6 +9,7 @@ import com.example.steam.redis.RedisPrefixKey;
 import com.example.steam.redis.RedisService;
 import com.example.steam.redis.key.CommentKey;
 import com.example.steam.redis.key.GameKey;
+import com.example.steam.redis.key.UserKey;
 import com.example.steam.utils.GamePriorityQueue;
 import com.example.steam.utils.GameRank;
 import com.example.steam.utils.RankScoreValue;
@@ -65,20 +66,28 @@ public class GameService implements InitializingBean {
     @Autowired
     UserGameService userGameService;
 
+    @Autowired
+    UserService userService;
+
+
     /**
-     * 找到某个用户下的所有游戏
+     * 某个用户下的游戏数量
      * @param email
      * @return
      */
-    public List<SimpleGameShowVo> findAllGameByEmail(String email){
-        List<UserGame> userGameList=userGameService.findUserGameListByEmail(email);
-        List<Long> gameIdList=userGameService.findGamesIdByEmail(email);
+    public long findContainGamesNum(String email){
+        return userService.findByEmail(email).getBuyGames();
+    }
+
+    /**
+     * 找到某个用户下的所有游戏展示
+     * @param email
+     * @return
+     */
+    public List<SimpleGameShowVo> findAllGameShowByEmail(String email){
         List<SimpleGameShowVo> simpleGameShowVoList=new LinkedList<>();
-        List<String> newGameIdList=new LinkedList<>();
-        for (Long id:gameIdList){
-            newGameIdList.add(id+"");
-        }
-        List<GameDetail> gameDetailList=redisService.getPipelineBatch(GameKey.GAME_ID,newGameIdList,GameDetail.class);
+        List<UserGame> userGameList=userGameService.findUserGameListByEmail(email);
+        List<GameDetail> gameDetailList=findAllGameByEmail(email);
         Map<Long,UserGame> map=new HashMap<>();
         for (UserGame userGame:userGameList){
             map.put(userGame.getGameId(),userGame);
@@ -89,6 +98,21 @@ public class GameService implements InitializingBean {
             simpleGameShowVoList.add(simpleGameShowVo);
         }
         return simpleGameShowVoList;
+    }
+
+    /**
+     * 找到某个用户下所有的游戏详情
+     * @param email
+     * @return
+     */
+    public List<GameDetail> findAllGameByEmail(String email){
+        List<Long> gameIdList=userGameService.findGamesIdByEmail(email);
+        List<String> newGameIdList=new LinkedList<>();
+        for (Long id:gameIdList){
+            newGameIdList.add(id+"");
+        }
+        List<GameDetail> gameDetailList=redisService.getPipelineBatch(GameKey.GAME_ID,newGameIdList,GameDetail.class);
+        return gameDetailList;
     }
 
     /**
@@ -528,33 +552,33 @@ public class GameService implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        int sum=((GameService)applicationContext.getBean("gameService")).findGamesSum();
-        redisService.set(GameKey.GAME_SUM,GameKey.GAME_SUM_KEY,sum);
-        for (int i=0;i<sum;i++){
-
-            GameDetail gameDetail=((GameService)applicationContext.getBean("gameService")).findGameById(i+1);
-
-            RankScoreValue<GameRank> rankTime=new RankScoreValue<>();
-            RankScoreValue<GameRank> rankSellNum=new RankScoreValue<>();
-
-            GameRank gameRank=new GameRank();
-            gameRank.setId(gameDetail.getId());
-            gameRank.setType(gameDetail.getType());
-
-            rankSellNum.setScore(gameDetail.getSellNum());
-            rankSellNum.setValue(gameRank);
-
-            rankTime.setValue(gameRank);
-            rankTime.setScore(gameDetail.getIssuedDate().getTime());
-
-            redisService.set(GameKey.GAME_ID,gameDetail.getId()+"",gameDetail);
-            if (gameDetail.getIssuedStatu()!=0){
-                redisService.zadd(GameKey.RANK_TIME,GameKey.GAME_RANK_TIME,rankTime);
-                redisService.zadd(GameKey.RANK_SELLNUM,GameKey.GAME_RANK_SELLNUM,rankSellNum);
-            }
-            if (gameDetail.getIssuedStatu()!=1){
-                redisService.zadd(GameKey.RANK_UPCOMING,GameKey.GAME_RANK_UPCOMING,rankTime);
-            }
-        }
+//        int sum=((GameService)applicationContext.getBean("gameService")).findGamesSum();
+//        redisService.set(GameKey.GAME_SUM,GameKey.GAME_SUM_KEY,sum);
+//        for (int i=0;i<sum;i++){
+//
+//            GameDetail gameDetail=((GameService)applicationContext.getBean("gameService")).findGameById(i+1);
+//
+//            RankScoreValue<GameRank> rankTime=new RankScoreValue<>();
+//            RankScoreValue<GameRank> rankSellNum=new RankScoreValue<>();
+//
+//            GameRank gameRank=new GameRank();
+//            gameRank.setId(gameDetail.getId());
+//            gameRank.setType(gameDetail.getType());
+//
+//            rankSellNum.setScore(gameDetail.getSellNum());
+//            rankSellNum.setValue(gameRank);
+//
+//            rankTime.setValue(gameRank);
+//            rankTime.setScore(gameDetail.getIssuedDate().getTime());
+//
+//            redisService.set(GameKey.GAME_ID,gameDetail.getId()+"",gameDetail);
+//            if (gameDetail.getIssuedStatu()!=0){
+//                redisService.zadd(GameKey.RANK_TIME,GameKey.GAME_RANK_TIME,rankTime);
+//                redisService.zadd(GameKey.RANK_SELLNUM,GameKey.GAME_RANK_SELLNUM,rankSellNum);
+//            }
+//            if (gameDetail.getIssuedStatu()!=1){
+//                redisService.zadd(GameKey.RANK_UPCOMING,GameKey.GAME_RANK_UPCOMING,rankTime);
+//            }
+//        }
     }
 }

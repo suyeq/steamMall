@@ -1,8 +1,24 @@
 # 项目介绍
-这个项目是主要设计缓存的一个练手项目，所以后台没有实现，但是前台流程是通了的，获取后面会把从登陆到购买以及秒杀。目前主要模块有四个：用户模块，游戏模块，评论模块以及秒杀模块。
+这个项目是主要设计缓存的一个练手项目，目前后台还没有实现，还在开发，但是前台流程是通了的，从登陆到购买以及秒杀。目前主要模块有五个：用户模块，游戏模块，评论模块、购物车模块以及秒杀模块。你们可以接着把这个项目写下去，里面注释写了很多，相信大家也能看懂，页面是直接在steam趴下来修改了的，嘿嘿嘿。。。。
+
+# 项目展示
+<div style="float:left">
+<img src="https://github.com/suyeq/steamMall/blob/master/1.png" width=350px height=200px>
+<img src="https://github.com/suyeq/steamMall/blob/master/2.png" width=350px height=200px>
+<img src="https://github.com/suyeq/steamMall/blob/master/3.png" width=350px height=200px>
+<img src="https://github.com/suyeq/steamMall/blob/master/4.png" width=350px height=200px>
+<img src="https://github.com/suyeq/steamMall/blob/master/5.png" width=350px height=200px>
+<img src="https://github.com/suyeq/steamMall/blob/master/6.png" width=350px height=200px>
+<img src="https://github.com/suyeq/steamMall/blob/master/7.png" width=350px height=200px>
+<img src="https://github.com/suyeq/steamMall/blob/master/8.png" width=350px height=200px>
+</div>
+
+# 压力测试
+服务器是学生服务器，就是腾讯那个10元的服务器，在本地利用jmeter压测工具设置5000个线程、10000个请求时，首页的QPS为1024，而秒杀接口则为1678，可能服务器的问题，我感觉QPS不应该这么低。
+<img src="https://github.com/suyeq/steamMall/blob/master/TestResult.png" width=350px height=200px>
 
 # 项目的运行
-在数据库中创建steam库，然后导入sql文件，修改相应的的配置后，运行起项目，然后需要把启动器类里面的`afterPropertiesSet`方法里面的代码注释掉，这是第一次启动加载缓存的代码。
+在数据库中创建steam库，然后导入sql文件，修改相应的的配置，关于主从配置请自行百度啦，运行起项目，然后需要把`GameService`类以及`CommentService`类里面的`afterPropertiesSet`方法里面的代码注释掉，这是第一次启动加载缓存的代码。
 
 # 架构以及详细实现
 ## 1.登录注册

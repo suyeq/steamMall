@@ -41,6 +41,7 @@ public class RedisService {
         try {
             jedis=pool.getResource();
             String value=jedis.get(keyPrefix.getThisPrefix()+key);
+
             return stringToBean(value,clazz);
         }finally {
             jedis.close();

@@ -10,6 +10,7 @@ import com.example.steam.redis.key.SpikeGameKey;
 import com.example.steam.service.ShoppingCartService;
 import com.example.steam.service.SpikeGameService;
 import com.example.steam.service.SpikeShopCartService;
+import com.example.steam.service.UserGameService;
 import com.example.steam.vo.SpikeGameDetail;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -39,9 +40,12 @@ public class SpikeGameHandle implements EventHandle {
         String value=(String) event.getEtrMsg().get(Event.SPIKE);
         SpikeShopCart spikeShopCart=RedisService.stringToBean(value,SpikeShopCart.class);
         SpikeGame spikeGame=((SpikeGameService)applicationContext.getBean("spikeGameService")).findOneGameBySpikeId(spikeShopCart.getSpikeGameId(),DynamicDataSourceHolder.SLAVE);
-        ((SpikeGameService)applicationContext.getBean("spikeGameService")).updateSpikeGameStockCount(spikeShopCart.getSpikeGameId());
-        ((SpikeShopCartService)applicationContext.getBean("spikeShopCartService")).addSpikeShopCart(spikeShopCart);
-        ((ShoppingCartService)applicationContext.getBean("shoppingCartService")).addOneCart(spikeShopCart.getEmail(),spikeGame.getGameId(),spikeGame.getSpikePrice());
+        boolean isContains=((UserGameService)applicationContext.getBean("userGameService")).isContains(spikeShopCart.getEmail(),spikeGame.getGameId());
+        if (!isContains){
+            ((SpikeGameService)applicationContext.getBean("spikeGameService")).updateSpikeGameStockCount(spikeShopCart.getSpikeGameId());
+            ((SpikeShopCartService)applicationContext.getBean("spikeShopCartService")).addSpikeShopCart(spikeShopCart);
+            ((ShoppingCartService)applicationContext.getBean("shoppingCartService")).addOneCart(spikeShopCart.getEmail(),spikeGame.getGameId(),spikeGame.getSpikePrice());
+        }
     }
 
     @Override

@@ -11,6 +11,7 @@ import com.example.steam.mq.MQProducer;
 import com.example.steam.redis.RedisService;
 import com.example.steam.redis.key.GameKey;
 import com.example.steam.redis.key.SpikeGameKey;
+import com.example.steam.redis.key.UserKey;
 import com.example.steam.utils.ResultMsg;
 import com.example.steam.utils.UUIDUtil;
 import com.example.steam.vo.GameDetail;
@@ -148,6 +149,11 @@ public class SpikeGameService {
         if (stock<0){
             return ResultMsg.STOCK_IS_NULL;
         }
+        List<Long> containsGames=redisService.getList(UserKey.CONTAINS_GAMES,UserKey.CONTAINS_KEY+loginUser.getEmail(),Long.class);
+        SpikeGameDetail spikeGameDetail=spikeGameService.findOneSpikeGameDetail(spikeId);
+        if (containsGames.contains(spikeGameDetail.getGameId())){
+            return ResultMsg.GAME_HAD;
+        }
         SpikeShopCart spikeShopCart=spikeShopCartService.findSpikeShopCart(loginUser.getEmail(),spikeId);
         if (spikeShopCart!=null){
             return ResultMsg.SPIKE_REPEAT;
@@ -168,7 +174,6 @@ public class SpikeGameService {
         if (loginUser==null){
             return ResultMsg.NO_LOGIN;
         }
-
         SpikeShopCart spikeShopCart=spikeShopCartService.findSpikeShopCart(loginUser.getEmail(),spikeId);
         if (spikeShopCart==null){
             return ResultMsg.SPIKE_ING;
@@ -182,12 +187,17 @@ public class SpikeGameService {
      * @return
      */
     public ResultMsg handleRandomPathAndLimitSpike(LoginUser loginUser) {
+        if (loginUser==null){
+            return ResultMsg.NO_LOGIN;
+        }
         Integer spikeTimes=redisService.get(SpikeGameKey.SPIKE_TIMES,SpikeGameKey.SPIKE_TIMES_KEY+loginUser.getEmail(),Integer.class);
-        spikeTimes=spikeTimes==null?0:spikeTimes;
+        spikeTimes=spikeTimes==null?new Integer(0):spikeTimes;
         if (spikeTimes>MAX_SPIKETIMES_EVERY_MINUTE){
             return ResultMsg.SPIKE_LIMIT_ERROR;
         }
         String uuId= UUIDUtil.randomUUID();
+        spikeTimes++;
+        redisService.set(SpikeGameKey.SPIKE_TIMES,SpikeGameKey.SPIKE_TIMES_KEY+loginUser.getEmail(),spikeTimes);
         redisService.set(SpikeGameKey.RANDM_PATH,SpikeGameKey.RANDM_PATH_KEY+loginUser.getEmail(),uuId);
         return ResultMsg.SUCCESS(uuId);
     }

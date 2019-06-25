@@ -12,10 +12,6 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * -----------
- * 穷则独善其身
- * 达则兼济天下
- * -----------
  * 买游戏处理器
  * @author: 苍术
  * @date: 2019-06-14
@@ -34,7 +30,6 @@ public class BuyGameHandle implements EventHandle {
     public void eventHandle(Event event, ApplicationContext applicationContext) {
         long userId=Long.parseLong((String)event.getEtrMsg().get(Event.USER_ID));
         String email=(String) event.getEtrMsg().get(Event.EMAIL);
-        System.out.println(email+"         lllllllllllll");
         List<ShoppingCart> shoppingCartList=((ShoppingCartService)applicationContext.getBean("shoppingCartService")).findShopCartByEmail(email);
         ((SpikeShopCartService)applicationContext.getBean("spikeShopCartService")).deleteSpikeShopCartByUserEmail(email);
         ((ShoppingCartService)applicationContext.getBean("shoppingCartService")).deleteAllGameInCartByUserEmail(email);

@@ -59,6 +59,8 @@ public class ResultMsg {
 
     public static ResultMsg GAME_HAD=new ResultMsg("520","游戏购买，不能参与秒杀");
 
+    public static ResultMsg ADMIN_NO=new ResultMsg("521","该账户不是管理员");
+
     private String code;
 
     private Object msg;

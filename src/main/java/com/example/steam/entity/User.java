@@ -12,6 +12,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class User {
 
+    public final static int ISADMIN=1;
+
     private Long id;
 
     private String nickName;

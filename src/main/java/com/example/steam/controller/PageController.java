@@ -1,13 +1,10 @@
 package com.example.steam.controller;
 
-import com.example.steam.dao.GameDao;
-import com.example.steam.entity.User;
 import com.example.steam.redis.RedisService;
 import com.example.steam.redis.key.SpikeGameKey;
 import com.example.steam.service.*;
 import com.example.steam.vo.LoginUser;
 import com.example.steam.vo.SpikeGameDetail;
-import com.example.steam.vo.UserVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * Created with IntelliJ IDEA.
@@ -144,5 +140,15 @@ public class PageController {
         }
         model.addAttribute("user",loginUser);
         return "showallcomment";
+    }
+
+    @RequestMapping("/admin/login")
+    public String adminLogin(){
+        return "admin/login";
+    }
+
+    @RequestMapping("/admin/index")
+    public String adminIndex(){
+        return "admin/index";
     }
 }

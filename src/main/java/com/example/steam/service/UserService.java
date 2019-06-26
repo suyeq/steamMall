@@ -55,6 +55,34 @@ public class UserService {
     MQProducer mqProducer;
 
     /**
+     * 处理管理员登录
+     * @param email
+     * @param password
+     * @return
+     */
+    public ResultMsg handleAdminLogin(String email,String password){
+        User user=((UserService)applicationContext.getBean("userService")).findByEmail(email);
+        User adminUser=redisService.get(UserKey.ADMIN_EMAIL,UserKey.ADMIN_KEY+email,User.class);
+        if (user == null){
+            return ResultMsg.NO_EMAIL;
+        }
+        if (adminUser!=null){
+            return ResultMsg.HAD_Login;
+        }
+
+        String finalPassword=Md5PassUtil.secondMd5(password,user.getSalt());
+        if (!finalPassword.equals(user.getPassword())){
+            return ResultMsg.PASS_ERROR;
+        }
+        if (user.getIsAdmin()!=User.ISADMIN){
+            return ResultMsg.ADMIN_NO;
+        }
+        redisService.set(UserKey.ADMIN_EMAIL,UserKey.ADMIN_KEY+email,user);
+        AdminUserHoleUtil.addUser(user);
+        return ResultMsg.LOGIN_SUCCESS;
+    }
+
+    /**
      * 找回密码，加入消息队列发送邮件
      * @param email
      * @return

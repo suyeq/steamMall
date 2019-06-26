@@ -48,6 +48,20 @@ public class LoginController {
     Logger log= LoggerFactory.getLogger(LoginController.class);
 
     /**
+     * 管理员登录验证
+     * @param email
+     * @param password
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/admin/userVerification")
+    public String adminLogin(@RequestParam("email")String email,
+                             @RequestParam("password")String password){
+        log.info(email+" "+password);
+        return JSON.toJSONString(userService.handleAdminLogin(email, password));
+    }
+
+    /**
      * 登录验证
      * @param email
      * @param password

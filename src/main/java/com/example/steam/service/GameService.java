@@ -69,7 +69,6 @@ public class GameService implements InitializingBean {
     @Autowired
     UserService userService;
 
-
     /**
      * 某个用户下的游戏数量
      * @param email

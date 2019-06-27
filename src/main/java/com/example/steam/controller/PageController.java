@@ -3,6 +3,7 @@ package com.example.steam.controller;
 import com.example.steam.redis.RedisService;
 import com.example.steam.redis.key.SpikeGameKey;
 import com.example.steam.service.*;
+import com.example.steam.vo.GameDetail;
 import com.example.steam.vo.LoginUser;
 import com.example.steam.vo.SpikeGameDetail;
 import org.slf4j.Logger;
@@ -13,6 +14,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -42,8 +45,6 @@ public class PageController {
     @RequestMapping("/")
     public String index(LoginUser loginUser, Model model){
         model.addAttribute("user",loginUser);
-        //
-        // log.error(loginUser.getId()+"");
         return "index";
     }
 
@@ -150,5 +151,15 @@ public class PageController {
     @RequestMapping("/admin/index")
     public String adminIndex(){
         return "admin/index";
+    }
+
+    @RequestMapping("/admin/game-list")
+    public String adminShowAllGames(){
+        return "admin/game-list";
+    }
+
+    @RequestMapping("/admin/game-add")
+    public String adminGameAdd(){
+        return "admin/game-add";
     }
 }

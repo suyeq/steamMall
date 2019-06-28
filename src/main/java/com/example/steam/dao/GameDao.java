@@ -1,9 +1,7 @@
 package com.example.steam.dao;
 
 import com.example.steam.entity.Game;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.security.PermitAll;
@@ -18,6 +16,9 @@ import java.util.List;
  */
 @Repository
 public interface GameDao {
+
+    @Select("select MAX(id) FROM game")
+    int findMaxId();
 
     @Select("select * from game where id=#{id}")
     Game findGameById(@Param("id")long id);
@@ -44,6 +45,13 @@ public interface GameDao {
     List<Game> findGamesBySearchContent(@Param("content")String content);
 
     @Update("update game set gamename=#{gameName},gameabout=#{gameAbout},gameprice=#{gamePrice}," +
-            "posterimage=#{posterImage},sellnum=#{sellNum},discount=#{discount} where id=#{id}")
+            "posterimage=#{posterImage},sellnum=#{sellNum},discount=#{discount},issuedstatu=#{issuedStatu}," +
+            "issueddate=#{issuedDate} where id=#{id}")
     int updateGame(Game game);
+
+    @Insert("insert into game(gamename,gameintroduction,gameabout,issuedstatu,gameprice,issueddate," +
+            "posterImage,lowestsystem,recommendsystem,sellnum,discount) value(#gameName,#{gameIntroduction},#{gameAbout}," +
+            "0,gamePrice,NOW(),1,lowestSystem,recommendSystem,0,discount)")
+    @Options(useGeneratedKeys = true,keyColumn ="id",keyProperty = "id")
+    int addGame(Game game);
 }

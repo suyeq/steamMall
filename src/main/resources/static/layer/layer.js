@@ -109,7 +109,7 @@
             c = r.maxmin && (1 === r.type || 2 === r.type),
             u = r.title ? '<div class="layui-layer-title" style="' + (f ? r.title[1] : "") + '">' + (f ? r.title[0] : r.title) + "</div>" : "";
         return r.zIndex = s, t([r.shade ? '<div class="layui-layer-shade" id="layui-layer-shade' + a + '" times="' + a + '" style="' + ("z-index:" + (s - 1) + "; ") + '"></div>' : "", '<div class="' + l[0] + (" layui-layer-" + o.type[r.type]) + (0 != r.type && 2 != r.type || r.shade ? "" : " layui-layer-border") + " " + (r.skin || "") + '" id="' + l[0] + a + '" type="' + o.type[r.type] + '" times="' + a + '" showtime="' + r.time + '" conType="' + (e ? "object" : "string") + '" style="z-index: ' + s + "; width:" + r.area[0] + ";height:" + r.area[1] + (r.fixed ? "" : ";position:absolute;") + '">' + (e && 2 != r.type ? "" : u) + '<div id="' + (r.id || "") + '" class="layui-layer-content' + (0 == r.type && r.icon !== -1 ? " layui-layer-padding" : "") + (3 == r.type ? " layui-layer-loading" + r.icon : "") + '">' + (0 == r.type && r.icon !== -1 ? '<i class="layui-layer-ico layui-layer-ico' + r.icon + '"></i>' : "") + (1 == r.type && e ? "" : r.content || "") + '</div><span class="layui-layer-setwin">' + function () {
-            var e = c ? '<a class="layui-layer-min" href="javascript:;"><cite></cite></a><a class="layui-layer-ico layui-layer-max" href="javascript:;"></a>' : "";
+            var e = c ? '<a class="layui-layer-dropzone" href="javascript:;"><cite></cite></a><a class="layui-layer-ico layui-layer-max" href="javascript:;"></a>' : "";
             return r.closeBtn && (e += '<a class="layui-layer-ico ' + l[7] + " " + l[7] + (r.title ? r.closeBtn : 4 == r.type ? "1" : "2") + '" href="javascript:;"></a>'), e
         }() + "</span>" + (r.btn ? function () {
             var e = "";
@@ -244,7 +244,7 @@
             }
         }), n.find("." + l[7]).on("click", e), a.shadeClose && i("#layui-layer-shade" + t.index).on("click", function () {
             r.close(t.index)
-        }), n.find(".layui-layer-min").on("click", function () {
+        }), n.find(".layui-layer-dropzone").on("click", function () {
             var e = a.min && a.min(n);
             e === !1 || r.min(t.index, a)
         }), n.find(".layui-layer-max").on("click", function () {
@@ -302,7 +302,7 @@
             top: n.height() - s,
             position: "fixed",
             overflow: "hidden"
-        }, !0), a.find(".layui-layer-min").hide(), "page" === a.attr("type") && a.find(l[4]).hide(), o.rescollbar(e), a.attr("minLeft") || o.minIndex++, a.attr("minLeft", f)
+        }, !0), a.find(".layui-layer-dropzone").hide(), "page" === a.attr("type") && a.find(l[4]).hide(), o.rescollbar(e), a.attr("minLeft") || o.minIndex++, a.attr("minLeft", f)
     }, r.restore = function (e) {
         var t = i("#" + l[0] + e), n = t.attr("area").split(",");
         t.attr("type");
@@ -313,7 +313,7 @@
             left: parseFloat(n[3]),
             position: t.attr("position"),
             overflow: "visible"
-        }, !0), t.find(".layui-layer-max").removeClass("layui-layer-maxmin"), t.find(".layui-layer-min").show(), "page" === t.attr("type") && t.find(l[4]).show(), o.rescollbar(e)
+        }, !0), t.find(".layui-layer-max").removeClass("layui-layer-maxmin"), t.find(".layui-layer-dropzone").show(), "page" === t.attr("type") && t.find(l[4]).show(), o.rescollbar(e)
     }, r.full = function (e) {
         var t, a = i("#" + l[0] + e);
         o.record(a), l.html.attr("layer-full") || l.html.css("overflow", "hidden").attr("layer-full", e), clearTimeout(t), t = setTimeout(function () {
@@ -323,7 +323,7 @@
                 left: t ? 0 : n.scrollLeft(),
                 width: n.width(),
                 height: n.height()
-            }, !0), a.find(".layui-layer-min").hide()
+            }, !0), a.find(".layui-layer-dropzone").hide()
         }, 100)
     }, r.title = function (e, t) {
         var n = i("#" + l[0] + (t || r.index)).find(l[1]);

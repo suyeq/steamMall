@@ -166,6 +166,40 @@ public class GameController {
         return JSON.toJSONString(ResultMsg.SUCCESS(gameService.findContainGamesNum(email)));
     }
 
+    /**
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/game/add")
+    public String addGame(@RequestParam("newGameName")String newGameName,
+                          @RequestParam("newGameIntroduction")String newGameIntroduction,
+                          @RequestParam("newGameAbout")String newGameAbout,
+                          @RequestParam("newGameKind")String newGameKind,
+                          @RequestParam("newGamePrice")int newGamePrice,
+                          @RequestParam("newGameDiscount")int  newGameDiscount,
+                          @RequestParam("newGameLowestCpu")String newGameLowestCpu,
+                          @RequestParam("newGameLowestOs")String newGameLowestOs,
+                          @RequestParam("newGameLowestRam")String newGameLowestRam,
+                          @RequestParam("newGameLowestXianka")String newGameLowestXianka,
+                          @RequestParam("newGameLowestNetwork")String newGameLowestNetwork,
+                          @RequestParam("newGameLowestDirectx")String newGameLowestDirectx,
+                          @RequestParam("newGameLowestRom")String newGameLowestRom,
+                          @RequestParam("newGameLowestShenka")String newGameLowestShenka,
+                          @RequestParam("newGameGoodCpu")String newGameGoodCpu,
+                          @RequestParam("newGameGoodOs")String newGameGoodOs,
+                          @RequestParam("newGameGoodRam")String newGameGoodRam,
+                          @RequestParam("newGameGoodXianka")String newGameGoodXianka,
+                          @RequestParam("newGameGoodNetwork")String newGameGoodNetwork,
+                          @RequestParam("newGameGoodDirectx")String newGameGoodDirectx,
+                          @RequestParam("newGameGoodRom")String newGameGoodRom,
+                          @RequestParam("newGameGoodShenka")String newGameGoodShenka){
+        long result=gameService.addGame(newGameName,newGameIntroduction, newGameAbout, newGameKind, newGamePrice, newGameDiscount,
+                newGameLowestCpu,newGameLowestOs,newGameLowestRam,newGameLowestXianka,newGameLowestNetwork,newGameLowestDirectx,
+                 newGameLowestRom,newGameLowestShenka,newGameGoodCpu,newGameGoodOs,newGameGoodRam,newGameGoodXianka,newGameGoodNetwork,
+                newGameGoodDirectx,newGameGoodRom, newGameGoodShenka);
+        return JSON.toJSONString(result);
+    }
+
 
 
 

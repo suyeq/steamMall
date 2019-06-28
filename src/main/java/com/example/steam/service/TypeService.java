@@ -3,6 +3,7 @@ package com.example.steam.service;
 import com.example.steam.dao.TypeDao;
 import com.example.steam.entity.GameType;
 import com.example.steam.entity.Label;
+import com.example.steam.entity.Type;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,10 +25,27 @@ public class TypeService {
     TypeDao typeDao;
 
 
+    /**
+     * 通过类型名字找到type
+     * @param typeName
+     * @return
+     */
+    public Type findTypeByTypeName(String typeName){
+        return typeDao.findTypeByTypeName(typeName);
+    }
+
+    /**
+     * 找到所有的类型
+     */
     public List<String> findAllType(){
         return typeDao.findAllType();
     }
 
+    /**
+     * 找到游戏id的游戏类型
+     * @param gameId
+     * @return
+     */
     public List<String> findTypeNameByGameId(long gameId){
         List<GameType> gameTypeList=typeDao.findTypesByGameId(gameId);
         List<String> typeNameList=new LinkedList<>();
@@ -37,9 +55,12 @@ public class TypeService {
         return typeNameList;
     }
 
-//    public String find
-//
-//
+    /**
+     * 判断是否存在
+     * @param types
+     * @param typeName
+     * @return
+     */
     public boolean isExists(List<String> types,String typeName){
         for (int i=0;i<types.size();i++){
             if (types.get(i).equals(typeName)){

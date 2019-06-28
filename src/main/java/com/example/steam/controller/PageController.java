@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.jws.WebParam;
 import java.util.List;
 
 /**
@@ -158,8 +159,20 @@ public class PageController {
         return "admin/game-list";
     }
 
+    @RequestMapping("/admin/not-game-list")
+    public String adminShowNotAllGames(){
+        return "admin/notissued-game-list";
+    }
+
     @RequestMapping("/admin/game-add")
-    public String adminGameAdd(){
+    public String adminGameAdd(Model model){
         return "admin/game-add";
+    }
+
+    @RequestMapping("/admin/game-image-edit/{gameId}")
+    public String adminGameImageEdit(@PathVariable("gameId") long gameId,
+                                     Model model){
+        model.addAttribute("gameId",gameId);
+        return "admin/game-image-edit";
     }
 }

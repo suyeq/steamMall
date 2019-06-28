@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.*;
 
@@ -68,6 +69,56 @@ public class GameService implements InitializingBean {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    SystemNeedService systemNeedService;
+
+    /**
+     * 增加一个游戏,默认不发布
+     * @param newGameName
+     * @param newGameIntroduction
+     * @param newGameAbout
+     * @param newGameKind
+     * @param newGamePrice
+     * @param newGameDiscount
+     * @param newGameLowestCpu
+     * @param newGameLowestOs
+     * @param newGameLowestRam
+     * @param newGameLowestXianka
+     * @param newGameLowestNetwork
+     * @param newGameLowestDirectx
+     * @param newGameLowestRom
+     * @param newGameLowestShenka
+     * @param newGameGoodCpu
+     * @param newGameGoodOs
+     * @param newGameGoodRam
+     * @param newGameGoodXianka
+     * @param newGameGoodNetwork
+     * @param newGameGoodDirectx
+     * @param newGameGoodRom
+     * @param newGameGoodShenka
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public long addGame(String newGameName, String newGameIntroduction, String newGameAbout,
+                        String newGameKind, int newGamePrice, int newGameDiscount,
+                        String newGameLowestCpu, String newGameLowestOs, String newGameLowestRam,
+                        String newGameLowestXianka, String newGameLowestNetwork, String newGameLowestDirectx,
+                        String newGameLowestRom, String newGameLowestShenka, String newGameGoodCpu,
+                        String newGameGoodOs, String newGameGoodRam, String newGameGoodXianka,
+                        String newGameGoodNetwork, String newGameGoodDirectx,
+                        String newGameGoodRom, String newGameGoodShenka){
+        SystemNeed lowestSystemNeed=new SystemNeed(newGameLowestOs,newGameLowestCpu,newGameLowestRam,newGameLowestXianka,
+                newGameLowestDirectx,newGameLowestNetwork,newGameLowestRom,newGameLowestShenka);
+        SystemNeed goodSystemNeed=new SystemNeed(newGameGoodOs,newGameGoodCpu,newGameGoodRam,newGameGoodXianka,
+                newGameGoodDirectx,newGameGoodNetwork,newGameGoodRom,newGameGoodShenka);
+        long lowestSystemId=systemNeedService.addSystemNeed(lowestSystemNeed);
+        long goodSystemId=systemNeedService.addSystemNeed(goodSystemNeed);
+        Game game=new Game(newGameName,newGameIntroduction,newGameAbout,newGamePrice,lowestSystemId,goodSystemId,newGameDiscount);
+        Type type=typeService.findTypeByTypeName(newGameKind);
+
+         return 1L;
+    }
 
     /**
      * 某个用户下的游戏数量
@@ -454,7 +505,6 @@ public class GameService implements InitializingBean {
         return gameDetailList;
     }
 
-
     /**
      * 找出最热卖的10个游戏
      * @return
@@ -495,6 +545,10 @@ public class GameService implements InitializingBean {
         }
         localStoreService.set(LocalStoreKey.UP_COMING_INDEX_KEY(),gameDetailList,page+"");
         return gameDetailList;
+    }
+
+    public int findMaxGameId(){
+        return gameDao.findMaxId();
     }
 
     public int findGamesSum(){

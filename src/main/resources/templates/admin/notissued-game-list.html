@@ -1,0 +1,70 @@
+﻿<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+	<div th:replace="admin/welcome::#link"></div>
+
+<title>未发布游戏列表</title>
+
+</head>
+<body class="pos-r" id="not_game_list" page="0">
+<header th:replace="admin/welcome::#head"></header>
+
+<aside th:replace="admin/welcome::#menu"></aside>
+<div style="margin-left:200px;">
+	<div class="page-container">
+		<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a class="btn btn-primary radius" onclick="product_add('添加产品','/admin/game-add')" href="javascript:void (0);"><i class="Hui-iconfont">&#xe600;</i> 添加产品</a></span> <span class="r">共有数据：<strong>54</strong> 条</span> </div>
+		<div class="mt-20">
+			<table class="table table-border table-bordered table-bg table-hover table-sort">
+				<thead>
+					<tr class="text-c">
+						<th width="40">ID</th>
+						<th width="60">游戏海报</th>
+						<th width="100">游戏名</th>
+						<th>游戏简介</th>
+						<th>游戏关于</th>
+						<th width="100">原价</th>
+						<th width="100">折扣</th>
+						<th width="60">发售状态</th>
+						<th width="60">发售时间</th>
+						<th width="100">操作</th>
+					</tr>
+				</thead>
+				<tbody id="game_list_content">
+					<tr class="text-c va-m">
+						<td>001</td>
+						<td><img width="60" class="product-thumb" src=""></a></td>
+						<td class="text-l"></td>
+						<td class="text-l"></td>
+						<td class="text-l"></td>
+						<td><span class="price">134</span> 元</td>
+						<td><span class="price">10</span> %</td>
+						<td class="td-status"><span class="label label-success radius">已发布</span></td>
+						<td class="td-manage"><a style="text-decoration:none" onClick="product_stop(this,'10001')" href="javascript:;" title="下架"><i class="Hui-iconfont">&#xe6de;</i></a> <a style="text-decoration:none" class="ml-5" onClick="product_edit('产品编辑','product-add.html','10001')" href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a> <a style="text-decoration:none" class="ml-5" onClick="product_del(this,'10001')" href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="dataTables_paginate paging_simple_numbers">
+				<a class="paginate_button previous disabled" onclick="loadPrePageGameList('not_issued')">上一页</a>
+				<!--<a class="paginate_button current" >1</a></span>-->
+				<a class="paginate_button next disabled" onclick="loadNextPageGameList('not_issued')">下一页</a>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+<!--_footer 作为公共模版分离出去-->
+	<div th:replace="admin/welcome::#foot"></div>
+<!--/_footer 作为公共模版分离出去-->
+<script type="text/javascript">
+    initNotIssuedGameList(0);
+</script>
+
+</body>
+</html>

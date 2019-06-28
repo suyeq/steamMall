@@ -2796,8 +2796,9 @@ var steam=
             shade: [0.1,'#fff'] //0.1透明度的白色背景
         });
         var data = new FormData();
-        var image=$("#avatar")[0].files[0];
-        data.append('avatar', image);
+        var image=$("#file")[0].files[0];
+        data.append('file', image);
+        //console.log(data)
         if (image.size>MAX_IMAGE_SIZE){
             layer.close(loadId);
             layer.msg("图片超过10M");

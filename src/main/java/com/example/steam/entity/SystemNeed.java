@@ -32,6 +32,17 @@ public class SystemNeed {
 
     public SystemNeed(){}
 
+    public SystemNeed(String operatingSystem,String cpu,String ram,String graphicsCard,
+                      String directx,String network,String rom,String soundCard){
+        this.operatingSystem=operatingSystem;
+        this.cpu=cpu;
+        this.ram=ram;
+        this.graphicsCard=graphicsCard;
+        this.directx=directx;
+        this.network=network;
+        this.rom=rom;
+        this.soundCard=soundCard;
+    }
 
     public Long getId() {
         return id;

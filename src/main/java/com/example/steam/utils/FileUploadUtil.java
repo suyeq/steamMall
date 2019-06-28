@@ -66,7 +66,7 @@ public class FileUploadUtil {
         }catch (IOException e){
             e.printStackTrace();
         }
-        Image image=new Image(imageUrl+origName,"avatar","avatar");
+        Image image=new Image(imageUrl+origName,"","");
         imageService.addImage(image);
         return ResultMsg.SUCCESS(image);
     }

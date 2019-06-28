@@ -23,7 +23,11 @@ public class FileController {
 
     @ResponseBody
     @RequestMapping("/file/upload")
-    public String upload(@RequestParam("avatar") MultipartFile file){
+    public String upload(@RequestParam("file") MultipartFile file){
         return JSON.toJSONString(fileUploadUtil.handleFileUpload(file));
     }
+
+
+
+
 }

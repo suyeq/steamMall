@@ -18,6 +18,9 @@ import java.util.List;
 @Repository
 public interface TypeDao {
 
+    @Select("select * from type where typename=#{typeName}")
+    Type findTypeByTypeName(@Param("typeName") String typeName);
+
     @Select("select * from game_type where gameid=#{gameId}")
     List<GameType> findTypesByGameId(@Param("gameId") long gameId);
 

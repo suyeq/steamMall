@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="Bookmark" href="/favicon.ico" >
+    <link rel="Shortcut Icon" href="/favicon.ico" />
+    <div th:replace="admin/welcome::#link"></div>
+    <link href="lib/webuploader/0.1.5/webuploader.css" th:href="@{/H-ui/lib/webuploader/0.1.5/webuploader.css}" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+<div class="page-container" id="game_edit_image" game-id="" th:attr="game-id=${gameId}">
+    <form action="" method="post" class="form form-horizontal" id="form-article-add">
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2">图片介绍上传：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <div class="uploader-list-container">
+                    <div class="queueList">
+                        <div id="dndArea" class="placeholder">
+                            <div id="filePicker-2"></div>
+                            <p>将照片拖到这里，最多可选6张(第一张为海报图)</p>
+                        </div>
+                    </div>
+                    <div class="statusBar" style="display:none;">
+                        <div class="progress"> <span class="text">0%</span> <span class="percentage"></span> </div>
+                        <div class="info"></div>
+                        <div class="btns">
+                            <div id="filePicker2"></div>
+                            <div class="uploadBtn">开始上传</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</body>
+</html>

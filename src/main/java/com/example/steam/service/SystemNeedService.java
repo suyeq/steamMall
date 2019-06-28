@@ -32,4 +32,14 @@ public class SystemNeedService {
         redisService.set(SystemNeedKey.SYSTEMNEED_ID,id+"",systemNeed);
         return systemNeed;
     }
+
+    /**
+     * 增加系统配置
+     * @param systemNeed
+     * @return
+     */
+    public long addSystemNeed(SystemNeed systemNeed){
+        systemNeedDao.addSystemNeed(systemNeed);
+        return systemNeed.getId();
+    }
 }

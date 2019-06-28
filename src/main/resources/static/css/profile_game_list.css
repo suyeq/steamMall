@@ -257,7 +257,7 @@ a.games_list_tab:hover {
 .price, .match_price {
     font-family:tahoma, helvetica, arial, trebuchet ms, sans-serif;
     font-size: 11px;
-    color: #fff;
+    color: red;
 }
 
 .discount_block {

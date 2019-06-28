@@ -40,6 +40,21 @@ public class Game {
 
     public Game(){}
 
+    public Game(String gameName,String gameIntroduction,String gameAbout,int gamePrice,
+                long lowestSystem,long recommendSystem,int discount){
+        this.gameName=gameName;
+        this.gameIntroduction=gameIntroduction;
+        this.gameAbout=gameAbout;
+        this.gamePrice=gamePrice;
+        this.lowestSystem=lowestSystem;
+        this.recommendSystem=recommendSystem;
+        this.discount=discount;
+        this.issuedStatu=0;
+        this.issuedDate=new Date();
+        this.sellNum=0;
+        this.posterImage=1L;
+    }
+
     public Long getId() {
         return id;
     }

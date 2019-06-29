@@ -30,4 +30,8 @@ public interface ImageDao {
     @Insert("insert into image(url,gamename,type) value(#{url},#{gameName},#{type})")
     @Options(useGeneratedKeys = true,keyColumn = "id",keyProperty = "id")
     long addImage(Image image);
+
+    @Insert("insert into game_image(gameid,image1,image2,image3,image4,image5) value(" +
+            "#{gameId},#{image1},#{image2},#{image3},#{image4},#{image5})")
+    long addImageToGame(GameImage gameImage);
 }

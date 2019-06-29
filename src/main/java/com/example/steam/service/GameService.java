@@ -201,6 +201,23 @@ public class GameService implements InitializingBean {
     }
 
     /**
+     * 更新游戏海报图
+     * @param gameId
+     * @param posterImage
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public int updateGamePosterImage(long gameId,long posterImage){
+        Game game=((GameService)applicationContext.getBean("gameService")).findOneGameById(gameId,DynamicDataSourceHolder.MASTER);
+        GameDetail gameDetail=redisService.get(GameKey.GAME_ID,gameId+"",GameDetail.class);
+        String imageUrl=imageService.findImageUrlById(posterImage);
+        gameDetail.setPosterImage(imageUrl);
+        redisService.set(GameKey.GAME_ID,gameId+"",gameDetail);
+        game.setPosterImage(posterImage);
+        return ((GameService)applicationContext.getBean("gameService")).updateGame(game);
+    }
+
+    /**
      * 更新卖出数目
      * @param gameId
      * @return

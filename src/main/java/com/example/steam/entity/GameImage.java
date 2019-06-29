@@ -28,6 +28,16 @@ public class GameImage {
 
     public GameImage(){}
 
+    public GameImage(long gameId,long image1,long image2,
+                     long image3,long image4,long image5){
+        this.gameId=gameId;
+        this.image1=image1;
+        this.image2=image2;
+        this.image3=image3;
+        this.image4=image4;
+        this.image5=image5;
+    }
+
     public Long getId() {
         return id;
     }

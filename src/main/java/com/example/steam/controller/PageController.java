@@ -172,7 +172,7 @@ public class PageController {
     }
 
     @RequestMapping("/admin/game-image-edit/{gameId}")
-    public String adminGameImageEdit(@PathVariable("gameId") long gameId,
+    public String adminGameImageEdit(@PathVariable("gameId")long gameId,
                                      Model model){
         model.addAttribute("gameId",gameId);
         return "admin/game-image-edit";

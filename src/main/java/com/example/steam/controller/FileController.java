@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @author: 苍术
  * @date: 2019-06-21
@@ -25,6 +27,12 @@ public class FileController {
     @RequestMapping("/file/upload")
     public String upload(@RequestParam("file") MultipartFile file){
         return JSON.toJSONString(fileUploadUtil.handleFileUpload(file));
+    }
+
+    @ResponseBody
+    @RequestMapping("/file/multipleattributesupload")
+    public String uploadImages(HttpServletRequest request){
+        return JSON.toJSONString(fileUploadUtil.handleMultipleAttributrUpload(request));
     }
 
 

@@ -178,7 +178,7 @@
                             element+='<a style="text-decoration:none" onClick="product_start(this,'+data.msg[i].id+')" href="javascript:;" title="发布"><i class="Hui-iconfont">&#xe6de;</i></a> ';
                         }
                         element+='<a style="text-decoration:none" class="ml-5" onClick="product_edit(\'产品编辑\',game-add.html'+data.msg[i].id+' href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a>' ;
-                        element+='<a  href="javascript:;" onclick="system_log_show(this,\'10001\')" class="ml-5" style="text-decoration:none" title="修改图片或者为该游戏新增图片介绍"><i class="Hui-iconfont"></i></a>';
+                        element+='<a  href="javascript:;" onclick="product_image('+data.msg[i].id+')" class="ml-5" style="text-decoration:none" title="修改图片或者为该游戏新增图片介绍"><i class="Hui-iconfont"></i></a>';
                         element+='<a style="text-decoration:none" class="ml-5" onClick="product_del(this,'+data.msg[i].id+')" href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a></td>\n' +
                         '</tr>';
                         $('#game_list_content').append(element);
@@ -355,4 +355,15 @@
                 },
             });
         });
+    }
+
+    function product_image(id) {
+        var index=layer.open({
+            type: 2,
+            area: ['893px', '600px'], //宽高
+            content: "/admin/game-image-edit/"+id,
+            title:"编辑图片"
+        });
+        // layer.full(index);
+
     }

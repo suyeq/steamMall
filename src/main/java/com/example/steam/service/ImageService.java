@@ -26,24 +26,68 @@ public class ImageService {
     @Autowired
     ImageDao imageDao;
 
+    /**
+     * 增加介绍图片给游戏
+     * @param gameImage
+     * @return
+     */
+    public long addImageToGame(GameImage gameImage){
+        return imageDao.addImageToGame(gameImage);
+    }
+
+    /**
+     * 得到一个gameimage
+     * @param gameId
+     * @return
+     */
+    public GameImage findGameImageByGameId(long gameId){
+        return imageDao.findImagesByGameId(gameId);
+    }
+
+    /**
+     * 增加一张图片，并返回新增id
+     * @param image
+     * @return
+     */
     public Long addImage(Image image){
         imageDao.addImage(image);
         return image.getId();
     }
 
+    /**
+     * 通过id得到一个image
+     * @param id
+     * @return
+     */
     public Image findImageById(long id){
         return imageDao.findImageById(id);
     }
 
+    /**
+     * 通过id得到image的url
+     * @param id
+     * @return
+     */
     public String findImageUrlById(long id){
           return imageDao.findImageUrlById(id);
     }
 
+    /**
+     * 自定义数据库
+     * @param id
+     * @param dataSource
+     * @return
+     */
     public String findImageUrlById(long id, String dataSource){
         DynamicDataSourceHolder.putDataSource(dataSource);
         return imageDao.findImageUrlById(id);
     }
 
+    /**
+     * 通过游戏id找寻相关图片url
+     * @param gameId
+     * @return
+     */
     public List<String> findGameImageUrlsByGameId(long gameId){
         GameImage gameImage=imageDao.findImagesByGameId(gameId);
         List<String> images=new LinkedList<>();
@@ -68,6 +112,11 @@ public class ImageService {
         return images;
     }
 
+    /**
+     * 通过游戏id找寻相关图片
+     * @param gameId
+     * @return
+     */
     public List<Image> findGameImagesByGameId(long gameId){
         GameImage gameImage=imageDao.findImagesByGameId(gameId);
         List<Image> images=new LinkedList<>();

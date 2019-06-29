@@ -1,9 +1,13 @@
 package com.example.steam.service;
 
 import com.example.steam.dao.TypeDao;
+import com.example.steam.entity.Game;
 import com.example.steam.entity.GameType;
 import com.example.steam.entity.Label;
 import com.example.steam.entity.Type;
+import com.example.steam.redis.RedisService;
+import com.example.steam.redis.key.GameKey;
+import com.example.steam.vo.GameDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +28,39 @@ public class TypeService {
     @Autowired
     TypeDao typeDao;
 
+    @Autowired
+    RedisService redisService;
+
+
+    @Transactional(rollbackFor = Exception.class)
+    public int deleteGameTypeByGameId(long gameId){
+        List<GameType> typeList=typeDao.findTypesByGameId(gameId);
+        if (typeList != null){
+            return typeDao.deleteGameTypeByGameId(gameId);
+        }
+        return -1;
+    }
+
+    /**
+     * 为一个游戏增加分类
+     * @param gameType
+     * @return
+     */
+    public int addTypeToGame(GameType gameType){
+        GameDetail gameDetail=redisService.get(GameKey.GAME_ID,gameType.getGameId()+"",GameDetail.class);
+        if (gameDetail!=null){
+            List<String> typeList=gameDetail.getType();
+            if (typeList!=null){
+                typeList.add(typeDao.findTypeNameById(gameType.getTypeId()));
+            }else {
+                typeList=new LinkedList<>();
+                typeList.add(typeDao.findTypeNameById(gameType.getTypeId()));
+            }
+            gameDetail.setType(typeList);
+            redisService.set(GameKey.GAME_ID,gameType.getGameId()+"",gameDetail);
+        }
+        return typeDao.addTypeToGame(gameType);
+    }
 
     /**
      * 通过类型名字找到type

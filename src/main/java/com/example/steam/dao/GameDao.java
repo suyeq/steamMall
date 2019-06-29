@@ -50,8 +50,11 @@ public interface GameDao {
     int updateGame(Game game);
 
     @Insert("insert into game(gamename,gameintroduction,gameabout,issuedstatu,gameprice,issueddate," +
-            "posterImage,lowestsystem,recommendsystem,sellnum,discount) value(#gameName,#{gameIntroduction},#{gameAbout}," +
-            "0,gamePrice,NOW(),1,lowestSystem,recommendSystem,0,discount)")
+            "posterImage,lowestsystem,recommendsystem,sellnum,discount) value(#{gameName},#{gameIntroduction},#{gameAbout}," +
+            "0,#{gamePrice},#{issuedDate},1,#{lowestSystem},#{recommendSystem},0,#{discount})")
     @Options(useGeneratedKeys = true,keyColumn ="id",keyProperty = "id")
     int addGame(Game game);
+
+    @Delete("delete from game where id=#{id}")
+    int deleteGame(@Param("id") long id);
 }

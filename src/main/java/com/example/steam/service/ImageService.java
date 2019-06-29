@@ -21,6 +21,8 @@ import java.util.List;
 @Service
 public class ImageService {
 
+    private final static String DEFAULT_IMAGE="https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/95/959986934ff7a3782a0746a96d5f5df8524d9c2b_full.jpg";
+
     @Autowired
     ImageDao imageDao;
 
@@ -45,11 +47,24 @@ public class ImageService {
     public List<String> findGameImageUrlsByGameId(long gameId){
         GameImage gameImage=imageDao.findImagesByGameId(gameId);
         List<String> images=new LinkedList<>();
-        images.add(imageDao.findImageUrlById(gameImage.getImage1()));
-        images.add(imageDao.findImageUrlById(gameImage.getImage2()));
-        images.add(imageDao.findImageUrlById(gameImage.getImage3()));
-        images.add(imageDao.findImageUrlById(gameImage.getImage4()));
-        images.add(imageDao.findImageUrlById(gameImage.getImage5()));
+        if (gameImage ==null){
+            images.add(DEFAULT_IMAGE);
+            images.add(DEFAULT_IMAGE);
+            images.add(DEFAULT_IMAGE);
+            images.add(DEFAULT_IMAGE);
+            images.add(DEFAULT_IMAGE);
+            return images;
+        }
+        String image1=imageDao.findImageUrlById(gameImage.getImage1());
+        String image2=imageDao.findImageUrlById(gameImage.getImage2());
+        String image3=imageDao.findImageUrlById(gameImage.getImage3());
+        String image4=imageDao.findImageUrlById(gameImage.getImage4());
+        String image5=imageDao.findImageUrlById(gameImage.getImage5());
+        images.add(image1);
+        images.add(image2);
+        images.add(image3);
+        images.add(image4);
+        images.add(image5);
         return images;
     }
 

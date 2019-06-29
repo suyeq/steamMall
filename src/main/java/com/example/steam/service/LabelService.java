@@ -42,6 +42,25 @@ public class LabelService {
 
     Logger log= LoggerFactory.getLogger(LabelService.class);
 
+    /**
+     * 删除与该游戏相关的标签相关
+     * @param gameId
+     * @return
+     */
+    public int deleteGameLabelByGameId(long gameId){
+        List<GameLabel> gameLabelList=labelDao.findLabelsByGameId(gameId);
+        if (gameLabelList!=null){
+            return labelDao.deleteGameLabelByGameId(gameId);
+        }
+        return -1;
+    }
+
+    /**
+     * 通过标签名字找到标签
+     * @param labelName
+     * @param dataSource
+     * @return
+     */
     public Label findLabelByLabelName(String labelName, String dataSource){
         DynamicDataSourceHolder.putDataSource(dataSource);
         return labelDao.findLabelByLableName(labelName);

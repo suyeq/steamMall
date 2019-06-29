@@ -4,49 +4,27 @@
     //新建一个游戏
     function saveNewGame() {
         var newGameName=$('#new_game_name').val();
-        console.log(newGameName)
         var newGameIntroduction=$('#new_game_introduction').val();
-        console.log(newGameIntroduction)
         var newGameAbout=$('#new_game_about').val();
-        console.log(newGameAbout)
         var newGameKind=$('#new_game_kind option:selected').text();
-        console.log(newGameKind)
         var newGamePrice=$('#new_game_price').val();
-        console.log(newGamePrice)
         var newGameDiscount=$('#new_game_discount').val();
-        console.log(newGameDiscount)
         var newGameLowestCpu=$('#new_game_lowest_cpu').val();
-        console.log(newGameLowestCpu)
         var newGameLowestOs=$('#new_game_lowest_os').val();
-        console.log(newGameLowestOs)
         var newGameLowestRam=$('#new_game_lowest_ram').val();
-        console.log(newGameLowestRam)
         var newGameLowestXianka=$('#new_game_lowest_xianka').val();
-        console.log(newGameLowestXianka)
         var newGameLowestNetwork=$('#new_game_lowest_net').val();
-        console.log(newGameLowestNetwork)
         var newGameLowestDirectx=$('#new_game_lowest_directx').val();
-        console.log(newGameLowestDirectx)
         var newGameLowestRom=$('#new_game_lowest_rom').val();
-        console.log(newGameLowestRom)
         var newGameLowestShenka=$('#new_game_lowest_shenka').val();
-        console.log(newGameLowestShenka)
         var newGameGoodCpu=$('#new_game_good_cpu').val();
-        console.log(newGameGoodCpu)
         var newGameGoodOs=$('#new_game_good_os').val();
-        console.log(newGameGoodOs)
         var newGameGoodRam=$('#new_game_good_ram').val();
-        console.log(newGameGoodRam)
         var newGameGoodXianka=$('#new_game_good_xianka').val();
-        console.log(newGameGoodXianka)
         var newGameGoodNetwork=$('#new_game_good_net').val();
-        console.log(newGameGoodNetwork)
         var newGameGoodDirectx=$('#new_game_good_directx').val();
-        console.log(newGameGoodDirectx)
         var newGameGoodRom=$('#new_game_good_rom').val();
-        console.log(newGameGoodRom)
         var newGameGoodShenka=$('#new_game_good_shenka').val();
-        console.log(newGameGoodShenka)
         $.ajax({
             url:"/game/add",
             type:"POST",
@@ -75,9 +53,9 @@
                newGameGoodShenka:newGameGoodShenka
             },
             success:function (data) {
-                console.log(data)
                 data=eval("("+data+")");
-                console.log(data);
+                layer.msg("增加成功");
+                window.location.href="/admin/not-game-list"
             }
         })
     }
@@ -293,7 +271,8 @@
         var index = layer.open({
             type: 2,
             title: title,
-            content: url
+            content: url,
+            area: '1000px',
         });
         layer.full(index);
     }
@@ -367,14 +346,12 @@
         layer.confirm('确认要删除吗？',function(index){
             $.ajax({
                 type: 'POST',
-                url: '',
-                dataType: 'json',
-                success: function(data){
+                url: '/game/delete/'+id,
+                success: function(){
                     $(obj).parents("tr").remove();
                     layer.msg('已删除!',{icon:1,time:1000});
                 },
-                error:function(data) {
-                    console.log(data.msg);
+                error:function() {
                 },
             });
         });

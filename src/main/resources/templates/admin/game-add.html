@@ -39,11 +39,9 @@
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>游戏分类：</label>
 			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
 				<select name="new_game_kind" id="new_game_kind" class="select">
-					<option value="0">一级分类</option>
-					<option value="1">一级分类</option>
-					<option value="11">├二级分类</option>
-					<option value="12">├二级分类</option>
-					<option value="13">├二级分类</option>
+					<th:block th:each="type:${typeList}">
+						<option value="0" th:text="${type}">一级分类</option>
+					</th:block>
 				</select>
 				</span> </div>
 		</div>

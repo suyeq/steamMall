@@ -166,6 +166,8 @@ public class PageController {
 
     @RequestMapping("/admin/game-add")
     public String adminGameAdd(Model model){
+        List<String> typeList=typeService.findAllType();
+        model.addAttribute("typeList",typeList);
         return "admin/game-add";
     }
 

@@ -224,6 +224,26 @@ public class RedisService {
     }
 
     /**
+     * 根据值移除zset中某一个排名
+     * @param keyPrefix
+     * @param key
+     * @param member
+     * @param <T>
+     * @return
+     */
+    public <T> long zrem(RedisPrefixKey keyPrefix,String key,T member){
+        Jedis jedis=null;
+        try{
+            jedis=pool.getResource();
+            String realKey=keyPrefix.getThisPrefix()+key;
+            String realMember=beanToString(member);
+            return jedis.zrem(realKey,realMember);
+        }finally {
+            jedis.close();
+        }
+    }
+
+    /**
      * 返回该键有序集合的总元素个数
      * @param keyPrefix
      * @param key
@@ -260,7 +280,7 @@ public class RedisService {
     }
 
     /**
-     * 键自增，使用于string
+     * 键自减，使用于string
      * @param keyPrefix
      * @param key
      * @return

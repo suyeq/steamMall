@@ -197,7 +197,13 @@ public class GameController {
                 newGameLowestCpu,newGameLowestOs,newGameLowestRam,newGameLowestXianka,newGameLowestNetwork,newGameLowestDirectx,
                  newGameLowestRom,newGameLowestShenka,newGameGoodCpu,newGameGoodOs,newGameGoodRam,newGameGoodXianka,newGameGoodNetwork,
                 newGameGoodDirectx,newGameGoodRom, newGameGoodShenka);
-        return JSON.toJSONString(result);
+        return JSON.toJSONString(ResultMsg.SUCCESS(result));
+    }
+
+    @ResponseBody
+    @RequestMapping("/game/delete/{gameId}")
+    public String deleteGame(@PathVariable("gameId")long gameId){
+        return JSON.toJSONString(ResultMsg.SUCCESS(gameService.deleteGame(gameId)));
     }
 
 

@@ -18,6 +18,9 @@ import java.util.List;
 @Repository
 public interface LabelDao {
 
+    @Delete("delete from game_label where gameid=#{gameId}")
+    int deleteGameLabelByGameId(@Param("gameId")long gameId);
+
     @Select("select name from label where id=#{id}")
     String findLabelNameById(@Param("id") long id);
 

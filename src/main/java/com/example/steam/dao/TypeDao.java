@@ -2,6 +2,8 @@ package com.example.steam.dao;
 
 import com.example.steam.entity.GameType;
 import com.example.steam.entity.Type;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
@@ -24,6 +26,9 @@ public interface TypeDao {
     @Select("select * from game_type where gameid=#{gameId}")
     List<GameType> findTypesByGameId(@Param("gameId") long gameId);
 
+    @Delete("delete from game_type where gameid=#{gameId}")
+    int deleteGameTypeByGameId(long gameId);
+
     @Select("select * from type where id=#{id}")
     Type findTypeById(@Param("id") long id);
 
@@ -32,4 +37,9 @@ public interface TypeDao {
 
     @Select("select typename from type")
     List<String> findAllType();
+
+    @Insert("insert into game_type(gameid,typeid) value(#{gameId},#{typeId})")
+    int addTypeToGame(GameType gameType);
+
+
 }

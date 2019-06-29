@@ -20,6 +20,10 @@ public class GameType {
 
     public GameType(){}
 
+    public GameType(long gameId,long typeId){
+        this.gameId=gameId;
+        this.typeId=typeId;
+    }
 
     public Long getId() {
         return id;

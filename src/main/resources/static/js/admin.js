@@ -1,6 +1,32 @@
     var salt="1q2w3e";
     var MAX_IMAGE_SIZE=10*1024*1024;
 
+    //修改一个游戏
+    function updateGame() {
+        var gameId=$('#edit_game')[0].getAttribute("game-id");
+        var newGameName=$('#new_game_name').val();
+        var newGameIntroduction=$('#new_game_introduction').val();
+        var newGameAbout=$('#new_game_about').val();
+        //var newGameKind=$('#new_game_kind option:selected').text();
+        var newGamePrice=$('#new_game_price').val();
+        var newGameDiscount=$('#new_game_discount').val();
+        $.ajax({
+            url:"/game/update",
+            data:{
+                gameId:gameId,
+                newGameName:newGameName,
+                newGameIntroduction:newGameIntroduction,
+                newGameAbout:newGameAbout,
+                //newGameKind:newGameKind,
+                newGamePrice:newGamePrice,
+                newGameDiscount:newGameDiscount
+            },
+            success:function (data) {
+                layer.msg("修改成功");
+            }
+        })
+    }
+
     //新建一个游戏
     function saveNewGame() {
         var newGameName=$('#new_game_name').val();
@@ -128,8 +154,8 @@
                     } else {
                         element+='<a style="text-decoration:none" onClick="product_start(this,'+data.msg[i].id+')" href="javascript:;" title="发布"><i class="Hui-iconfont">&#xe6de;</i></a> ';
                     }
-                    element+='<a style="text-decoration:none" class="ml-5" onClick="product_edit(\'产品编辑\',game-add.html'+data.msg[i].id+' href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a>' ;
-                    element+='<a  href="javascript:;" onclick="system_log_show(this,\'10001\')" class="ml-5" style="text-decoration:none" title="修改图片或者为该游戏新增图片介绍"><i class="Hui-iconfont"></i></a>';
+                    element+='<a style="text-decoration:none" class="ml-5" onClick="product_edit('+data.msg[i].id+')" href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a>' ;
+                    element+='<a  href="javascript:;" onclick="product_image('+data.msg[i].id+')" class="ml-5" style="text-decoration:none" title="修改图片或者为该游戏新增图片介绍"><i class="Hui-iconfont"></i></a>';
                     element+='<a style="text-decoration:none" class="ml-5" onClick="product_del(this,'+data.msg[i].id+')" href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a></td>\n' +
                         '</tr>';
                     $('#game_list_content').append(element);
@@ -177,7 +203,7 @@
                         } else {
                             element+='<a style="text-decoration:none" onClick="product_start(this,'+data.msg[i].id+')" href="javascript:;" title="发布"><i class="Hui-iconfont">&#xe6de;</i></a> ';
                         }
-                        element+='<a style="text-decoration:none" class="ml-5" onClick="product_edit(\'产品编辑\',game-add.html'+data.msg[i].id+' href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a>' ;
+                        element+='<a style="text-decoration:none" class="ml-5" onClick="product_edit('+data.msg[i].id+')" href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a>' ;
                         element+='<a  href="javascript:;" onclick="product_image('+data.msg[i].id+')" class="ml-5" style="text-decoration:none" title="修改图片或者为该游戏新增图片介绍"><i class="Hui-iconfont"></i></a>';
                         element+='<a style="text-decoration:none" class="ml-5" onClick="product_del(this,'+data.msg[i].id+')" href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a></td>\n' +
                         '</tr>';
@@ -309,8 +335,15 @@
         layer.confirm('确认要下架吗？',function(index){
             $(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="product_start(this,id)" href="javascript:;" title="发布"><i class="Hui-iconfont">&#xe603;</i></a>');
             $(obj).parents("tr").find(".td-status").html('<span class="label label-defaunt radius">已下架</span>');
-            $(obj).remove();
+            //$(obj).remove();
             layer.msg('已下架!',{icon: 5,time:1000});
+            $(obj).parents("tr").remove();
+            $.ajax({
+                url:"/game/issued/"+id,
+                success:function () {
+
+                }
+            })
         });
     }
 
@@ -319,8 +352,15 @@
         layer.confirm('确认要发布吗？',function(index){
             $(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="product_stop(this,id)" href="javascript:;" title="下架"><i class="Hui-iconfont">&#xe6de;</i></a>');
             $(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已发布</span>');
-            $(obj).remove();
+            //$(obj).remove();
             layer.msg('已发布!',{icon: 6,time:1000});
+            $(obj).parents("tr").remove();
+            $.ajax({
+                url:"/game/issued/"+id,
+                success:function () {
+
+                }
+            })
         });
     }
 
@@ -332,13 +372,14 @@
     }
 
     /*产品-编辑*/
-    function product_edit(title,url,id){
+    function product_edit(id){
         var index = layer.open({
             type: 2,
-            title: title,
-            content: url
+            area: ['900px', '600px'], //宽高
+            title: "游戏编辑",
+            content: '/admin/game-edit/'+id,
         });
-        layer.full(index);
+        //layer.full(index);
     }
 
     /*产品-删除*/

@@ -17,6 +17,8 @@ public class SpikeGameKey extends BaseKey {
 
     public static final String SPIKE_TIMES_KEY="times:";
 
+    private static final int MAX_EXSIS_tIME=1000*30;
+
     private SpikeGameKey(int expiredTime) {
         super(expiredTime);
     }
@@ -25,7 +27,7 @@ public class SpikeGameKey extends BaseKey {
 
     public static SpikeGameKey SPIKE_STOCK=new SpikeGameKey(0);
 
-    public static SpikeGameKey RANDM_PATH=new SpikeGameKey(0);
+    public static SpikeGameKey RANDM_PATH=new SpikeGameKey(MAX_EXSIS_tIME);
 
     public static SpikeGameKey SPIKE_TIMES=new SpikeGameKey(60);
 }

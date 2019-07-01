@@ -2,10 +2,7 @@ package com.example.steam.dao;
 
 import com.example.steam.entity.GameImage;
 import com.example.steam.entity.Image;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -34,4 +31,8 @@ public interface ImageDao {
     @Insert("insert into game_image(gameid,image1,image2,image3,image4,image5) value(" +
             "#{gameId},#{image1},#{image2},#{image3},#{image4},#{image5})")
     long addImageToGame(GameImage gameImage);
+
+    @Update("update game_image set image1=#{image1},image2=#{image2},image3=#{image3}," +
+            "image4=#{image4},image5=#{image5} where gameid=#{gameId}")
+    long updateImageToGame(GameImage gameImage);
 }

@@ -2,6 +2,8 @@ package com.example.steam.utils;
 
 import com.example.steam.entity.GameImage;
 import com.example.steam.entity.Image;
+import com.example.steam.redis.RedisService;
+import com.example.steam.redis.key.FileKey;
 import com.example.steam.service.GameService;
 import com.example.steam.service.ImageService;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
@@ -10,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -31,6 +34,8 @@ public class FileUploadUtil {
 
     Logger log= LoggerFactory.getLogger(FileUploadUtil.class);
 
+    private final static int MAX_IMAGE_LENGTH=6;
+
     @Value("${imageAddress}")
     private String imageServer;
 
@@ -46,6 +51,9 @@ public class FileUploadUtil {
 
     @Autowired
     GameService gameService;
+
+    @Autowired
+    RedisService redisService;
 
     /**
      * 处理图片的上传
@@ -111,36 +119,40 @@ public class FileUploadUtil {
      * 处理数据库增加
      * @param imageUrl
      */
-    private void handleImageDao(String imageUrl,long gameId){
+    @Transactional(rollbackFor = Exception.class)
+     void handleImageDao(String imageUrl, long gameId){
         Image image=new Image(imageUrl,"","");
         long newImageId=imageService.addImage(image);
         GameImage gameImage=imageService.findGameImageByGameId(gameId);
-        if (gameImage == null){
+        redisService.lpush(FileKey.IMAGE_LIST,gameId+"",newImageId);
+        long imageListSize=redisService.llength(FileKey.IMAGE_LIST,gameId+"");
+        if (imageListSize == MAX_IMAGE_LENGTH){
+            List<Long> imageIdList=new LinkedList<>();
+            for (int i=0;i<MAX_IMAGE_LENGTH;i++){
+                long imageId=redisService.rpop(FileKey.IMAGE_LIST,gameId+"",Long.class);
+                imageIdList.add(imageId);
+            }
+            if (gameImage == null){
+                /**
+                 *  1.  加入集合存入
+                 *  2. 当集合中满了6条的时候
+                 *  3. 取第一条做海报，其它插入做介绍
+                 */
+                GameImage newGameImage=new GameImage(gameId,imageIdList.get(1),imageIdList.get(2),
+                        imageIdList.get(3),imageIdList.get(4),imageIdList.get(5));
+                imageService.addImageToGame(newGameImage);
+                gameService.updateGamePosterImage(gameId,imageIdList.get(0));
+                redisService.del(FileKey.IMAGE_LIST,gameId+"");
+            }else {
+                GameImage newGameImage=new GameImage(gameId,imageIdList.get(1),imageIdList.get(2),
+                        imageIdList.get(3),imageIdList.get(4),imageIdList.get(5));
+                imageService.updateImageToGame(newGameImage);
+                gameService.updateGamePosterImage(gameId,imageIdList.get(0));
+                redisService.del(FileKey.IMAGE_LIST,gameId+"");
+            }
             /**
-             *  1.加入集合存入
-             *  2. 当集合中满了6条的时候
-             *  3. 取第一条做海报，其它插入做介绍
+             * 插入数据库
              */
-           List<Image> imageList=ImageHolderUtil.getImageHolder();
-           if (imageList == null){
-               imageList=new LinkedList<>();
-               imageList.add(image);
-               ImageHolderUtil.setImageHolder(imageList);
-           }else {
-               imageList.add(image);
-               ImageHolderUtil.setImageHolder(imageList);
-               if (imageList.size() == 6){
-                   /**
-                    * 插入数据库
-                    */
-                    GameImage newGameImage=new GameImage(gameId,imageList.get(1).getId(),imageList.get(2).getId(),
-                            imageList.get(3).getId(),imageList.get(4).getId(),imageList.get(5).getId());
-                    imageService.addImageToGame(newGameImage);
-                    gameService.updateGamePosterImage(gameId,newImageId);
-                    ImageHolderUtil.setImageHolder(null);
-               }
-           }
-        }else {
 
         }
     }

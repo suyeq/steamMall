@@ -4,7 +4,11 @@ import com.example.steam.config.DynamicDataSourceHolder;
 import com.example.steam.dao.ImageDao;
 import com.example.steam.entity.GameImage;
 import com.example.steam.entity.Image;
+import com.example.steam.redis.RedisService;
+import com.example.steam.redis.key.GameKey;
+import com.example.steam.vo.GameDetail;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,13 +30,51 @@ public class ImageService {
     @Autowired
     ImageDao imageDao;
 
+    @Autowired
+    GameService gameService;
+
+    @Autowired
+    RedisService redisService;
+
+    @Autowired
+    ApplicationContext applicationContext;
+
     /**
-     * 增加介绍图片给游戏
+     * 更新游戏介绍图
      * @param gameImage
      * @return
      */
+    public long updateImageToGame(GameImage gameImage){
+        long result=imageDao.updateImageToGame(gameImage);
+        GameDetail gameDetail=gameService.findGameById(gameImage.getGameId());
+        List<Image> imageList=((ImageService)applicationContext.getBean("imageService")).findGameImagesByGameId(gameImage.getGameId());
+        gameDetail.setImageIntro1(imageList.get(0).getUrl());
+        gameDetail.setImageIntro2(imageList.get(1).getUrl());
+        gameDetail.setImageIntro3(imageList.get(2).getUrl());
+        gameDetail.setImageIntro4(imageList.get(3).getUrl());
+        gameDetail.setImageIntro5(imageList.get(4).getUrl());
+        redisService.set(GameKey.GAME_ID,gameImage.getGameId()+"",gameDetail);
+        return result;
+    }
+
+    /**
+     * 增加介绍图片给游戏
+     * 并更新缓存中的游戏介绍图
+     * @param gameImage
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
     public long addImageToGame(GameImage gameImage){
-        return imageDao.addImageToGame(gameImage);
+        long result=imageDao.addImageToGame(gameImage);
+        GameDetail gameDetail=gameService.findGameById(gameImage.getGameId());
+        List<Image> imageList=((ImageService)applicationContext.getBean("imageService")).findGameImagesByGameId(gameImage.getGameId());
+        gameDetail.setImageIntro1(imageList.get(0).getUrl());
+        gameDetail.setImageIntro2(imageList.get(1).getUrl());
+        gameDetail.setImageIntro3(imageList.get(2).getUrl());
+        gameDetail.setImageIntro4(imageList.get(3).getUrl());
+        gameDetail.setImageIntro5(imageList.get(4).getUrl());
+        redisService.set(GameKey.GAME_ID,gameImage.getGameId()+"",gameDetail);
+        return result;
     }
 
     /**

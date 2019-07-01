@@ -200,11 +200,33 @@ public class GameController {
         return JSON.toJSONString(ResultMsg.SUCCESS(result));
     }
 
+
+    @ResponseBody
+    @RequestMapping("/game/update")
+    public String addGame(@RequestParam("gameId")long gameId,
+                          @RequestParam("newGameName")String newGameName,
+                          @RequestParam("newGameIntroduction")String newGameIntroduction,
+                          @RequestParam("newGameAbout")String newGameAbout,
+                          //@RequestParam("newGameKind")String newGameKind,
+                          @RequestParam("newGamePrice")int newGamePrice,
+                          @RequestParam("newGameDiscount")int  newGameDiscount){
+        long result=gameService.updateGame(gameId,newGameName,newGameIntroduction, newGameAbout, null, newGamePrice, newGameDiscount);
+        return JSON.toJSONString(ResultMsg.SUCCESS(result));
+    }
+
     @ResponseBody
     @RequestMapping("/game/delete/{gameId}")
     public String deleteGame(@PathVariable("gameId")long gameId){
         return JSON.toJSONString(ResultMsg.SUCCESS(gameService.deleteGame(gameId)));
     }
+
+    @ResponseBody
+    @RequestMapping("/game/issued/{gameId}")
+    public String publishGame(@PathVariable("gameId")long gameId){
+        return JSON.toJSONString(ResultMsg.SUCCESS(gameService.updateGameIssuedStatu(gameId)));
+    }
+
+
 
 
 

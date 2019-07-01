@@ -154,6 +154,16 @@ public class PageController {
         return "admin/index";
     }
 
+    @RequestMapping("/admin/game-edit/{gameId}")
+    public String adminEditGames(@PathVariable("gameId")long gameId,
+                                 Model model){
+        GameDetail gameDetail=gameService.findGameById(gameId);
+        List<String> typeList=typeService.findAllType();
+        model.addAttribute("typeList",typeList);
+        model.addAttribute("game",gameDetail);
+        return "admin/game-edit";
+    }
+
     @RequestMapping("/admin/game-list")
     public String adminShowAllGames(){
         return "admin/game-list";

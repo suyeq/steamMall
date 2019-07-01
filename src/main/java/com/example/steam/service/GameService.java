@@ -100,6 +100,35 @@ public class GameService implements InitializingBean {
     }
 
     /**
+     * 更新游戏的价格折扣，名字等
+     * @param newGameName
+     * @param newGameIntroduction
+     * @param newGameAbout
+     * @param newGameKind
+     * @param newGamePrice
+     * @param newGameDiscount
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public int updateGame(long gameId,String newGameName, String newGameIntroduction, String newGameAbout,
+                          String newGameKind, int newGamePrice, int newGameDiscount){
+        Game game=((GameService)applicationContext.getBean("gameService")).findOneGameById(gameId,DynamicDataSourceHolder.MASTER);
+        GameDetail gameDetail=redisService.get(GameKey.GAME_ID,gameId+"",GameDetail.class);
+        gameDetail.setGameName(newGameName);
+        gameDetail.setGameIntroduction(newGameIntroduction);
+        gameDetail.setGameAbout(newGameAbout);
+        gameDetail.setGamePrice(newGamePrice);
+        gameDetail.setDiscount(newGameDiscount);
+        redisService.set(GameKey.GAME_ID,gameId+"",gameDetail);
+        game.setGameName(newGameName);
+        game.setGameIntroduction(newGameIntroduction);
+        game.setGameAbout(newGameAbout);
+        game.setGamePrice(newGamePrice);
+        game.setDiscount(newGameDiscount);
+        return ((GameService)applicationContext.getBean("gameService")).updateGame(game);
+    }
+
+    /**
      * 增加一个游戏,默认不发布
      * 并加入为发布列表，排序
      * @param newGameName
@@ -198,6 +227,38 @@ public class GameService implements InitializingBean {
         }
         List<GameDetail> gameDetailList=redisService.getPipelineBatch(GameKey.GAME_ID,newGameIdList,GameDetail.class);
         return gameDetailList;
+    }
+
+    /**
+     * 更新发布的状态
+     * @param gameId
+     * @return
+     */
+    public int updateGameIssuedStatu(long gameId){
+        Game game=((GameService)applicationContext.getBean("gameService")).findOneGameById(gameId,DynamicDataSourceHolder.MASTER);
+        GameDetail gameDetail=redisService.get(GameKey.GAME_ID,gameId+"",GameDetail.class);
+        RankScoreValue<GameRank> rankRankScoreValue=new RankScoreValue<>();
+        GameRank gameRank=new GameRank(gameDetail.getId(),gameDetail.getType());
+        rankRankScoreValue.setValue(gameRank);
+        if (game.getIssuedStatu() == Game.ISSUED_PUBLISH){
+            game.setIssuedStatu(Game.ISSUED_UNPUBLISH);
+            gameDetail.setIssuedStatu(Game.ISSUED_UNPUBLISH);
+            rankRankScoreValue.setScore(game.getIssuedDate().getTime());
+            redisService.zrem(GameKey.RANK_TIME,GameKey.GAME_RANK_TIME,gameRank);
+            redisService.zrem(GameKey.RANK_SELLNUM,GameKey.GAME_RANK_SELLNUM,gameRank);
+            redisService.zadd(GameKey.RANK_UPCOMING,GameKey.GAME_RANK_UPCOMING,rankRankScoreValue);
+        }else {
+            game.setIssuedStatu(Game.ISSUED_PUBLISH);
+            gameDetail.setIssuedStatu(Game.ISSUED_PUBLISH);
+            game.setIssuedDate(new Date());
+            gameDetail.setIssuedDate(game.getIssuedDate());
+            rankRankScoreValue.setScore(game.getIssuedDate().getTime());
+            redisService.zadd(GameKey.RANK_TIME,GameKey.GAME_RANK_TIME,rankRankScoreValue);
+            redisService.zadd(GameKey.RANK_SELLNUM,GameKey.GAME_RANK_SELLNUM,rankRankScoreValue);
+            redisService.zrem(GameKey.RANK_UPCOMING,GameKey.GAME_RANK_UPCOMING,gameRank);
+        }
+        redisService.set(GameKey.GAME_ID,gameId+"",gameDetail);
+        return ((GameService)applicationContext.getBean("gameService")).updateGame(game);
     }
 
     /**

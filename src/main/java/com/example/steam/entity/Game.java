@@ -14,6 +14,10 @@ import java.util.Date;
 @Component
 public class Game {
 
+    public final static int ISSUED_PUBLISH=1;
+
+    public final static int ISSUED_UNPUBLISH=0;
+
     private Long id;
 
     private String gameName;

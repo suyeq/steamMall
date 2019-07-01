@@ -1,0 +1,74 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="Bookmark" href="/favicon.ico" >
+<link rel="Shortcut Icon" href="/favicon.ico" />
+<div th:replace="admin/welcome::#link"></div>
+<link href="lib/webuploader/0.1.5/webuploader.css" th:href="@{/H-ui/lib/webuploader/0.1.5/webuploader.css}" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+<div class="page-container" id="edit_game" game-id="" th:attr="game-id=${game.id}">
+	<form action="" method="post" class="form form-horizontal" id="form-article-add">
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>游戏名称：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="" th:placeholder="${game.gameName}" id="new_game_name">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">游戏介绍：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<textarea id="new_game_introduction" name="" cols="" rows="" class="textarea"  placeholder="介绍游戏...最少输入10个字符" th:placeholder="${game.gameIntroduction}" datatype="*10-100" dragonfly="true" nullmsg="备注不能为空！" onKeyUp=""></textarea>
+				<p class="textarea-numberbar"></p>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">游戏关于：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<textarea id="new_game_about" name="" cols="" rows="" class="textarea" th:placeholder="${game.gameAbout}" placeholder="介绍游戏...最少输入10个字符" datatype="*10-100" dragonfly="true" nullmsg="备注不能为空！" onKeyUp=""></textarea>
+				<p class="textarea-numberbar"></p>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>游戏分类：</label>
+			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
+				<select name="new_game_kind" id="new_game_kind" class="select">
+					<th:block th:each="type:${typeList}">
+						<option value="0" th:text="${type}">一级分类</option>
+					</th:block>
+				</select>
+				</span> </div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">游戏价格：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" name="" id="new_game_price" th:placeholder="${game.gamePrice}" placeholder="" value="" class="input-text" style="width:90%">
+				元</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">游戏折扣：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" name="" id="new_game_discount" placeholder="输入一个大于等于0小于100的整数(打几折)" th:placeholder="${game.discount}" value="" class="input-text" style="width:90%">
+				%</div>
+		</div>
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+				<button onClick="updateGame();" class="btn btn-primary radius" type="submit"><i class="Hui-iconfont">&#xe632;</i> 保存</button>
+				<!--<button onClick="article_save();" class="btn btn-secondary radius" type="button"><i class="Hui-iconfont">&#xe632;</i> 保存草稿</button>-->
+				<!--<button onClick="layer_close();" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>-->
+			</div>
+		</div>
+	</form>
+</div>
+
+<!--_footer 作为公共模版分离出去-->
+<div th:replace="admin/welcome::#foot"></div> <!--/_footer 作为公共模版分离出去-->
+
+</body>
+</html>

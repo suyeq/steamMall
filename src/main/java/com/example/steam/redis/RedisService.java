@@ -182,6 +182,23 @@ public class RedisService {
     }
 
     /**
+     * 列表长度
+     * @param keyPrefix
+     * @param key
+     * @return
+     */
+    public long llength(RedisPrefixKey keyPrefix,String key){
+        Jedis jedis=null;
+        try {
+            jedis=pool.getResource();
+            String realKey=keyPrefix.getThisPrefix()+key;
+            return jedis.llen(realKey);
+        }finally {
+            jedis.close();
+        }
+    }
+
+    /**
      * zset增加
      * @param keyPrefix
      * @param key

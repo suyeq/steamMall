@@ -1,11 +1,13 @@
 package com.example.steam.controller;
 
+import com.example.steam.entity.User;
 import com.example.steam.redis.RedisService;
 import com.example.steam.redis.key.SpikeGameKey;
 import com.example.steam.service.*;
 import com.example.steam.vo.GameDetail;
 import com.example.steam.vo.LoginUser;
 import com.example.steam.vo.SpikeGameDetail;
+import com.example.steam.vo.UserVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -186,5 +188,34 @@ public class PageController {
                                      Model model){
         model.addAttribute("gameId",gameId);
         return "admin/game-image-edit";
+    }
+
+    @RequestMapping("/admin/user-list")
+    public String adminUserList(Model model){
+        List<UserVo> userVoList=userService.findAllUser();
+        System.out.println(userVoList.toString());
+        model.addAttribute("userList",userVoList);
+        return "admin/member-list";
+    }
+
+    @RequestMapping("/admin/member-add")
+    public String adminUserAdd(Model model){
+        return "admin/member-add";
+    }
+
+    @RequestMapping("/admin/member-edit/{email}")
+    public String adminUserEdit(Model model,
+                                @PathVariable("email")String email){
+        User user=userService.findByEmail(email);
+        model.addAttribute("user",user);
+        return "admin/member-edit";
+    }
+
+    @RequestMapping("/admin/change-password/{email}")
+    public String adminEditPass(Model model,
+                                @PathVariable("email")String email){
+        User user=userService.findByEmail(email);
+        model.addAttribute("user",user);
+        return "admin/change-password";
     }
 }

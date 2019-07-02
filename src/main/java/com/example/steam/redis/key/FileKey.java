@@ -14,5 +14,5 @@ public class FileKey extends BaseKey {
         super(expiredTime);
     }
 
-    public static FileKey IMAGE_LIST=new FileKey(0);
+    public final static FileKey IMAGE_LIST=new FileKey(0);
 }

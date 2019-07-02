@@ -23,11 +23,11 @@ public class SpikeGameKey extends BaseKey {
         super(expiredTime);
     }
 
-    public static SpikeGameKey SPIKE_ID=new SpikeGameKey(0);
+    public final static SpikeGameKey SPIKE_ID=new SpikeGameKey(0);
 
-    public static SpikeGameKey SPIKE_STOCK=new SpikeGameKey(0);
+    public final static SpikeGameKey SPIKE_STOCK=new SpikeGameKey(0);
 
-    public static SpikeGameKey RANDM_PATH=new SpikeGameKey(MAX_EXSIS_tIME);
+    public final static SpikeGameKey RANDM_PATH=new SpikeGameKey(MAX_EXSIS_tIME);
 
-    public static SpikeGameKey SPIKE_TIMES=new SpikeGameKey(60);
+    public final static SpikeGameKey SPIKE_TIMES=new SpikeGameKey(60);
 }

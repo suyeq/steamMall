@@ -80,7 +80,8 @@ public class MQCustomer implements InitializingBean, DisposableBean {
                     try {
                         Thread.sleep(500);
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
+                        log.error("I/O异常");
+                        Thread.currentThread().interrupt();
                     }
                 }
             }

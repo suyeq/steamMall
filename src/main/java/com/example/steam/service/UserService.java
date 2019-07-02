@@ -1,6 +1,7 @@
 package com.example.steam.service;
 
 import com.example.steam.dao.UserDao;
+import com.example.steam.entity.Image;
 import com.example.steam.entity.User;
 import com.example.steam.mq.Event;
 import com.example.steam.mq.EventType;
@@ -19,10 +20,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -54,6 +60,111 @@ public class UserService {
     @Autowired
     MQProducer mqProducer;
 
+    @Autowired
+    FileUploadUtil fileUploadUtil;
+
+    /**
+     * 处理修改密码
+     * @param email
+     * @param newPass
+     * @param confimPass
+     * @return
+     */
+    public ResultMsg handleEditPass(String email,String newPass,String confimPass){
+        User user=((UserService)applicationContext.getBean("userService")).findByEmail(email);
+        if (!newPass.equals(confimPass)){
+            return ResultMsg.PASS_NOT_EQUAL;
+        }
+        String finalPass=Md5PassUtil.secondMd5(newPass,user.getSalt());
+        user.setPassword(finalPass);
+        redisService.set(UserKey.USER_ID,email,user);
+        ((UserService) applicationContext.getBean("userService")).updateUser(user);
+        return ResultMsg.SUCCESS;
+    }
+
+    /**
+     * 处理编辑用户
+     * @param email
+     * @param request
+     * @return
+     */
+    public ResultMsg handleEditUser(String email,HttpServletRequest request){
+        User user=((UserService)applicationContext.getBean("userService")).findByEmail(email);
+        MultipartHttpServletRequest multipartHttpServletRequest=(MultipartHttpServletRequest)request;
+        String nickName=multipartHttpServletRequest.getParameter("nickName");
+        String city=multipartHttpServletRequest.getParameter("city");
+        String introduction=multipartHttpServletRequest.getParameter("introduction");
+        MultipartFile file=multipartHttpServletRequest.getFile("avatar");
+        log.error(nickName);
+        user.setNickName(nickName);
+        if (StringUtils.isNotEmpty(city)){
+            log.error(city);
+            user.setProvince(city);
+        }
+        if (StringUtils.isNotEmpty(introduction)){
+            log.error(introduction);
+            user.setIntroduction(introduction);
+        }
+        if (file!=null){
+            String finalImageUrl=fileUploadUtil.handleMultipartFile(file);
+            Image image=new Image(finalImageUrl,"avatar","avatar");
+            long newImageId=imageService.addImage(image);
+            user.setAvatar(newImageId);
+        }
+        redisService.set(UserKey.USER_ID,email,user);
+        ((UserService) applicationContext.getBean("userService")).updateUser(user);
+        return ResultMsg.SUCCESS;
+    }
+
+    /**
+     * 处理删除
+     * @param email
+     * @return
+     */
+    public ResultMsg handleDeleteUser(String email){
+        ((UserService)applicationContext.getBean("userService")).deleteUser(email);
+        return ResultMsg.SUCCESS;
+    }
+
+    /**
+     * 删除某个用户
+     * @param email
+     * @return
+     */
+    public int deleteUser(String email){
+        redisService.del(UserKey.USER_ID,email);
+        return userDao.deleteUser(email);
+    }
+
+    /**
+     * 新增一个用户
+     * @param request
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public ResultMsg handleAddNewUser(HttpServletRequest request){
+        MultipartHttpServletRequest multipartHttpServletRequest=(MultipartHttpServletRequest)request;
+        String email=multipartHttpServletRequest.getParameter("email");
+        User user=((UserService)applicationContext.getBean("userService")).findByEmail(email);
+        if (user!=null){
+            return ResultMsg.HAD_REGISTER;
+        }
+        String nickName=multipartHttpServletRequest.getParameter("nickName");
+        int isAdmin=Integer.parseInt(multipartHttpServletRequest.getParameter("isAdmin"));
+        String password=multipartHttpServletRequest.getParameter("password");
+        String city=multipartHttpServletRequest.getParameter("city");
+        String introduction=multipartHttpServletRequest.getParameter("introduction");
+        MultipartFile file=multipartHttpServletRequest.getFile("avatar");
+        String finalImageUrl=fileUploadUtil.handleMultipartFile(file);
+        Image image=new Image(finalImageUrl,"avatar","avatar");
+        long newImageId=imageService.addImage(image);
+        String salt=UUIDUtil.randomUUID().substring(0,6);
+        String finalPass=Md5PassUtil.secondMd5(password,salt);
+        User newUser=new User(nickName,email,salt,finalPass,newImageId,city,introduction,isAdmin);
+        ((UserService) applicationContext.getBean("userService")).addUser(newUser);
+        return ResultMsg.SUCCESS;
+    }
+
     /**
      * 处理管理员登录
      * @param email
@@ -80,6 +191,23 @@ public class UserService {
         redisService.set(UserKey.ADMIN_EMAIL,UserKey.ADMIN_KEY+email,user);
         AdminUserHoleUtil.addUser(user);
         return ResultMsg.LOGIN_SUCCESS;
+    }
+
+    /**
+     * 更新管理员的状态
+     * @param email
+     * @return
+     */
+    public ResultMsg updateAdminStatu(String email){
+        User user=((UserService)applicationContext.getBean("userService")).findByEmail(email);
+        if (user.getIsAdmin() == User.ISADMIN){
+            user.setIsAdmin(User.NOADMIN);
+        }else {
+            user.setIsAdmin(User.ISADMIN);
+        }
+        redisService.set(UserKey.USER_ID,email,user);
+        int result=((UserService) applicationContext.getBean("userService")).updateUser(user);
+        return ResultMsg.SUCCESS(result);
     }
 
     /**
@@ -132,6 +260,30 @@ public class UserService {
         redisService.set(UserKey.USER_ID,email,user);
         redisService.set(UserKey.COOKIE_ID,cookieId,loginUser);
         return ((UserService)applicationContext.getBean("userService")).updateUser(user);
+    }
+
+
+    /**
+     * 找到所有的用户
+     * @return
+     */
+    public List<UserVo> findAllUser(){
+        List<User> userList=userDao.findAllUser();
+        List<UserVo> userVoList=new LinkedList<>();
+        for (User user:userList){
+            UserVo userVo=new UserVo();
+            userVo.setId(user.getId());
+            userVo.setAvatarImage(imageService.findImageUrlById(user.getAvatar()));
+            userVo.setLv(user.getLv());
+            userVo.setCountry(user.getCountry());
+            userVo.setProvince(user.getProvince());
+            userVo.setNickName(user.getNickName());
+            userVo.setIntroduction(user.getIntroduction());
+            userVo.setIsAdmin(user.getIsAdmin());
+            userVo.setEmail(user.getEmail());
+            userVoList.add(userVo);
+        }
+        return userVoList;
     }
 
     /**

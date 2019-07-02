@@ -27,4 +27,9 @@ public class UserVo extends User {
     public void setAvatarImage(String avatarImage) {
         this.avatarImage = avatarImage;
     }
+
+    @Override
+    public String toString(){
+        return avatarImage;
+    }
 }

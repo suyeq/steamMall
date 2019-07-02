@@ -17,5 +17,5 @@ public class EmailKey extends BaseKey {
         super(expiredTime);
     }
 
-    public static EmailKey VERIFICATION_CODE=new EmailKey(VERIFICATION_CODE_TIME);
+    public final static EmailKey VERIFICATION_CODE=new EmailKey(VERIFICATION_CODE_TIME);
 }

@@ -3,6 +3,8 @@ package com.example.steam.redis;
 import com.alibaba.fastjson.JSON;
 import com.example.steam.utils.RankScoreValue;
 import com.example.steam.vo.SpecialGame;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
@@ -24,6 +26,8 @@ import java.util.*;
 public class RedisService {
 
     private final static double MIN_SEED=-9999999999999d;
+
+    Logger log= LoggerFactory.getLogger(RedisService.class);
 
     @Autowired
     JedisPool pool;
@@ -99,7 +103,7 @@ public class RedisService {
             try {
                 pipeline.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error("I/O异常");
             }
             jedis.close();
         }

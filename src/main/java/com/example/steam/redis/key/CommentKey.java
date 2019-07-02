@@ -26,11 +26,11 @@ public class CommentKey extends BaseKey {
 //        this.prefixKey=getClass().getSimpleName()+":"+
 //    }
 
-    public static CommentKey COMMENT_ID=new CommentKey(0);
+    public final static CommentKey COMMENT_ID=new CommentKey(0);
 
-    public static CommentKey COMMENT_RANK_ZANNUM=new CommentKey(0);
+    public final static CommentKey COMMENT_RANK_ZANNUM=new CommentKey(0);
 
-    public static CommentKey COMMENT_RANK_TIME=new CommentKey(0);
+    public final static CommentKey COMMENT_RANK_TIME=new CommentKey(0);
 
-    public static CommentKey COMMENT_SUM=new CommentKey(0);
+    public final static CommentKey COMMENT_SUM=new CommentKey(0);
 }

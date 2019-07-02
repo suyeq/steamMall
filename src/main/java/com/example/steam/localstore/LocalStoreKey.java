@@ -167,6 +167,12 @@ public class LocalStoreKey {
 
     @Override
     public boolean equals(Object o){
+        if(o == null){
+            return false;
+        }
+        if (this.getClass()!=o.getClass()){
+            return false;
+        }
         LocalStoreKey storeKey=(LocalStoreKey)o;
         if (keyName.equals(storeKey.keyName)){
             return true;

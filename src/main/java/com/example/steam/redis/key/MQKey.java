@@ -15,5 +15,5 @@ public class MQKey extends BaseKey {
         super(expiredTime);
     }
 
-    public static MQKey MQ=new MQKey(0);
+    public final static MQKey MQ=new MQKey(0);
 }

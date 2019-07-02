@@ -95,7 +95,7 @@ public class FileUploadUtil {
      * @param file
      * @return
      */
-    private String handleMultipartFile(MultipartFile file){
+    public  String handleMultipartFile(MultipartFile file){
         String origName=file.getOriginalFilename();
         File imgFile=new File(imageServer,origName);
         while (imgFile.exists()){
@@ -110,7 +110,7 @@ public class FileUploadUtil {
             IOUtils.copy(file.getInputStream(),outputStream);
             outputStream.flush();
         }catch (IOException e){
-            e.printStackTrace();
+            log.error("I/O异常");
         }
         return imageUrl+origName;
     }

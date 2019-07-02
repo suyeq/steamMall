@@ -15,5 +15,5 @@ public class SystemNeedKey extends BaseKey {
         super(expiredTime);
     }
 
-    public static SystemNeedKey SYSTEMNEED_ID=new SystemNeedKey(0);
+    public final static SystemNeedKey SYSTEMNEED_ID=new SystemNeedKey(0);
 }

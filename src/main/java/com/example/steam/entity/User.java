@@ -14,6 +14,8 @@ public class User {
 
     public final static int ISADMIN=1;
 
+    public final static int NOADMIN=0;
+
     private Long id;
 
     private String nickName;
@@ -55,9 +57,26 @@ public class User {
         this.commentNum=0;
         this.isAdmin=0;
         this.lv=0;
-        this.country="China";
-        this.province="Hunan";
+        this.country="湖南";
+        this.province="长沙";
         this.introduction="这个人很懒，什么都没写~";
+    }
+
+    public User(String nickName,String email,String salt,String password,long avatar,
+                String province,String introduction,int isAdmin){
+        this.nickName=nickName;
+        this.email=email;
+        this.salt=salt;
+        this.password=password;
+        this.avatar=avatar;
+        this.playTime=0;
+        this.buyGames=0;
+        this.commentNum=0;
+        this.isAdmin=isAdmin;
+        this.lv=0;
+        this.country="湖南";
+        this.province=province;
+        this.introduction=introduction;
     }
 
     public User(long id,String nickName,String salt,String email,String password,

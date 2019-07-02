@@ -23,14 +23,14 @@ public class UserKey extends BaseKey {
         super(expireTime);
     }
 
-    public static UserKey USER_ID=new UserKey(0);
+    public final static UserKey USER_ID=new UserKey(0);
 
-    public static UserKey COOKIE_ID=new UserKey(expireTime);
+    public final static UserKey COOKIE_ID=new UserKey(expireTime);
 
-    public static UserKey CONTAINS_GAMES=new UserKey(0);
+    public final static UserKey CONTAINS_GAMES=new UserKey(0);
 
-    public static UserKey CONTAINS_CART=new UserKey(0);
+    public final static UserKey CONTAINS_CART=new UserKey(0);
 
-    public static UserKey ADMIN_EMAIL=new UserKey(expireTime);
+    public final static UserKey ADMIN_EMAIL=new UserKey(expireTime);
 
 }

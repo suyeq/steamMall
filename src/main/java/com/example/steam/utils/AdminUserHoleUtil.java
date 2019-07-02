@@ -31,7 +31,7 @@ public class AdminUserHoleUtil {
 
         AdminUserHolder(User user){
             this.startTime=System.currentTimeMillis();
-            this.expiredTime=60*60*2*1000;
+            this.expiredTime=60L*60*2*1000;
             this.user=user;
         }
 

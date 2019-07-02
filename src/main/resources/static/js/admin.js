@@ -22,7 +22,9 @@
                 newGameDiscount:newGameDiscount
             },
             success:function (data) {
+                parent.layer.close(index);
                 layer.msg("修改成功");
+
             }
         })
     }
@@ -79,6 +81,7 @@
                newGameGoodShenka:newGameGoodShenka
             },
             success:function (data) {
+                parent.layer.close(index);
                 data=eval("("+data+")");
                 layer.msg("增加成功");
                 window.location.href="/admin/not-game-list"

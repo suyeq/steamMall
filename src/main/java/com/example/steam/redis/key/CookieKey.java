@@ -17,6 +17,6 @@ public class CookieKey extends BaseKey {
         super(expireTime);
     }
 
-    public static CookieKey EMAIL=new CookieKey(expireTime);
+    public final static CookieKey EMAIL=new CookieKey(expireTime);
 
 }

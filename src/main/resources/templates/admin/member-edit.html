@@ -18,37 +18,12 @@
 
 </head>
 <body>
-<article class="page-container">
+<article class="page-container" id="user_update" email="" th:attr="email=${user.email}">
 	<form action="" onsubmit="return false;" method="post" class="form form-horizontal" id="form-member-add" enctype="multipart/form-data">
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>昵称：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="" id="nickName" name="nickName">
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>是否管理员：</label>
-			<div class="formControls col-xs-8 col-sm-9 skin-minimal">
-				<div class="radio-box">
-					<input name="isAdmin" type="radio" id="sex-1" checked value="1">
-					<label for="sex-1">是</label>
-				</div>
-				<div class="radio-box">
-					<input type="radio" id="sex-2" name="isAdmin" value="0">
-					<label for="sex-2">否</label>
-				</div>
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>密码：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="password" class="input-text" value="" placeholder="" id="password" name="password">
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>邮箱：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" placeholder="@" name="email" id="email">
+				<input type="text" class="input-text" value="" th:value="${user.nickName}" placeholder="" id="nickName" name="nickName">
 			</div>
 		</div>
 		<div class="row cl">
@@ -57,7 +32,8 @@
 				<input class="input-text upload-url" type="text" name="uploadfile" id="uploadfile" readonly nullmsg="请添加图片！" style="width:200px">
 				<a href="javascript:void(0);" class="btn btn-primary radius upload-btn"><i class="Hui-iconfont">&#xe642;</i> 浏览图片</a>
 				<input type="file" name="avatar" id="avatar" class="input-file">
-				</span> </div>
+				</span>
+			</div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3">所在城市：</label>
@@ -76,13 +52,13 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3">介绍：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<textarea name="introduction" id="introduction" cols="" rows="" class="textarea"  placeholder="用一句话介绍自己......" onKeyUp="$.Huitextarealength(this,100)"></textarea>
+				<textarea th:placeholder="${user.introduction}" name="introduction" id="introduction" cols="" rows="" class="textarea"  placeholder="用一句话介绍自己......" onKeyUp="$.Huitextarealength(this,100)"></textarea>
 				<p class="textarea-numberbar"><em class="textarea-length">0</em>/100</p>
 			</div>
 		</div>
 		<div class="row cl">
 			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
-				<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;" onclick="addUser();">
+				<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;修改&nbsp;&nbsp;" onclick="UpdateUser();">
 			</div>
 		</div>
 	</form>
@@ -131,26 +107,19 @@
 			focusCleanup:true,
 			success:"valid",
 			submitHandler:function(form){
-				//$(form).ajaxSubmit();
-				//var index = parent.layer.getFrameIndex(window.name);
-				//parent.$('.btn-refresh').click();
-				//parent.layer.close(index);
-				//window.location.href="/admin/user-list";
+				// $(form).ajaxSubmit();
+				// var index = parent.layer.getFrameIndex(window.name);
+				// //parent.$('.btn-refresh').click();
+				// parent.layer.close(index);
+				// window.location.href="/admin/user-list";
 			}
 		});
 	 });
 
-	function addUser() {
+	function UpdateUser() {
+	    var user_email=$('#user_update')[0].getAttribute('email');
 		var userName=$('#nickName').val();
         console.log(userName)
-		var isAdmin=$('input:radio:checked').val();
-		console.log(isAdmin)
-		var email=$('#email').val();
-        console.log(email)
-		var password=$('#password').val();
-        console.log(password)
-        password=""+salt.charAt(0)+salt.charAt(4)+password+salt.charAt(5)+salt.charAt(2);
-        password=md5(password);
         var city=$('#city').val();
         console.log(city)
         var introduction=$('#introduction').val();
@@ -159,14 +128,11 @@
         var image=$("#avatar")[0].files[0];
         data.append('avatar', image);
         data.append('nickName',userName);
-        data.append('isAdmin',isAdmin);
-        data.append('email',email);
-        data.append('password',password);
         data.append('city',city);
         data.append('introduction',introduction);
         console.log(image)
         $.ajax({
-			url:"/user/add",
+			url:"/user/edit/"+user_email,
 			type:"POST",
             async:false,
             processData: false,
@@ -182,16 +148,15 @@
 			// },
 			data:data,
 			success:function (data) {
-			    data=eval("("+data+")");
-			    if (data.code==200){
-			        layer.msg("增加成功")
+                data=eval("("+data+")");
+                if (data.code==200){
+                    layer.msg("增加成功")
                     var index = parent.layer.getFrameIndex(window.name);
                     parent.layer.close(index);
                     window.location.href="/admin/user-list"
-				} else {
+                } else {
                     layer.msg(data.msg)
-				}
-
+                }
             }
 		})
     }

@@ -102,7 +102,7 @@ public class RedisService {
         }finally {
             try {
                 pipeline.close();
-            } catch (IOException e) {
+            } catch (Exception e) {
                 log.error("I/O异常");
             }
             jedis.close();
@@ -389,6 +389,7 @@ public class RedisService {
 
 //    public static void main(String args[]){
 //
-//        System.out.println(System.currentTimeMillis());
+//        Jedis jedis=new Jedis("129.204.214.212",6379);
+//        System.out.println(jedis.keys("*").size());
 //    }
 }

@@ -24,6 +24,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -73,7 +74,32 @@ public class SpikeGameService {
             return spikeGameDetail;
         }
         SpikeGame spikeGame=spikeGameDao.findOneById(spikeId);
-        spikeGameDetail=new SpikeGameDetail();
+        spikeGameDetail=spikeGameToSpikeGameDetail(spikeGame);
+        redisService.set(SpikeGameKey.SPIKE_ID,spikeId+"",spikeGameDetail);
+        return spikeGameDetail;
+    }
+
+    /**
+     * 找到所有的秒杀游戏
+     * @return
+     */
+    public List<SpikeGameDetail> findAllSpikeGameDetail(){
+        List<SpikeGame> spikeGameList=spikeGameDao.findAllSpikeGame();
+        List<SpikeGameDetail> spikeGameDetailList=new LinkedList<>();
+        for (SpikeGame spikeGame:spikeGameList){
+            SpikeGameDetail spikeGameDetail=spikeGameToSpikeGameDetail(spikeGame);
+            spikeGameDetailList.add(spikeGameDetail);
+        }
+        return spikeGameDetailList;
+    }
+
+    /**
+     * 转变为vo
+     * @param spikeGame
+     * @return
+     */
+    private SpikeGameDetail spikeGameToSpikeGameDetail(SpikeGame spikeGame){
+        SpikeGameDetail spikeGameDetail=new SpikeGameDetail();
         spikeGameDetail.setId(spikeGame.getId());
         spikeGameDetail.setGameId(spikeGame.getGameId());
         spikeGameDetail.setGamePrice(spikeGame.getGamePrice());
@@ -82,7 +108,6 @@ public class SpikeGameService {
         spikeGameDetail.setStartTime(spikeGame.getStartTime());
         spikeGameDetail.setEndTime(spikeGame.getEndTime());
         spikeGameDetail.setStockCount(spikeGame.getStockCount());
-        redisService.set(SpikeGameKey.SPIKE_ID,spikeId+"",spikeGameDetail);
         return spikeGameDetail;
     }
 

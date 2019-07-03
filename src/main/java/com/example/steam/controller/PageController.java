@@ -1,13 +1,11 @@
 package com.example.steam.controller;
 
+import com.example.steam.entity.ShoppingCart;
 import com.example.steam.entity.User;
 import com.example.steam.redis.RedisService;
 import com.example.steam.redis.key.SpikeGameKey;
 import com.example.steam.service.*;
-import com.example.steam.vo.GameDetail;
-import com.example.steam.vo.LoginUser;
-import com.example.steam.vo.SpikeGameDetail;
-import com.example.steam.vo.UserVo;
+import com.example.steam.vo.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +42,13 @@ public class PageController {
     RedisService redisService;
     @Autowired
     UserService userService;
+    @Autowired
+    CommentService commentService;
+    @Autowired
+    ShoppingCartService shoppingCartService;
+    @Autowired
+    SpikeGameService spikeGameService;
+
 
     @RequestMapping("/")
     public String index(LoginUser loginUser, Model model){
@@ -217,5 +222,34 @@ public class PageController {
         User user=userService.findByEmail(email);
         model.addAttribute("user",user);
         return "admin/change-password";
+    }
+
+    @RequestMapping("/admin/allcomment/{page}")
+    public String adminShowComment(@PathVariable("page")long page,
+                                    Model model){
+        List<CommentDetail> commentDetailList=commentService.findALlCommentDetailByTime();
+        model.addAttribute("commentList",commentDetailList);
+        return "admin/feedback-list";
+    }
+
+    @RequestMapping("/admin/edit-comment/{commentId}")
+    public String adminEditComment(@PathVariable("commentId")long commentId,
+                                   Model model){
+        model.addAttribute("commentId",commentId);
+        return "admin/comment-edit";
+    }
+
+    @RequestMapping("/admin/shoppingcart")
+    public String adminShoppingCart(Model model){
+        List<ShoppingCartDetail> shoppingCartList=shoppingCartService.findAllCart();
+        model.addAttribute("shopcartList",shoppingCartList);
+        return "admin/shoppingcart-list";
+    }
+
+    @RequestMapping("/admin/spike")
+    public String adminSpikeShow(Model model){
+        List<SpikeGameDetail> spikeGameDetailList=spikeGameService.findAllSpikeGameDetail();
+        model.addAttribute("spikeList",spikeGameDetailList);
+        return "admin/spike-list";
     }
 }

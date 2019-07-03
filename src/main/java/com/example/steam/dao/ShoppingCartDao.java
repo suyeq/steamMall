@@ -31,4 +31,7 @@ public interface ShoppingCartDao {
 
     @Delete("delete from shoppingcart where email=#{email}")
     int deleteAllGameByUserEmail(@Param("email")String email);
+
+    @Select("select * from shoppingcart")
+    List<ShoppingCart> findAllCart();
 }

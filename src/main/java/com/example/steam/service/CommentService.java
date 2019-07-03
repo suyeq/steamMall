@@ -63,6 +63,39 @@ public class CommentService implements InitializingBean{
 
 
     /**
+     * 删除一个评论
+     * @param commentId
+     * @return
+     */
+    public int deleteComment(long commentId){
+        Comment comment=redisService.get(CommentKey.COMMENT_ID,commentId+"",Comment.class);
+        if (comment == null){
+            return -1;
+        }
+        int result=commentDao.deleteComment(commentId);
+        redisService.del(CommentKey.COMMENT_ID,commentId+"");
+        CommentRank commentRank=new CommentRank();
+        commentRank.setId(commentId);
+        commentRank.setGameId(comment.getGameId());
+        redisService.zrem(CommentKey.COMMENT_RANK_TIME,CommentKey.COMMENT_RANK_TIME_KEY,commentRank);
+        redisService.zrem(CommentKey.COMMENT_RANK_ZANNUM,CommentKey.COMMENT_RANK_ZANNUM_KEY,commentRank);
+        return result;
+    }
+
+    /**
+     * 更新评论内容
+     * @param commentId
+     * @param newContent
+     * @return
+     */
+    public ResultMsg updateCommentContent(long commentId,String newContent){
+        Comment comment=((CommentService)applicationContext.getBean("commentService")).findOneCommentById(commentId);
+        comment.setContent(newContent);
+        ((CommentService)applicationContext.getBean("commentService")).updateComment(comment);
+        return ResultMsg.SUCCESS;
+    }
+
+    /**
      * 找到该用户下的所有评论的数目
      * @param email
      * @return
@@ -211,6 +244,9 @@ public class CommentService implements InitializingBean{
             return comment;
         }
         comment=commentDao.findOneCommentById(id);
+        if (comment == null){
+            return null;
+        }
         redisService.set(CommentKey.COMMENT_ID,id+"",comment);
         return comment;
     }
@@ -238,7 +274,29 @@ public class CommentService implements InitializingBean{
         commentDetail.setId(comment.getId());
         commentDetail.setUserId(user.getId());
         commentDetail.setHappyNum(comment.getHappy());
+        commentDetail.setGameId(comment.getGameId());
         return commentDetail;
+    }
+
+    /**
+     * 返回一页评论，按时间倒序
+     * @return
+     */
+    public List<CommentDetail> findALlCommentDetailByTime(){
+        long cursor=0;
+        List<CommentDetail> commentDetailList=new LinkedList<>();
+        int sum=((CommentService)applicationContext.getBean("commentService")).findCommentSum();
+        while (cursor<sum){
+            Set<CommentRank> commentRankSet=redisService.zrange(CommentKey.COMMENT_RANK_TIME,CommentKey.COMMENT_RANK_TIME_KEY,cursor,cursor+100,CommentRank.class);
+            Iterator<CommentRank> iterator=commentRankSet.iterator();
+            while (iterator.hasNext()){
+                CommentRank commentRank=iterator.next();
+                CommentDetail commentDetail=((CommentService)applicationContext.getBean("commentService")).findCommentDetailById(commentRank.getId());
+                commentDetailList.add(commentDetail);
+            }
+            cursor+=100;
+        }
+        return commentDetailList;
     }
 
     /**
@@ -371,8 +429,13 @@ public class CommentService implements InitializingBean{
     public void afterPropertiesSet() throws Exception {
 //        int sum=((CommentService)applicationContext.getBean("commentService")).findCommentSum();
 //        log.error(sum+"");
+//        sum=17;
 //        for (int i=0;i<sum;i++){
 //            Comment comment=((CommentService)applicationContext.getBean("commentService")).findOneCommentById(i+1);
+//            if (comment ==null){
+//                log.error("评论为空");
+//                continue;
+//            }
 //            CommentRank commentRank=new CommentRank();
 //            commentRank.setId(comment.getId());
 //            commentRank.setGameId(comment.getGameId());

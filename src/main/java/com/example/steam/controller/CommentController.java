@@ -110,6 +110,24 @@ public class CommentController{
         return JSON.toJSONString(ResultMsg.SUCCESS(commentService.findAllCommentByUserEmailOrderByTimeDesc(email, page)));
     }
 
+//    @ResponseBody
+//    @RequestMapping("/comment/showallcomment/{page}")
+//    public String showRecentCommentByPage(@PathVariable("page")long page){
+//        return JSON.toJSONString(ResultMsg.SUCCESS(commentService.findRangeCommentDetailByTime(page)));
+//    }
+
+    @ResponseBody
+    @RequestMapping("/comment/edit/content")
+    public String updateCommentContent(@RequestParam("commentId")long commentId,
+                                       @RequestParam("newContent")String content){
+        return JSON.toJSONString(commentService.updateCommentContent(commentId, content));
+    }
+
+    @ResponseBody
+    @RequestMapping("/comment/delete/{commentId}")
+    public String deleteComment(@PathVariable("commentId")long commentId){
+        return JSON.toJSONString(ResultMsg.SUCCESS(commentService.deleteComment(commentId)));
+    }
 
 
 }

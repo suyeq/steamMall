@@ -7,6 +7,8 @@ import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  *
@@ -27,4 +29,7 @@ public interface SpikeGameDao {
             "spikeprice=#{spikePrice},stockcount=#{stockCount},starttime=#{startTime}," +
             "endtime=#{endTime},gameprice=#{gamePrice} where id=#{id}")
     int updateOneSpikeGame(SpikeGame spikeGame);
+
+    @Select("select * from spikegame")
+    List<SpikeGame> findAllSpikeGame();
 }

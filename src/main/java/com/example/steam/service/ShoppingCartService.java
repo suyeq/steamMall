@@ -62,6 +62,16 @@ public class ShoppingCartService {
         return false;
     }
 
+    /**
+     * 找到所有的购物订单
+     * @return
+     */
+    public List<ShoppingCartDetail> findAllCart(){
+         List<ShoppingCart> shoppingCartList=shoppingCartDao.findAllCart();
+         return shopCartToDetail(shoppingCartList);
+    }
+
+
 
     /**
      * 事务会以第一个sql执行的数据源为数据源
@@ -91,19 +101,7 @@ public class ShoppingCartService {
      */
     public List<ShoppingCartDetail> findCartByUserEmail(String email){
         List<ShoppingCart> cartList=shoppingCartDao.findCartByUserEmail(email);
-        List<ShoppingCartDetail> shoppingCartDetailList=new LinkedList<>();
-        for (int i=0;i<cartList.size();i++){
-            ShoppingCartDetail shoppingCartDetail=new ShoppingCartDetail();
-            ShoppingCart shoppingCart=cartList.get(i);
-            shoppingCartDetail.setId(shoppingCart.getId());
-            shoppingCartDetail.setEmail(shoppingCart.getEmail());
-            shoppingCartDetail.setGamePoster(imageService.findImageUrlById(shoppingCart.getPosterImage()));
-            shoppingCartDetail.setGameId(shoppingCart.getGameId());
-            shoppingCartDetail.setGameName(shoppingCart.getGameName());
-            shoppingCartDetail.setGamePrice(shoppingCart.getGamePrice());
-            shoppingCartDetailList.add(shoppingCartDetail);
-        }
-        return shoppingCartDetailList;
+        return shopCartToDetail(cartList);
     }
 
 //    /**
@@ -153,6 +151,20 @@ public class ShoppingCartService {
     }
 
 
-
+    private List<ShoppingCartDetail> shopCartToDetail(List<ShoppingCart> shoppingCartList){
+        List<ShoppingCartDetail> shoppingCartDetailList=new LinkedList<>();
+        for (int i=0;i<shoppingCartList.size();i++){
+            ShoppingCartDetail shoppingCartDetail=new ShoppingCartDetail();
+            ShoppingCart shoppingCart=shoppingCartList.get(i);
+            shoppingCartDetail.setId(shoppingCart.getId());
+            shoppingCartDetail.setEmail(shoppingCart.getEmail());
+            shoppingCartDetail.setGamePoster(imageService.findImageUrlById(shoppingCart.getPosterImage()));
+            shoppingCartDetail.setGameId(shoppingCart.getGameId());
+            shoppingCartDetail.setGameName(shoppingCart.getGameName());
+            shoppingCartDetail.setGamePrice(shoppingCart.getGamePrice());
+            shoppingCartDetailList.add(shoppingCartDetail);
+        }
+        return shoppingCartDetailList;
+    }
 
 }

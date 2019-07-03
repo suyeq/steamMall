@@ -722,12 +722,13 @@ public class GameService implements InitializingBean {
     @Override
     public void afterPropertiesSet() throws Exception {
 //        int sum=((GameService)applicationContext.getBean("gameService")).findGamesSum();
+//        sum=30;
 //        redisService.set(GameKey.GAME_SUM,GameKey.GAME_SUM_KEY,sum);
-//        int sum=20;
 //        for (int i=0;i<sum;i++){
 //
 //            GameDetail gameDetail=((GameService)applicationContext.getBean("gameService")).findGameById(i+1);
 //            if (gameDetail == null){
+//                log.error("游戏为空");
 //                continue;
 //            }
 //            RankScoreValue<GameRank> rankTime=new RankScoreValue<>();
@@ -743,15 +744,15 @@ public class GameService implements InitializingBean {
 //            rankTime.setValue(gameRank);
 //            rankTime.setScore(gameDetail.getIssuedDate().getTime());
 //
-////            redisService.set(GameKey.GAME_ID,gameDetail.getId()+"",gameDetail);
-////            if (gameDetail.getIssuedStatu()!=0){
-////                redisService.zadd(GameKey.RANK_TIME,GameKey.GAME_RANK_TIME,rankTime);
-////                redisService.zadd(GameKey.RANK_SELLNUM,GameKey.GAME_RANK_SELLNUM,rankSellNum);
-////            }
+//            redisService.set(GameKey.GAME_ID,gameDetail.getId()+"",gameDetail);
+//            if (gameDetail.getIssuedStatu()!=0){
+//                redisService.zadd(GameKey.RANK_TIME,GameKey.GAME_RANK_TIME,rankTime);
+//                redisService.zadd(GameKey.RANK_SELLNUM,GameKey.GAME_RANK_SELLNUM,rankSellNum);
+//            }
 //            if (gameDetail.getIssuedStatu()!=1){
 //                redisService.zadd(GameKey.RANK_UPCOMING,GameKey.GAME_RANK_UPCOMING,rankTime);
 //            }
-       // }
+//        }
     }
 
 }

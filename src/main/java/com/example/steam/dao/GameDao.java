@@ -57,4 +57,7 @@ public interface GameDao {
 
     @Delete("delete from game where id=#{id}")
     int deleteGame(@Param("id") long id);
+
+    @Select("select * from game")
+    List<Game> findAllGame();
 }

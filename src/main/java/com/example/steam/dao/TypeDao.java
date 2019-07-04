@@ -38,8 +38,17 @@ public interface TypeDao {
     @Select("select typename from type")
     List<String> findAllType();
 
+    @Select("select * from type")
+    List<Type> findAllTypes();
+
     @Insert("insert into game_type(gameid,typeid) value(#{gameId},#{typeId})")
     int addTypeToGame(GameType gameType);
+
+    @Delete("delete from type where id=#{typeId}")
+    int deleteTypeById(@Param("typeId") long typeId);
+
+    @Insert("insert into type(typename) value(#{typeName})")
+    int addType(Type type);
 
 
 }

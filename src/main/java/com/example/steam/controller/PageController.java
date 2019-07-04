@@ -1,7 +1,6 @@
 package com.example.steam.controller;
 
-import com.example.steam.entity.ShoppingCart;
-import com.example.steam.entity.User;
+import com.example.steam.entity.*;
 import com.example.steam.redis.RedisService;
 import com.example.steam.redis.key.SpikeGameKey;
 import com.example.steam.service.*;
@@ -48,6 +47,11 @@ public class PageController {
     ShoppingCartService shoppingCartService;
     @Autowired
     SpikeGameService spikeGameService;
+    @Autowired
+    LabelService labelService;
+
+    @Autowired
+    SensitiveWordService sensitiveWordService;
 
 
     @RequestMapping("/")
@@ -252,4 +256,41 @@ public class PageController {
         model.addAttribute("spikeList",spikeGameDetailList);
         return "admin/spike-list";
     }
+
+    @RequestMapping("/admin/spike-edit/{spikeId}")
+    public String adminSPikeEdit(@PathVariable("spikeId")long spikeId,
+                                 Model model){
+        SpikeGameDetail spikeGameDetail=spikeGameService.findOneSpikeGameDetail(spikeId);
+        model.addAttribute("spikeGame",spikeGameDetail);
+        return "admin/spike-edit";
+    }
+
+    @RequestMapping("/admin/spike-add")
+    public String adminSPikeAdd(Model model){
+        List<Game> gameList=gameService.findAllGame();
+        model.addAttribute("gameList",gameList);
+        return "admin/spike-add";
+    }
+
+    @RequestMapping("/admin/kind-list")
+    public String adminKindShow(Model model){
+        List<Type> typeList=typeService.findAllTypes();
+        model.addAttribute("kindList",typeList);
+        return "admin/kind-list";
+    }
+
+    @RequestMapping("/admin/label-list")
+    public String adminLabelShow(Model model){
+        List<Label> labelList=labelService.findAllLabel();
+        model.addAttribute("labelList",labelList);
+        return "admin/label-list";
+    }
+
+    @RequestMapping("/admin/sensitive")
+    public String adminSensitive(Model model){
+        String sensitive=sensitiveWordService.sensitiveVo();
+        model.addAttribute("sensitive",sensitive);
+        return "admin/sensitive";
+    }
+
 }

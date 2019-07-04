@@ -1,9 +1,7 @@
 package com.example.steam.dao;
 
 import com.example.steam.entity.SpikeGame;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -32,4 +30,13 @@ public interface SpikeGameDao {
 
     @Select("select * from spikegame")
     List<SpikeGame> findAllSpikeGame();
+
+    @Delete("delete from spikegame where id=#{spikeId}")
+    int deleteSpikeGame(@Param("spikeId") long spikeId);
+
+    @Insert("insert into spikegame(gameid,postergame,spikeprice,stockcount,starttime," +
+            "endtime,gameprice) value(#{gameId},#{posterGame},#{spikePrice},#{stockCount}," +
+            "#{startTime},#{endTime},#{gamePrice})")
+    @Options(useGeneratedKeys = true,keyProperty = "id",keyColumn = "id")
+    long addSpikeGame(SpikeGame spikeGame);
 }

@@ -356,6 +356,14 @@ public class GameService implements InitializingBean {
     }
 
     /**
+     * 找到所有的游戏
+     * @return
+     */
+    public List<Game> findAllGame(){
+        return gameDao.findAllGame();
+    }
+
+    /**
      * 该类型的游戏总数
      * @param typeName
      * @return

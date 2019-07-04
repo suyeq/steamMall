@@ -31,6 +31,17 @@ public class TypeService {
     @Autowired
     RedisService redisService;
 
+    /**
+     * 增加一个类型
+     * @param typeName
+     * @return
+     */
+    public int addType(String typeName){
+        Type type=new Type();
+        type.setTypeName(typeName);
+        return typeDao.addType(type);
+    }
+
 
     @Transactional(rollbackFor = Exception.class)
     public int deleteGameTypeByGameId(long gameId){
@@ -76,6 +87,23 @@ public class TypeService {
      */
     public List<String> findAllType(){
         return typeDao.findAllType();
+    }
+
+    /**
+     * 找到所有的类型
+     * @return
+     */
+    public List<Type> findAllTypes(){
+        return typeDao.findAllTypes();
+    }
+
+    /**
+     * 删除类型
+     * @param typeId
+     * @return
+     */
+    public int deleteTypeById(long typeId){
+        return typeDao.deleteTypeById(typeId);
     }
 
     /**

@@ -46,4 +46,12 @@ public interface LabelDao {
     @Insert("insert into game_label(gameid,labelid,hotnum) value(#{gameId},#{labelId},#{hotNum})")
     int addLabelInGame(GameLabel gameLabel);
 
+    @Select("select * from label")
+    List<Label> findAllLabel();
+
+    @Delete("delete from label where id=#{labelId}")
+    int deleteLabelByLabelId(@Param("labelId") long labelId);
+
+
+
 }

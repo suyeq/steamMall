@@ -1,5 +1,6 @@
 package com.example.steam.utils;
 
+import com.example.steam.service.SensitiveWordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +18,8 @@ import java.util.*;
 @Component
 public class SensitiveWordUtil {
 
+    @Autowired
+    SensitiveWordService sensitiveWordService;
 
     private Map<String,String> keyWordMap;
     private String replaceString;
@@ -67,11 +70,8 @@ public class SensitiveWordUtil {
 //            line=bufferedReader.readLine();
 //        }
         //读取敏感词汇
-        List<String> list=null;
-        System.out.println("11");
-        System.out.println(list);
+        List<String> list=sensitiveWordService.getSensitiveWord();
         set.addAll(list);
-        System.out.println(set);
         return set;
     }
 

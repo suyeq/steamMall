@@ -6,7 +6,9 @@ import com.example.steam.service.TypeService;
 import com.example.steam.utils.ResultMsg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -27,4 +29,17 @@ public class TypeController {
     public String findAllType(){
         return JSON.toJSONString(ResultMsg.SUCCESS(typeService.findAllType()));
     }
+
+    @ResponseBody
+    @RequestMapping("/type/delete/{id}")
+    public String deleteType(@PathVariable("id")long typeId){
+        return JSON.toJSONString(ResultMsg.SUCCESS(typeService.deleteTypeById(typeId)));
+    }
+
+    @ResponseBody
+    @RequestMapping("/type/add")
+    public String addType(@RequestParam("kindName")String kindName){
+        return JSON.toJSONString(ResultMsg.SUCCESS(typeService.addType(kindName)));
+    }
+
 }

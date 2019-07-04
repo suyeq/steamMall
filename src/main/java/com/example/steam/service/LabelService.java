@@ -171,4 +171,30 @@ public class LabelService {
         }
         return ResultMsg.SUCCESS(label1.getId());
     }
+
+    /**
+     * 找到所有的标签
+     * @return
+     */
+    public List<Label> findAllLabel(){
+        return labelDao.findAllLabel();
+    }
+
+    /**
+     * 根据id删除标签
+     * @param labelId
+     * @return
+     */
+    public int deleteLabelById(long labelId){
+        return labelDao.deleteLabelByLabelId(labelId);
+    }
+
+    /**
+     * 增加一个标签
+     * @param label
+     * @return
+     */
+    public int addLabel(Label label){
+        return labelDao.addLabel(label);
+    }
 }

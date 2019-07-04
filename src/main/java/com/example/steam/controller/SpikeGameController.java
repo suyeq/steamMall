@@ -17,10 +17,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
 
 /**
  * Created with IntelliJ IDEA.
@@ -45,6 +44,17 @@ public class SpikeGameController implements InitializingBean {
 
     @Autowired
     SpikeShopCartService spikeShopCartService;
+
+    @ResponseBody
+    @RequestMapping("/spike/update")
+    public String updateSpikeGame(@RequestParam("spikeId")long spikeId,
+                                  @RequestParam("stockCout")int stockCout,
+                                  @RequestParam("spikePrice")int spikePrice,
+                                  @RequestParam("startTime")long startTime,
+                                  @RequestParam("endTime")long endTime){
+        return JSON.toJSONString(ResultMsg.SUCCESS(spikeGameService.updateSpikeGameStockCoutAndStartTimeAndEndTimeAndSpikePrice(spikeId,
+                stockCout,new Date(startTime),new Date(endTime),spikePrice)));
+    }
 
     @ResponseBody
     @RequestMapping("/spikegame")
@@ -95,6 +105,23 @@ public class SpikeGameController implements InitializingBean {
                                     @RequestParam("userId")long userId){
 
         return JSON.toJSONString(spikeGameService.handlePollSpike(loginUser,userId,spikeId));
+    }
+
+    @ResponseBody
+    @RequestMapping("/spike/delete/{spikeId}")
+    public String deleteSpikeGame(@PathVariable("spikeId")long spikeId){
+        return JSON.toJSONString(ResultMsg.SUCCESS(spikeGameService.deleteSpikeGame(spikeId)));
+    }
+
+    @ResponseBody
+    @RequestMapping("/spike/add")
+    public String addSpikeGame(@RequestParam("gameId")long gameId,
+                               @RequestParam("spikePrice")int spikePrice,
+                               @RequestParam("startTime")long startTime,
+                               @RequestParam("endTime")long endTime,
+                               @RequestParam("stockCount")int stockCount){
+        return JSON.toJSONString(ResultMsg.SUCCESS(spikeGameService.handleAddSpikeGame(
+                gameId,spikePrice,stockCount,new Date(startTime),new Date(endTime))));
     }
 
 

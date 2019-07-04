@@ -3,6 +3,7 @@ package com.example.steam.service;
 import com.alibaba.fastjson.JSON;
 import com.example.steam.config.DynamicDataSourceHolder;
 import com.example.steam.dao.SpikeGameDao;
+import com.example.steam.entity.Game;
 import com.example.steam.entity.SpikeGame;
 import com.example.steam.entity.SpikeShopCart;
 import com.example.steam.mq.Event;
@@ -24,6 +25,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -37,13 +39,16 @@ import java.util.List;
 @Service
 public class SpikeGameService {
 
-    //最大每分钟秒杀次数
+    //每个用户最大每分钟秒杀次数
     private final static int MAX_SPIKETIMES_EVERY_MINUTE=10;
 
     Logger log= LoggerFactory.getLogger(SpikeGameService.class);
 
     @Autowired
     SpikeGameDao spikeGameDao;
+
+    @Autowired
+    GameService gameService;
 
     @Autowired
     ImageService imageService;
@@ -62,6 +67,81 @@ public class SpikeGameService {
 
     @Autowired
     ApplicationContext applicationContext;
+
+    /**
+     * 更新秒杀游戏
+     * @param spikeId
+     * @param stockCout
+     * @param startTime
+     * @param endTime
+     * @param spikePrice
+     * @return
+     */
+    public int updateSpikeGameStockCoutAndStartTimeAndEndTimeAndSpikePrice(
+            long spikeId,int stockCout, Date startTime, Date endTime,int spikePrice){
+        SpikeGame spikeGame=spikeGameDao.findOneById(spikeId);
+        SpikeGameDetail spikeGameDetail=((SpikeGameService)applicationContext.getBean("spikeGameService")).findOneSpikeGameDetail(spikeId);
+        spikeGameDetail.setStockCount(stockCout);
+        spikeGameDetail.setStartTime(startTime);
+        spikeGameDetail.setEndTime(endTime);
+        spikeGameDetail.setSpikePrice(spikePrice);
+        redisService.set(SpikeGameKey.SPIKE_ID,spikeId+"",spikeGameDetail);
+        redisService.set(SpikeGameKey.SPIKE_STOCK,SpikeGameKey.SPIKE_STOCK_KEY+spikeId,stockCout);
+        spikeGame.setStockCount(stockCout);
+        spikeGame.setStartTime(startTime);
+        spikeGame.setEndTime(endTime);
+        spikeGame.setSpikePrice(spikePrice);
+        return ((SpikeGameService)applicationContext.getBean("spikeGameService")).updateOneSpikeGame(spikeGame);
+    }
+
+
+    /**
+     * 处理新增游戏
+     * @param gameId
+     * @param spikePrice
+     * @param stockCount
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    public long handleAddSpikeGame(long gameId,int spikePrice,int stockCount,
+                                   Date startTime,Date endTime){
+        Game game=gameService.findOneGameById(gameId,DynamicDataSourceHolder.MASTER);
+        SpikeGame spikeGame=new SpikeGame();
+        spikeGame.setGameId(gameId);
+        spikeGame.setSpikePrice(spikePrice);
+        spikeGame.setStartTime(startTime);
+        spikeGame.setEndTime(endTime);
+        spikeGame.setStockCount(stockCount);
+        spikeGame.setGamePrice(game.getGamePrice());
+        spikeGame.setPosterGame(game.getPosterImage());
+        return ((SpikeGameService)applicationContext.getBean("spikeGameService")).addSpikeGame(spikeGame);
+    }
+
+    /**
+     * 增加一个秒杀游戏
+     * @param spikeGame
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public long addSpikeGame(SpikeGame spikeGame){
+        spikeGameDao.addSpikeGame(spikeGame);
+        findOneSpikeGameDetail(spikeGame.getId());
+        redisService.set(SpikeGameKey.SPIKE_STOCK,SpikeGameKey.
+                        SPIKE_STOCK_KEY+spikeGame.getId(), spikeGame.getStockCount());
+        return spikeGame.getId();
+    }
+
+    /**
+     * 删除秒杀商品
+     * @param spikeId
+     * @return
+     */
+    public int deleteSpikeGame(long spikeId){
+        redisService.del(SpikeGameKey.SPIKE_ID,spikeId+"");
+        redisService.del(SpikeGameKey.SPIKE_STOCK,SpikeGameKey.SPIKE_STOCK_KEY+spikeId);
+        return spikeGameDao.deleteSpikeGame(spikeId);
+    }
 
     /**
      * 通过id找到一个详细的秒杀游戏信息

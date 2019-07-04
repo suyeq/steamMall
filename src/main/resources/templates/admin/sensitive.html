@@ -1,0 +1,48 @@
+﻿<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+	<div th:replace="admin/welcome::#link"></div>
+
+<title>基本设置</title>
+</head>
+<body>
+<header th:replace="admin/welcome::#head"></header>
+
+<aside th:replace="admin/welcome::#menu"></aside>
+<div class="page-container" style="margin-left: 200px">
+	<div>
+		<textarea id="sensitive" th:text="${sensitive}" class="textarea" style="width:98%; height:300px; resize:none"></textarea>
+	</div>
+	<div class="mt-20 text-c">
+		<button name="system-base-save" id="system-base-save" class="btn btn-success radius" onclick="saveSensitive()"><i class="icon-ok"></i> 确定</button>
+	</div>
+</div>
+<!--_footer 作为公共模版分离出去-->
+<div th:replace="admin/welcome::#foot"></div> <!--/_footer 作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript">
+	function saveSensitive() {
+		var sensitive=$('#sensitive').val();
+		$.ajax({
+			type:"POST",
+			url:"/sensitive/save",
+			data:{
+			    sensitive:sensitive
+			},
+			success:function () {
+				layer.msg("保存成功");
+            }
+		})
+    }
+</script>
+
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

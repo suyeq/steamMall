@@ -3,6 +3,9 @@ package com.example.steam.utils;
 import com.example.steam.entity.User;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 管理员用户容器
  * @author: 苍术
@@ -11,17 +14,23 @@ import org.springframework.stereotype.Component;
  */
 public class AdminUserHoleUtil {
 
-    private final static ThreadLocal<AdminUserHolder> adminUsers=new ThreadLocal<>();
+//    private final static ThreadLocal<AdminUserHolder> adminUsers=new ThreadLocal<>();
 
-    public static User getUser(){
-        if (adminUsers.get()==null){
+    private final static Map<String,AdminUserHolder> adminMap=new HashMap<>();
+
+    public static User getUser(String email){
+        if (adminMap.get(email) == null){
             return null;
         }
-        return adminUsers.get().getUser();
+        return adminMap.get(email).getUser();
     }
 
     public static void addUser(User user){
-        adminUsers.set(new AdminUserHolder(user));
+        adminMap.put(user.getEmail(),new AdminUserHolder(user));
+    }
+
+    public static void removeUser(String email){
+        adminMap.remove(email);
     }
 
     static class AdminUserHolder{
@@ -38,6 +47,7 @@ public class AdminUserHoleUtil {
         User getUser(){
             long now=System.currentTimeMillis();
             if (now-this.startTime>this.expiredTime){
+                System.out.println("啦啦啦");
                 return null;
             }
             return this.user;

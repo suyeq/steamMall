@@ -22,7 +22,7 @@ public class EmailUtil {
 
     private final static String VERIFICATION_CODE="你的验证码是：";
 
-    private final static String FIND_PASSWORD="系统将你的密码修改为：";
+    private final static String FIND_WORD="系统将你的密码修改为：";
 
     Logger log= LoggerFactory.getLogger(EmailUtil.class);
 
@@ -66,7 +66,7 @@ public class EmailUtil {
      * @param newPassword
      */
     public void sendFindPassword(String receiveEmail,String newPassword){
-        sendMessage(receiveEmail,FIND_PASSWORD+newPassword);
+        sendMessage(receiveEmail,FIND_WORD+newPassword);
     }
 
 //    public static void main(String args[]){

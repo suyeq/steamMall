@@ -97,4 +97,6 @@ public class UserController {
                                  @RequestParam("confimPass")String confimPass){
         return JSON.toJSONString(userService.handleEditPass(email,newPass,confimPass));
     }
+
+
 }

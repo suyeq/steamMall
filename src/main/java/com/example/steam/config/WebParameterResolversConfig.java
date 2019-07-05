@@ -1,6 +1,7 @@
 package com.example.steam.config;
 
 
+import com.example.steam.resolvers.AdminUserArgumentResolve;
 import com.example.steam.resolvers.UserArgumentResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -22,9 +23,13 @@ public class WebParameterResolversConfig extends WebMvcConfigurerAdapter {
     @Autowired
     UserArgumentResolver userArgumentResolver;
 
+    @Autowired
+    AdminUserArgumentResolve adminUserArgumentResolve;
+
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         argumentResolvers.add(userArgumentResolver);
+        argumentResolvers.add(adminUserArgumentResolve);
     }
 
 }

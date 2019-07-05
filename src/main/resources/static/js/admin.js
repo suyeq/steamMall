@@ -1,93 +1,9 @@
     var salt="1q2w3e";
     var MAX_IMAGE_SIZE=10*1024*1024;
 
-    //修改一个游戏
-    function updateGame() {
-        var gameId=$('#edit_game')[0].getAttribute("game-id");
-        var newGameName=$('#new_game_name').val();
-        var newGameIntroduction=$('#new_game_introduction').val();
-        var newGameAbout=$('#new_game_about').val();
-        //var newGameKind=$('#new_game_kind option:selected').text();
-        var newGamePrice=$('#new_game_price').val();
-        var newGameDiscount=$('#new_game_discount').val();
-        $.ajax({
-            url:"/game/update",
-            data:{
-                gameId:gameId,
-                newGameName:newGameName,
-                newGameIntroduction:newGameIntroduction,
-                newGameAbout:newGameAbout,
-                //newGameKind:newGameKind,
-                newGamePrice:newGamePrice,
-                newGameDiscount:newGameDiscount
-            },
-            success:function (data) {
-                parent.layer.close(index);
-                layer.msg("修改成功");
 
-            }
-        })
-    }
 
-    //新建一个游戏
-    function saveNewGame() {
-        var newGameName=$('#new_game_name').val();
-        var newGameIntroduction=$('#new_game_introduction').val();
-        var newGameAbout=$('#new_game_about').val();
-        var newGameKind=$('#new_game_kind option:selected').text();
-        var newGamePrice=$('#new_game_price').val();
-        var newGameDiscount=$('#new_game_discount').val();
-        var newGameLowestCpu=$('#new_game_lowest_cpu').val();
-        var newGameLowestOs=$('#new_game_lowest_os').val();
-        var newGameLowestRam=$('#new_game_lowest_ram').val();
-        var newGameLowestXianka=$('#new_game_lowest_xianka').val();
-        var newGameLowestNetwork=$('#new_game_lowest_net').val();
-        var newGameLowestDirectx=$('#new_game_lowest_directx').val();
-        var newGameLowestRom=$('#new_game_lowest_rom').val();
-        var newGameLowestShenka=$('#new_game_lowest_shenka').val();
-        var newGameGoodCpu=$('#new_game_good_cpu').val();
-        var newGameGoodOs=$('#new_game_good_os').val();
-        var newGameGoodRam=$('#new_game_good_ram').val();
-        var newGameGoodXianka=$('#new_game_good_xianka').val();
-        var newGameGoodNetwork=$('#new_game_good_net').val();
-        var newGameGoodDirectx=$('#new_game_good_directx').val();
-        var newGameGoodRom=$('#new_game_good_rom').val();
-        var newGameGoodShenka=$('#new_game_good_shenka').val();
-        $.ajax({
-            url:"/game/add",
-            type:"POST",
-            data:{
-               newGameName:newGameName,
-               newGameIntroduction:newGameIntroduction,
-               newGameAbout:newGameAbout,
-               newGameKind:newGameKind,
-               newGamePrice:newGamePrice,
-               newGameDiscount:newGameDiscount,
-               newGameLowestCpu:newGameLowestCpu,
-               newGameLowestOs:newGameLowestOs,
-               newGameLowestRam:newGameLowestRam,
-               newGameLowestXianka:newGameLowestXianka,
-               newGameLowestNetwork:newGameLowestNetwork,
-               newGameLowestDirectx:newGameLowestDirectx,
-               newGameLowestRom:newGameLowestRom,
-               newGameLowestShenka:newGameLowestShenka,
-               newGameGoodCpu:newGameGoodCpu,
-               newGameGoodOs:newGameGoodOs,
-               newGameGoodRam:newGameGoodRam,
-               newGameGoodXianka:newGameGoodXianka,
-               newGameGoodNetwork:newGameGoodNetwork,
-               newGameGoodDirectx:newGameGoodDirectx,
-               newGameGoodRom:newGameGoodRom,
-               newGameGoodShenka:newGameGoodShenka
-            },
-            success:function (data) {
-                parent.layer.close(index);
-                data=eval("("+data+")");
-                layer.msg("增加成功");
-                window.location.href="/admin/not-game-list"
-            }
-        })
-    }
+
 
     //游戏列表下一页
     function loadNextPageGameList(statu) {
@@ -217,6 +133,18 @@
         })
     }
 
+    function adminLogout() {
+        var email=$('#email_info')[0].getAttribute("email");
+        $.ajax({
+            url:"/user/logoutAdmin/"+email,
+            type:"POST",
+            success:function () {
+                layer.msg("登出成功");
+                window.location.href="/admin/login";
+            }
+        })
+    }
+
     //管理员登录
     function adminLogin() {
         var email=$('#email').val();
@@ -238,7 +166,7 @@
                 data=eval('('+data+')');
                 if (data.code==201){
                     layer.msg(data.msg)
-                    window.location.href="/";
+                    window.location.href="/admin/game-list";
                 }
                 if (data.code>500) {
                     layer.msg(data.msg)

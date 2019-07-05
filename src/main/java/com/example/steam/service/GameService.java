@@ -10,10 +10,7 @@ import com.example.steam.redis.RedisService;
 import com.example.steam.redis.key.CommentKey;
 import com.example.steam.redis.key.GameKey;
 import com.example.steam.redis.key.UserKey;
-import com.example.steam.utils.GamePriorityQueue;
-import com.example.steam.utils.GameRank;
-import com.example.steam.utils.RankScoreValue;
-import com.example.steam.utils.TimeComparator;
+import com.example.steam.utils.*;
 import com.example.steam.vo.GameDetail;
 import com.example.steam.vo.SimpleGameShowVo;
 import com.example.steam.vo.SpecialGame;
@@ -421,10 +418,11 @@ public class GameService implements InitializingBean {
             return new LinkedList<>(gameDetailSet);
         }
         int sum=redisService.get(GameKey.GAME_SUM,GameKey.GAME_SUM_KEY,int.class);
-        Random random=new Random();
+        //Random random=new Random();
         gameDetailSet=new HashSet<>();
         while (count<sum && gameDetailSet.size()<CLASS_CAROUSEL_SIZE){
-            int seed=random.nextInt(sum)+1;
+            //int seed=random.nextInt(sum)+1;
+            int seed= RandomUtil.randomSeed(sum);
             GameDetail gameDetail=redisService.get(GameKey.GAME_ID,seed+"",GameDetail.class);
             if (gameDetail!=null && typeService.isExists(gameDetail.getType(),typeName)){
                 gameDetailSet.add(gameDetail);
@@ -571,10 +569,11 @@ public class GameService implements InitializingBean {
             return new LinkedList<>(gameDetailSet);
         }
         int sum=redisService.get(GameKey.GAME_SUM,GameKey.GAME_SUM_KEY,int.class);
-        Random random=new Random();
+        //Random random=new Random();
         gameDetailSet=new HashSet<>();
         while (gameDetailSet.size()<INDEX_CAROUSEL_SIZE){
-            int seed=random.nextInt(sum)+1;
+            //int seed=random.nextInt(sum)+1;
+            int seed=RandomUtil.randomSeed(sum);
             GameDetail gameDetail=redisService.get(GameKey.GAME_ID,seed+"",GameDetail.class);
             if (gameDetail!=null){
                 gameDetailSet.add(gameDetail);
@@ -594,10 +593,11 @@ public class GameService implements InitializingBean {
             return new LinkedList<>(gameDetailSet);
         }
         int sum=redisService.get(GameKey.GAME_SUM,GameKey.GAME_SUM_KEY,int.class);
-        Random random=new Random();
+        //Random random=new Random();
         gameDetailSet=new HashSet<>();
         while (gameDetailSet.size()<INDEX_CAROUSEL_SIZE){
-            int seed=random.nextInt(sum)+1;
+            //int seed=random.nextInt(sum)+1;
+            int seed=RandomUtil.randomSeed(sum);
             GameDetail gameDetail=redisService.get(GameKey.GAME_ID,seed+"",GameDetail.class);
             if (gameDetail!=null && gameDetail.getDiscount()>0){
                 gameDetailSet.add(gameDetail);

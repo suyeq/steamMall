@@ -95,13 +95,15 @@
 						</li>
 					</ul>
 				</nav>
-				<nav id="Hui-userbar" class="nav navbar-nav navbar-userbar hidden-xs">
+				<nav id="Hui-userbar" class="nav navbar-nav navbar-userbar hidden-xs" th:if="${adminUser}">
 					<ul class="cl">
-						<li>超级管理员</li>
 						<li class="dropDown dropDown_hover">
-                            <a href="javascript：void(0);" class="dropDown_A">admin <i class="Hui-iconfont">&#xe6d5;</i></a>
-							<ul class="dropDown-menu menu radius box-shadow">
-								<li><a href="#">退出</a></li>
+                            <a href="javascript:void(0);" class="dropDown_A">
+								<th:block th:text="${adminUser.nickName}">admin </th:block>
+								<i class="Hui-iconfont">&#xe6d5;</i>
+							</a>
+							<ul class="dropDown-menu menu radius box-shadow" id="email_info" email="" th:attr="email=${adminUser.email}">
+								<li><a href="javascript:void(0);" onclick="adminLogout()">退出</a></li>
 							</ul>
 						</li>
 					</ul>

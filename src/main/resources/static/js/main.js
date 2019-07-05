@@ -2555,26 +2555,40 @@ var steam=
 
     //获取秒杀路径功能
     function spike(spikeId) {
-        var loadId=layer.load(1, {
-            shade: [0.1,'#fff'] //0.1透明度的白色背景
-        });
-        $.ajax({
-            url:"/spike/"+spikeId,
-            type:"POST",
-            async:false,
-            success:function (data) {
-                data=eval("("+data+")");
-                //console.log(data)
-                if (data.code>500) {
-                    layer.close(loadId);
-                    layer.msg(data.msg)
-                }
-                if (data.code==200){
-                    console.log(data.msg);
-                    doSpike(loadId,data.msg,spikeId);
-                }
+        var one = Math.ceil(Math.random() * 10);
+        var two = Math.ceil(Math.random() * 10);
+        var three = Math.ceil(Math.random() * 10);
+        var pass=one+""+two+three;
+        var confimPass=null;
+        layer.prompt({title: '输入:'+pass, formType: 1}, function(pass, index){
+            layer.close(index);
+            confimPass=pass;
+            if (confimPass !=pass){
+                layer.msg("验证码输入错误");
+                return;
             }
+            var loadId=layer.load(1, {
+                shade: [0.1,'#fff'] //0.1透明度的白色背景
+            });
+            $.ajax({
+                url:"/spike/"+spikeId,
+                type:"POST",
+                async:false,
+                success:function (data) {
+                    data=eval("("+data+")");
+                    //console.log(data)
+                    if (data.code>500) {
+                        layer.close(loadId);
+                        layer.msg(data.msg)
+                    }
+                    if (data.code==200){
+                        console.log(data.msg);
+                        doSpike(loadId,data.msg,spikeId);
+                    }
+                }
+            });
         });
+
     }
     //做秒杀功能
     function doSpike(loadId,path,spikeId) {

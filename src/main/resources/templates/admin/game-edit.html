@@ -69,6 +69,36 @@
 
 <!--_footer 作为公共模版分离出去-->
 <div th:replace="admin/welcome::#foot"></div> <!--/_footer 作为公共模版分离出去-->
+<script type="text/javascript">
+    //修改一个游戏
+    function updateGame() {
+        var gameId=$('#edit_game')[0].getAttribute("game-id");
+        var newGameName=$('#new_game_name').val();
+        var newGameIntroduction=$('#new_game_introduction').val();
+        var newGameAbout=$('#new_game_about').val();
+        //var newGameKind=$('#new_game_kind option:selected').text();
+        var newGamePrice=$('#new_game_price').val();
+        var newGameDiscount=$('#new_game_discount').val();
+        $.ajax({
+            url:"/game/update",
+            data:{
+                gameId:gameId,
+                newGameName:newGameName,
+                newGameIntroduction:newGameIntroduction,
+                newGameAbout:newGameAbout,
+                //newGameKind:newGameKind,
+                newGamePrice:newGamePrice,
+                newGameDiscount:newGameDiscount
+            },
+            success:function (data) {
+                var index = parent.layer.getFrameIndex(window.name);
+                parent.layer.close(index);
+                layer.msg("修改成功");
+
+            }
+        })
+    }
+</script>
 
 </body>
 </html>

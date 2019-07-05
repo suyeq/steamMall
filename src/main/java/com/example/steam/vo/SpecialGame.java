@@ -40,7 +40,6 @@ public class SpecialGame {
         this.id = id;
     }
 
-
     public String getGameName() {
         return gameName;
     }
@@ -115,7 +114,10 @@ public class SpecialGame {
 
     @Override
     public boolean equals(Object o){
-        if (o==this){
+        if (o==this || o == null){
+            return false;
+        }
+        if (o.getClass() != this.getClass()){
             return false;
         }
         GameDetail gameDetail=(GameDetail)o;

@@ -25,12 +25,12 @@ public class FindPasswordHandle implements EventHandle{
     @Override
     public void eventHandle(Event event, ApplicationContext applicationContext) {
         String email=(String) event.getEtrMsg().get(Event.EMAIL);
-        String newPassword=(String) event.getEtrMsg().get(Event.NEW_PASSWORD);
+        String newPassword=(String) event.getEtrMsg().get(Event.NEW_WORD);
         ((EmailUtil)applicationContext.getBean("emailUtil")).sendFindPassword(email,newPassword);
     }
 
     @Override
     public List<EventType> bindEventType() {
-        return Arrays.asList(EventType.FIND_PASSWORD);
+        return Arrays.asList(EventType.FIND_WORD);
     }
 }

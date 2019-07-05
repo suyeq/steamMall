@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -56,9 +57,17 @@ public class LoginController {
     @ResponseBody
     @RequestMapping("/admin/userVerification")
     public String adminLogin(@RequestParam("email")String email,
-                             @RequestParam("password")String password){
+                             @RequestParam("password")String password,
+                             HttpServletRequest request){
         log.info(email+" "+password);
-        return JSON.toJSONString(userService.handleAdminLogin(email, password));
+        return JSON.toJSONString(userService.handleAdminLogin(email, password,request));
+    }
+
+    @ResponseBody
+    @RequestMapping("/user/logoutAdmin/{email}")
+    public String adminLogout(@PathVariable("email")String email){
+        log.info(email);
+        return JSON.toJSONString(userService.handleLogoutAdmin(email));
     }
 
     /**

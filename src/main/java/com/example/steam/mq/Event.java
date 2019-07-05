@@ -22,7 +22,7 @@ public class Event {
 
     public final static String USER_ID="userId";
 
-    public final static String NEW_PASSWORD="pass";
+    public final static String NEW_WORD="pass";
 
     private EventType eventType;
     /**

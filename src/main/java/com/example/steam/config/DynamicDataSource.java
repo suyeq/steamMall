@@ -26,7 +26,7 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
     /**
      * 轮询计数
      */
-    private AtomicInteger squence = new AtomicInteger(0);
+    private final AtomicInteger squence = new AtomicInteger(0);
 
     @Override
     public void afterPropertiesSet() {
@@ -63,7 +63,8 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
         if (squence.intValue() == Integer.MAX_VALUE) {
             synchronized (squence) {
                 if (squence.intValue() == Integer.MAX_VALUE) {
-                    squence = new AtomicInteger(0);
+                    //squence = new AtomicInteger(0);
+                    squence.compareAndSet(Integer.MAX_VALUE,0);
                 }
             }
         }

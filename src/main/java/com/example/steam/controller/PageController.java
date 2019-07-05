@@ -176,12 +176,19 @@ public class PageController {
     }
 
     @RequestMapping("/admin/game-list")
-    public String adminShowAllGames(){
+    public String adminShowAllGames(AdminUser adminUser,
+                                    Model model){
+        if (adminUser == null){
+            return "/admin/login";
+        }
+        model.addAttribute("adminUser",adminUser);
         return "admin/game-list";
     }
 
     @RequestMapping("/admin/not-game-list")
-    public String adminShowNotAllGames(){
+    public String adminShowNotAllGames(AdminUser adminUser,
+                                       Model model){
+        model.addAttribute("adminUser",adminUser);
         return "admin/notissued-game-list";
     }
 
@@ -200,9 +207,10 @@ public class PageController {
     }
 
     @RequestMapping("/admin/user-list")
-    public String adminUserList(Model model){
+    public String adminUserList(AdminUser adminUser,
+                                Model model){
         List<UserVo> userVoList=userService.findAllUser();
-        System.out.println(userVoList.toString());
+        model.addAttribute("adminUser",adminUser);
         model.addAttribute("userList",userVoList);
         return "admin/member-list";
     }
@@ -230,9 +238,11 @@ public class PageController {
 
     @RequestMapping("/admin/allcomment/{page}")
     public String adminShowComment(@PathVariable("page")long page,
+                                    AdminUser adminUser,
                                     Model model){
         List<CommentDetail> commentDetailList=commentService.findALlCommentDetailByTime();
         model.addAttribute("commentList",commentDetailList);
+        model.addAttribute("adminUser",adminUser);
         return "admin/feedback-list";
     }
 
@@ -244,16 +254,20 @@ public class PageController {
     }
 
     @RequestMapping("/admin/shoppingcart")
-    public String adminShoppingCart(Model model){
+    public String adminShoppingCart(AdminUser adminUser,
+                                    Model model){
         List<ShoppingCartDetail> shoppingCartList=shoppingCartService.findAllCart();
         model.addAttribute("shopcartList",shoppingCartList);
+        model.addAttribute("adminUser",adminUser);
         return "admin/shoppingcart-list";
     }
 
     @RequestMapping("/admin/spike")
-    public String adminSpikeShow(Model model){
+    public String adminSpikeShow(AdminUser adminUser,
+                                 Model model){
         List<SpikeGameDetail> spikeGameDetailList=spikeGameService.findAllSpikeGameDetail();
         model.addAttribute("spikeList",spikeGameDetailList);
+        model.addAttribute("adminUser",adminUser);
         return "admin/spike-list";
     }
 
@@ -273,23 +287,29 @@ public class PageController {
     }
 
     @RequestMapping("/admin/kind-list")
-    public String adminKindShow(Model model){
+    public String adminKindShow(AdminUser adminUser,
+                                Model model){
         List<Type> typeList=typeService.findAllTypes();
         model.addAttribute("kindList",typeList);
+        model.addAttribute("adminUser",adminUser);
         return "admin/kind-list";
     }
 
     @RequestMapping("/admin/label-list")
-    public String adminLabelShow(Model model){
+    public String adminLabelShow(AdminUser adminUser,
+                                 Model model){
         List<Label> labelList=labelService.findAllLabel();
         model.addAttribute("labelList",labelList);
+        model.addAttribute("adminUser",adminUser);
         return "admin/label-list";
     }
 
     @RequestMapping("/admin/sensitive")
-    public String adminSensitive(Model model){
+    public String adminSensitive(AdminUser adminUser,
+                                 Model model){
         String sensitive=sensitiveWordService.sensitiveVo();
         model.addAttribute("sensitive",sensitive);
+        model.addAttribute("adminUser",adminUser);
         return "admin/sensitive";
     }
 

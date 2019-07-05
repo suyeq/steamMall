@@ -18,7 +18,7 @@ public enum  EventType {
 
     BUY_GAME("买游戏"),
 
-    FIND_PASSWORD("找回密码");
+    FIND_WORD("找回密码");
 
     private String value;
 

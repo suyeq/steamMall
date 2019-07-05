@@ -166,12 +166,23 @@ public class UserService {
     }
 
     /**
+     * 处理管理员登出
+     * @param email
+     * @return
+     */
+    public ResultMsg handleLogoutAdmin(String email){
+        redisService.del(UserKey.ADMIN_EMAIL,UserKey.ADMIN_KEY+email);
+        AdminUserHoleUtil.removeUser(email);
+        return ResultMsg.SUCCESS;
+    }
+
+    /**
      * 处理管理员登录
      * @param email
      * @param password
      * @return
      */
-    public ResultMsg handleAdminLogin(String email,String password){
+    public ResultMsg handleAdminLogin(String email,String password,HttpServletRequest request){
         User user=((UserService)applicationContext.getBean("userService")).findByEmail(email);
         User adminUser=redisService.get(UserKey.ADMIN_EMAIL,UserKey.ADMIN_KEY+email,User.class);
         if (user == null){
@@ -188,6 +199,7 @@ public class UserService {
         if (user.getIsAdmin()!=User.ISADMIN){
             return ResultMsg.ADMIN_NO;
         }
+        request.getSession().setAttribute(StaticField.EMAIL_KEY,email);
         redisService.set(UserKey.ADMIN_EMAIL,UserKey.ADMIN_KEY+email,user);
         AdminUserHoleUtil.addUser(user);
         return ResultMsg.LOGIN_SUCCESS;
@@ -225,7 +237,7 @@ public class UserService {
         user.setPassword(finalPassword);
         redisService.set(UserKey.USER_ID,email,user);
         ((UserService)applicationContext.getBean("userService")).updateUser(user);
-        mqProducer.productEvent(new Event(EventType.FIND_PASSWORD).setEtrMsg(Event.EMAIL,email).setEtrMsg(Event.NEW_PASSWORD,newPassword));
+        mqProducer.productEvent(new Event(EventType.FIND_WORD).setEtrMsg(Event.EMAIL,email).setEtrMsg(Event.NEW_WORD,newPassword));
         return ResultMsg.SUCCESS;
     }
 

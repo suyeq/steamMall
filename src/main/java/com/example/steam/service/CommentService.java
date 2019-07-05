@@ -7,9 +7,7 @@ import com.example.steam.entity.Comment;
 import com.example.steam.entity.User;
 import com.example.steam.redis.RedisService;
 import com.example.steam.redis.key.CommentKey;
-import com.example.steam.utils.CommentRank;
-import com.example.steam.utils.RankScoreValue;
-import com.example.steam.utils.ResultMsg;
+import com.example.steam.utils.*;
 import com.example.steam.vo.CommentDetail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +17,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -51,6 +50,8 @@ public class CommentService implements InitializingBean{
     @Autowired
     RedisService redisService;
     @Autowired
+    SensitiveWordService sensitiveWordService;
+    @Autowired
     UserService userService;
     @Autowired
     ImageService imageService;
@@ -58,6 +59,8 @@ public class CommentService implements InitializingBean{
     UserGameService userGameService;
     @Autowired
     GameService gameService;
+    @Autowired
+    SensitiveWordUtil sensitiveWordUtil;
     @Autowired
     ApplicationContext applicationContext;
 
@@ -90,6 +93,11 @@ public class CommentService implements InitializingBean{
      */
     public ResultMsg updateCommentContent(long commentId,String newContent){
         Comment comment=((CommentService)applicationContext.getBean("commentService")).findOneCommentById(commentId);
+        try {
+            newContent=sensitiveWordUtil.replaceSensitiveWord(newContent, StaticField.SENSITIVE);
+        } catch (IOException e) {
+            log.info(e.getMessage());
+        }
         comment.setContent(newContent);
         ((CommentService)applicationContext.getBean("commentService")).updateComment(comment);
         return ResultMsg.SUCCESS;
@@ -387,6 +395,11 @@ public class CommentService implements InitializingBean{
      */
     @Transactional(rollbackFor = Exception.class)
     public long addComment(Comment comment){
+        try {
+            comment.setContent(sensitiveWordUtil.replaceSensitiveWord(comment.getContent(),StaticField.SENSITIVE));
+        } catch (IOException e) {
+            log.info(e.getMessage());
+        }
         commentDao.addComment(comment);
         userService.updateCommnetNum(comment.getEmail());
         /**
@@ -427,6 +440,8 @@ public class CommentService implements InitializingBean{
 
     @Override
     public void afterPropertiesSet() throws Exception {
+//        sensitiveWordService.addSensitiveWord("傻子");
+//        sensitiveWordService.addSensitiveWord("傻子傻瓜");
 //        int sum=((CommentService)applicationContext.getBean("commentService")).findCommentSum();
 //        log.error(sum+"");
 //        sum=17;

@@ -21,6 +21,9 @@ public class SensitiveWordUtil {
     @Autowired
     SensitiveWordService sensitiveWordService;
 
+    @Autowired
+    StaticField staticField;
+
     private Map<String,String> keyWordMap;
     private String replaceString;
     private Map<Character,String> ignoreWord;
@@ -49,9 +52,9 @@ public class SensitiveWordUtil {
         Set<String> set=readKeyWordFromFile();
         addKeyWordtoHashMap(set);
         ignoreWord=new HashMap<>();
-//        for (int i=0;i< StaticField.IgnoreWords.length;i++){
-//            ignoreWord.put(StaticField.IgnoreWords[i],"1");
-//        }
+        for (int i=0;i< staticField.getIGNORE_WORD().length;i++){
+            ignoreWord.put(staticField.getIGNORE_WORD()[i],"1");
+        }
     }
 
     /**

@@ -440,30 +440,30 @@ public class CommentService implements InitializingBean{
 
     @Override
     public void afterPropertiesSet() throws Exception {
-//        sensitiveWordService.addSensitiveWord("傻子");
-//        sensitiveWordService.addSensitiveWord("傻子傻瓜");
-//        int sum=((CommentService)applicationContext.getBean("commentService")).findCommentSum();
-//        log.error(sum+"");
-//        sum=17;
-//        for (int i=0;i<sum;i++){
-//            Comment comment=((CommentService)applicationContext.getBean("commentService")).findOneCommentById(i+1);
-//            if (comment ==null){
-//                log.error("评论为空");
-//                continue;
-//            }
-//            CommentRank commentRank=new CommentRank();
-//            commentRank.setId(comment.getId());
-//            commentRank.setGameId(comment.getGameId());
-//
-//            RankScoreValue zanRank=new RankScoreValue();
-//            zanRank.setScore(comment.getZanNum());
-//            zanRank.setValue(commentRank);
-//
-//            RankScoreValue timeRank=new RankScoreValue();
-//            timeRank.setScore(comment.getCommentDate().getTime());
-//            timeRank.setValue(commentRank);
-//            redisService.zadd(CommentKey.COMMENT_RANK_ZANNUM,CommentKey.COMMENT_RANK_ZANNUM_KEY,zanRank);
-//            redisService.zadd(CommentKey.COMMENT_RANK_TIME,CommentKey.COMMENT_RANK_TIME_KEY,timeRank);
-//        }
+        sensitiveWordService.addSensitiveWord("傻子");
+        sensitiveWordService.addSensitiveWord("傻子傻瓜");
+        int sum=((CommentService)applicationContext.getBean("commentService")).findCommentSum();
+        log.error(sum+"");
+        sum=17;
+        for (int i=0;i<sum;i++){
+            Comment comment=((CommentService)applicationContext.getBean("commentService")).findOneCommentById(i+1);
+            if (comment ==null){
+                log.error("评论为空");
+                continue;
+            }
+            CommentRank commentRank=new CommentRank();
+            commentRank.setId(comment.getId());
+            commentRank.setGameId(comment.getGameId());
+
+            RankScoreValue zanRank=new RankScoreValue();
+            zanRank.setScore(comment.getZanNum());
+            zanRank.setValue(commentRank);
+
+            RankScoreValue timeRank=new RankScoreValue();
+            timeRank.setScore(comment.getCommentDate().getTime());
+            timeRank.setValue(commentRank);
+            redisService.zadd(CommentKey.COMMENT_RANK_ZANNUM,CommentKey.COMMENT_RANK_ZANNUM_KEY,zanRank);
+            redisService.zadd(CommentKey.COMMENT_RANK_TIME,CommentKey.COMMENT_RANK_TIME_KEY,timeRank);
+        }
     }
 }

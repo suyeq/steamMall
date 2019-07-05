@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50718
 File Encoding         : 65001
 
-Date: 2019-06-22 20:17:47
+Date: 2019-06-26 08:21:34
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -95,7 +95,7 @@ INSERT INTO `game` VALUES ('4', '隐形守护者', '《隐形守护者》长篇�
 INSERT INTO `game` VALUES ('5', '绝地求生', '绝地求生(PLAYERUNKNOWN’S BATTLEGROUNDS)是战术竞技类型的游戏，每一局游戏将有100名玩家参与，他们将被投放在绝地岛(battlegrounds)的上空，游戏开始跳伞时所有人都一无所有。', '绝地求生(PLAYERUNKNOWN’S BATTLEGROUNDS)是战术竞技类游戏，每一局游戏将有100名玩家参与，他们将被投放在绝地岛(battlegrounds)的上空，游戏开始跳伞时所有人都一无所有。\r\n游戏展开的方式是：玩家赤手空拳地分布在岛屿的各个角落，利用岛上多样的武器与道具。\r\n随着时间的流逝，岛上的安全地带越来越少，特定地区也会发生爆炸的情况，最终只有一人存活获得胜利。', '1', '98', '2019-04-22 20:36:24', '26', '9', '10', '1', '88');
 INSERT INTO `game` VALUES ('6', 'Anno 1800', '在《Anno 1800》里引领工业革命！ 体验史上瞬息万变的精彩时期之一。发现新科技、新大陆和新社会。', '在《Anno 1800》里引领工业革命！\r\n\r\n体验史上瞬息万变的精彩时期之一。发现新科技、新大陆和新社会。打造你梦想中的新世界！收集到的所有原料都是为了创造值得回味的《Anno》游戏体验。游历工业革命时期的世界并写下你的故事！', '1', '220', '2019-04-09 21:27:21', '32', '11', '12', '79', '79');
 INSERT INTO `game` VALUES ('7', 'Supraland', '混合了传送门、萨尔达和银河战士。探索、寻找隐藏的升级道具，解开谜题、击败怪兽或是寻找新的能力帮助你到达新的地区。Supraland 是一款第一人称的解谜型类银河战士恶魔城游戏。游戏的灵感主要来自於萨尔达、银河战士和传送门。', 'Supraland 是一款第一人称的解谜型类银河战士恶魔城游戏。游戏的灵感主要来自於萨尔达、银河战士和传送门。\r\nSupraland 不用繁琐的对话、多余的教学干扰你的游玩体验，以简单的小故事给予一个明确的首要目标，剩下的由聪明的你自行探索、发掘。', '1', '19', '2019-04-23 21:41:25', '38', '13', '14', '70', '70');
-INSERT INTO `game` VALUES ('8', 'Grand Theft Auto V', '洛圣都是一座有着明亮灯光、漫长夜晚和肮脏秘密的城市，其最亮、最长、最脏的一面，尽在 GTA 在线模式：不夜城。派对现在开始。', '与传奇经理人托尼·普林斯合伙经营顶级夜总会，请来世界闻名的 DJ 索洛蒙、我们的故事、迪克森以及黑色圣母，将它打造成圣安地列斯有史以来最集中的犯罪集团网的门面。\r\n\r\n一个初涉江湖的街头新丁、一个洗手多年的银行劫匪和一个丧心病狂的杀人狂魔，误打误撞中深陷犯罪集团、美国政府和娱乐产业之间盘根错杂的恐怖困境。他们必须齐心协力，接连完成九死一生的惊天劫案，才能在这个冷血无情的城市中苟延残喘。不要相信任何人，尤其是你的同伙！ ', '1', '290', '2019-04-01 21:56:44', '44', '15', '16', '0', '0');
+INSERT INTO `game` VALUES ('8', 'Grand Theft Auto V', '洛圣都是一座有着明亮灯光、漫长夜晚和肮脏秘密的城市，其最亮、最长、最脏的一面，尽在 GTA 在线模式：不夜城。派对现在开始。', '与传奇经理人托尼·普林斯合伙经营顶级夜总会，请来世界闻名的 DJ 索洛蒙、我们的故事、迪克森以及黑色圣母，将它打造成圣安地列斯有史以来最集中的犯罪集团网的门面。\r\n\r\n一个初涉江湖的街头新丁、一个洗手多年的银行劫匪和一个丧心病狂的杀人狂魔，误打误撞中深陷犯罪集团、美国政府和娱乐产业之间盘根错杂的恐怖困境。他们必须齐心协力，接连完成九死一生的惊天劫案，才能在这个冷血无情的城市中苟延残喘。不要相信任何人，尤其是你的同伙！ ', '1', '290', '2019-04-01 21:56:44', '44', '15', '16', '1', '0');
 INSERT INTO `game` VALUES ('9', 'Human Fall Flat', '人类一败涂地是一款与众不同的基于物理特性的开放结局解谜探索游戏。游戏发生于若干飘浮在云中的幻境中。你的目标就是用你仅有的智慧和物理原理解开谜题，从这些荒诞梦境中逃出来。', '人类一败涂地的世界拥有先进的物理引擎和创新的操作，能够为您带来多种挑战。Bob的坠落之梦中夹杂了许多需要解决的谜题和让你忘记本来目的的小玩意儿，贸然尝试它们可能会闹出不少笑料。这些世界可能看上去很奇幻，但物理法则可是很真实的。\r\n\r\n你会想打开那扇神秘之门吗？还是说你只想看看你能把一套音响扔多远？', '1', '21', '2019-04-09 22:22:41', '50', '17', '18', '0', '80');
 INSERT INTO `game` VALUES ('10', 'Sekiro™: Shadows Die Twice', '进入由打造了《黑暗之魂》系列的知名开发商FromSoftware倾力制作的全新冒险，用智慧和力量斩开复仇之路。 决死复仇，夺回荣誉，智杀强敌。', '在《Sekiro: Shadows Die Twice》中你是“独臂之狼”，一个名誉不再、伤痕累累的忍者，一个从死亡边缘捡回一命的战士。你效忠守护继承古老血统的年轻皇子，与危险的苇名一族以及众多凶恶之徒为敌。年轻的皇子被抓走后，为挽回荣誉，你将不畏死亡，踏上危机四伏的征程。\r\n\r\n探索生死冲突不断的16世纪后期，感受残酷的日本战国时代，在黑暗、扭曲的世界，与威胁生命的敌人对峙。活用义手装备各种致命武器，大显忍者身手，在血腥对抗中潜行、上下穿梭，与敌人正面激烈交锋。\r\n\r\n复仇雪耻。夺回荣誉。巧妙杀敌。', '1', '269', '2019-04-06 22:44:34', '56', '19', '20', '1', '68');
 INSERT INTO `game` VALUES ('11', 'Train Valley 2', '在我们的列车大亨益智游戏中推动工业革命向前发展！建造一条高效的铁路，升级机车，并让所有列车在轨道上运行，以满足你的小山谷中城市和工业不断增长的需求。', 'Train Valley 2 是一款列车大亨益智游戏。将你的铁路公司从工业革命时代带到未来，并满足山谷中城市和工业的需求。建造铁路，升级机车，让列车按照时刻表运行，不发生任何延误或事故。全体上车 — 列车即将驶离车站！', '1', '30', '2019-02-21 22:58:57', '62', '21', '22', '0', '70');
@@ -175,7 +175,7 @@ CREATE TABLE `game_label` (
   `labelid` bigint(40) DEFAULT NULL,
   `hotnum` int(11) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=90 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of game_label
@@ -263,9 +263,10 @@ INSERT INTO `game_label` VALUES ('80', '20', '12', '0');
 INSERT INTO `game_label` VALUES ('81', '20', '13', '0');
 INSERT INTO `game_label` VALUES ('84', '10', '32', '0');
 INSERT INTO `game_label` VALUES ('85', '10', '33', '1');
-INSERT INTO `game_label` VALUES ('86', '10', '34', '2');
+INSERT INTO `game_label` VALUES ('86', '10', '34', '3');
 INSERT INTO `game_label` VALUES ('87', '4', '35', '0');
 INSERT INTO `game_label` VALUES ('88', '1', '36', '0');
+INSERT INTO `game_label` VALUES ('89', '10', '37', '0');
 
 -- ----------------------------
 -- Table structure for game_language
@@ -520,7 +521,7 @@ CREATE TABLE `label` (
   `name` varchar(255) DEFAULT NULL,
   `hotnum` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of label
@@ -560,6 +561,7 @@ INSERT INTO `label` VALUES ('33', '猎杀', '0');
 INSERT INTO `label` VALUES ('34', '砍杀', '0');
 INSERT INTO `label` VALUES ('35', '二战', '0');
 INSERT INTO `label` VALUES ('36', '甜蜜', '0');
+INSERT INTO `label` VALUES ('37', '李檬', '0');
 
 -- ----------------------------
 -- Table structure for language
@@ -631,19 +633,17 @@ INSERT INTO `recentgame` VALUES ('3', '473721601@qq.com', '20', '2019-06-20', '7
 DROP TABLE IF EXISTS `shoppingcart`;
 CREATE TABLE `shoppingcart` (
   `id` bigint(40) NOT NULL AUTO_INCREMENT,
-  `userid` bigint(40) DEFAULT NULL,
+  `email` varchar(40) DEFAULT NULL,
   `posterimage` bigint(40) DEFAULT NULL,
   `gameprice` int(11) DEFAULT NULL,
   `gamename` varchar(255) DEFAULT NULL,
   `gameid` bigint(40) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of shoppingcart
 -- ----------------------------
-INSERT INTO `shoppingcart` VALUES ('26', '6', '2', '123', '樱花片落恋模样 This is a very sweet love story.', '1');
-INSERT INTO `shoppingcart` VALUES ('27', '6', '44', '290', 'Grand Theft Auto V', '8');
 
 -- ----------------------------
 -- Table structure for spikegame
@@ -664,7 +664,7 @@ CREATE TABLE `spikegame` (
 -- ----------------------------
 -- Records of spikegame
 -- ----------------------------
-INSERT INTO `spikegame` VALUES ('1', '1', '2', '1', '8', '2019-06-19 11:00:00', '2019-06-19 11:01:00', '136');
+INSERT INTO `spikegame` VALUES ('1', '1', '2', '1', '4', '2019-06-24 19:58:00', '2019-06-24 20:59:00', '136');
 
 -- ----------------------------
 -- Table structure for spikeshopcart
@@ -672,10 +672,10 @@ INSERT INTO `spikegame` VALUES ('1', '1', '2', '1', '8', '2019-06-19 11:00:00', 
 DROP TABLE IF EXISTS `spikeshopcart`;
 CREATE TABLE `spikeshopcart` (
   `id` bigint(40) NOT NULL AUTO_INCREMENT,
-  `userid` bigint(40) DEFAULT NULL,
+  `email` varchar(40) DEFAULT NULL,
   `spikegameid` bigint(40) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of spikeshopcart
@@ -777,9 +777,9 @@ CREATE TABLE `user` (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('1', 'Suyeq', '1q2w3e', '473721601@qq.com', '96bd8eabbac36ead0485d163a1cff489', '126', '109.5', '0', '30', '1', '9', 'China', 'Hunan', '一两清风，半盏明月');
+INSERT INTO `user` VALUES ('1', 'Suyeq', '1q2w3e', '473721601@qq.com', '96bd8eabbac36ead0485d163a1cff489', '126', '109.5', '5', '5', '1', '9', 'China', 'Hunan', '一两清风，半盏明月');
 INSERT INTO `user` VALUES ('2', 'Suye', '1q2w3e', '12345678@qq.com', '96bd8eabbac36ead0485d163a1cff489', '1', '456.9', '20', '40', '0', '0', 'China', 'Hunan', '这个人很懒，没有什么~~');
-INSERT INTO `user` VALUES ('6', '李檬', 'c075b5', '3162618364@qq.com', '242ebf1e943eb157cdf93b81e2e7f9ed', '1', '0', '1', '2', '0', '0', 'china', 'Hunan', '一两清风，半盏明月');
+INSERT INTO `user` VALUES ('6', '李檬', 'c075b5', '3162618364@qq.com', '242ebf1e943eb157cdf93b81e2e7f9ed', '1', '0', '1', '3', '0', '0', 'china', 'Hunan', '一两清风，半盏明月');
 
 -- ----------------------------
 -- Table structure for user_game
@@ -792,7 +792,7 @@ CREATE TABLE `user_game` (
   `playtime` int(11) DEFAULT '0',
   `lastplay` date DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of user_game
@@ -805,3 +805,4 @@ INSERT INTO `user_game` VALUES ('5', '3162618364@qq.com', '20', '10', '2019-06-1
 INSERT INTO `user_game` VALUES ('6', '3162618364@qq.com', '10', '50', '2019-06-27');
 INSERT INTO `user_game` VALUES ('7', '3162618364@qq.com', '5', '10', '2019-06-18');
 INSERT INTO `user_game` VALUES ('8', '473721601@qq.com', '18', '0', null);
+INSERT INTO `user_game` VALUES ('9', '3162618364@qq.com', '8', '0', '2019-06-24');

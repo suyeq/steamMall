@@ -1,8 +1,8 @@
 # 项目介绍
 这个项目是主要设计缓存的一个练手项目，目前后台还没有实现，还在开发（现在已上传后台），但是前台流程是通了的，从登陆到购买以及秒杀。目前主要模块有五个：用户模块，游戏模块，评论模块、购物车模块以及秒杀模块。你们可以接着把这个项目写下去，里面注释写了很多，相信大家也能看懂，页面是直接在steam趴下来修改了的，嘿嘿嘿。。。。后台用的H-UI界面，上述模块的可视化操作全部实现了。
 
-# 项目功能
-<img src="https://github.com/suyeq/steamMall/blob/master/666.png" width=350px height=700px>
+# 项目架构图
+<img src="https://github.com/suyeq/steamMall/blob/master/%E6%9E%B6%E6%9E%84.png">
 
 # 项目展示
 <div style="float:left">
